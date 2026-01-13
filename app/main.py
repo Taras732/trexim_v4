@@ -4,8 +4,12 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 
-from config import settings
-from routes import pages, admin
+try:
+    from .config import settings
+    from .routes import pages, admin
+except ImportError:
+    from config import settings
+    from routes import pages, admin
 
 app = FastAPI(title=settings.APP_NAME)
 
