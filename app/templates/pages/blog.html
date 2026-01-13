@@ -1,16 +1,348 @@
 {% extends "base.html" %}
 
+{% block title %}
+{% if language == 'uk' %}
+Блог - Trexim
+{% else %}
+Blog - Trexim
+{% endif %}
+{% endblock %}
+
 {% block content %}
-<section class="py-20">
-    <div class="container mx-auto px-4">
-        <h1 class="text-4xl font-bold mb-6">{{ page_title }}</h1>
-        <p class="text-xl text-gray-600">
+<!-- Blog Hero -->
+<section class="relative py-16 md:py-20 px-6 bg-gradient-to-b from-slate-900 to-slate-800">
+    <div class="max-w-7xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+            {% if language == 'uk' %}Блог Trexim{% else %}Trexim Blog{% endif %}
+        </h1>
+        <p class="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto">
             {% if language == 'uk' %}
-            Ця сторінка в розробці.
+            Новини, інсайти та корисні матеріали про логістику, AI та автоматизацію транспортних перевезень
             {% else %}
-            This page is under development.
+            News, insights and useful materials about logistics, AI and transportation automation
             {% endif %}
         </p>
+    </div>
+</section>
+
+<!-- Filters -->
+<section class="py-8 px-6 bg-white border-b border-gray-200 sticky top-16 z-40">
+    <div class="max-w-7xl mx-auto">
+        <div x-data="{ category: 'all' }" class="flex flex-wrap gap-3 justify-center">
+            <button @click="category = 'all'"
+                    :class="category === 'all' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                    class="px-6 py-2 rounded-full font-semibold transition">
+                {% if language == 'uk' %}Всі{% else %}All{% endif %}
+            </button>
+            <button @click="category = 'news'"
+                    :class="category === 'news' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                    class="px-6 py-2 rounded-full font-semibold transition">
+                {% if language == 'uk' %}Новини{% else %}News{% endif %}
+            </button>
+            <button @click="category = 'guides'"
+                    :class="category === 'guides' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                    class="px-6 py-2 rounded-full font-semibold transition">
+                {% if language == 'uk' %}Гіди{% else %}Guides{% endif %}
+            </button>
+            <button @click="category = 'tech'"
+                    :class="category === 'tech' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                    class="px-6 py-2 rounded-full font-semibold transition">
+                {% if language == 'uk' %}Технології{% else %}Technology{% endif %}
+            </button>
+            <button @click="category = 'updates'"
+                    :class="category === 'updates' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                    class="px-6 py-2 rounded-full font-semibold transition">
+                {% if language == 'uk' %}Оновлення{% else %}Updates{% endif %}
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Post -->
+<section class="py-16 px-6 bg-gradient-to-b from-white to-slate-50">
+    <div class="max-w-7xl mx-auto">
+        <div class="bg-gradient-to-r from-slate-900 to-slate-800 rounded-3xl overflow-hidden shadow-2xl">
+            <div class="grid md:grid-cols-2 gap-0">
+                <div class="p-8 md:p-12 flex flex-col justify-center">
+                    <span class="inline-block px-4 py-2 bg-orange-500 text-white text-xs font-bold rounded-full w-fit mb-4">
+                        {% if language == 'uk' %}ГОЛОВНА НОВИНА{% else %}FEATURED{% endif %}
+                    </span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                        {% if language == 'uk' %}
+                        Trexim готується до запуску: Е-ТТН 2026
+                        {% else %}
+                        Trexim Prepares for Launch: E-TTN 2026
+                        {% endif %}
+                    </h2>
+                    <p class="text-slate-300 mb-6 text-lg">
+                        {% if language == 'uk' %}
+                        З 1 січня 2026 року електронна товарно-транспортна накладна стає обов'язковою. Trexim допоможе вашому бізнесу підготуватися до змін.
+                        {% else %}
+                        From January 1, 2026, electronic waybills become mandatory. Trexim will help your business prepare for changes.
+                        {% endif %}
+                    </p>
+                    <div class="flex items-center gap-4 mb-6">
+                        <span class="text-slate-400 text-sm">13 {% if language == 'uk' %}січня{% else %}January{% endif %} 2026</span>
+                        <span class="text-slate-600">•</span>
+                        <span class="text-slate-400 text-sm">5 {% if language == 'uk' %}хв читання{% else %}min read{% endif %}</span>
+                    </div>
+                    <a href="#" class="inline-block px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl transition w-fit">
+                        {% if language == 'uk' %}Читати далі{% else %}Read More{% endif %}
+                    </a>
+                </div>
+                <div class="relative min-h-[300px] md:min-h-0 bg-gradient-to-br from-orange-500/20 to-orange-600/10 flex items-center justify-center">
+                    <div class="text-9xl">📋</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Blog Posts Grid -->
+<section class="py-16 px-6 bg-slate-50">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Post 1 -->
+            <article class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                <div class="relative h-48 bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center">
+                    <div class="text-6xl">🤖</div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="px-3 py-1 bg-orange-100 text-orange-600 text-xs font-semibold rounded-full">
+                            {% if language == 'uk' %}Технології{% else %}Technology{% endif %}
+                        </span>
+                        <span class="text-gray-400 text-xs">10 {% if language == 'uk' %}січня{% else %}January{% endif %} 2026</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 hover:text-orange-500 transition">
+                        {% if language == 'uk' %}
+                        Як AI оптимізує маршрути в реальному часі
+                        {% else %}
+                        How AI Optimizes Routes in Real-Time
+                        {% endif %}
+                    </h3>
+                    <p class="text-gray-600 mb-4 text-sm">
+                        {% if language == 'uk' %}
+                        Штучний інтелект аналізує трафік, погоду та інші фактори для побудови оптимальних маршрутів...
+                        {% else %}
+                        Artificial intelligence analyzes traffic, weather and other factors to build optimal routes...
+                        {% endif %}
+                    </p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-400 text-xs">3 {% if language == 'uk' %}хв{% else %}min{% endif %}</span>
+                        <a href="#" class="text-orange-500 hover:text-orange-600 font-semibold text-sm">
+                            {% if language == 'uk' %}Читати →{% else %}Read →{% endif %}
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Post 2 -->
+            <article class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                <div class="relative h-48 bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                    <div class="text-6xl">💼</div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="px-3 py-1 bg-blue-100 text-blue-600 text-xs font-semibold rounded-full">
+                            {% if language == 'uk' %}Гіди{% else %}Guides{% endif %}
+                        </span>
+                        <span class="text-gray-400 text-xs">8 {% if language == 'uk' %}січня{% else %}January{% endif %} 2026</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 hover:text-orange-500 transition">
+                        {% if language == 'uk' %}
+                        5 кроків для легалізації транспортного бізнесу
+                        {% else %}
+                        5 Steps to Legalize Your Transport Business
+                        {% endif %}
+                    </h3>
+                    <p class="text-gray-600 mb-4 text-sm">
+                        {% if language == 'uk' %}
+                        Покроковий гід по виходу з тіньової економіки та отримання всіх переваг легального бізнесу...
+                        {% else %}
+                        Step-by-step guide to exiting shadow economy and getting all benefits of legal business...
+                        {% endif %}
+                    </p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-400 text-xs">7 {% if language == 'uk' %}хв{% else %}min{% endif %}</span>
+                        <a href="#" class="text-orange-500 hover:text-orange-600 font-semibold text-sm">
+                            {% if language == 'uk' %}Читати →{% else %}Read →{% endif %}
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Post 3 -->
+            <article class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                <div class="relative h-48 bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center">
+                    <div class="text-6xl">📊</div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="px-3 py-1 bg-green-100 text-green-600 text-xs font-semibold rounded-full">
+                            {% if language == 'uk' %}Новини{% else %}News{% endif %}
+                        </span>
+                        <span class="text-gray-400 text-xs">5 {% if language == 'uk' %}січня{% else %}January{% endif %} 2026</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 hover:text-orange-500 transition">
+                        {% if language == 'uk' %}
+                        Ринок вантажоперевезень України 2026
+                        {% else %}
+                        Ukraine's Freight Market 2026
+                        {% endif %}
+                    </h3>
+                    <p class="text-gray-600 mb-4 text-sm">
+                        {% if language == 'uk' %}
+                        Огляд ключових трендів та статистики українського ринку логістики на початок 2026 року...
+                        {% else %}
+                        Overview of key trends and statistics of Ukrainian logistics market at the beginning of 2026...
+                        {% endif %}
+                    </p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-400 text-xs">4 {% if language == 'uk' %}хв{% else %}min{% endif %}</span>
+                        <a href="#" class="text-orange-500 hover:text-orange-600 font-semibold text-sm">
+                            {% if language == 'uk' %}Читати →{% else %}Read →{% endif %}
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Post 4 -->
+            <article class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                <div class="relative h-48 bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
+                    <div class="text-6xl">🚛</div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="px-3 py-1 bg-purple-100 text-purple-600 text-xs font-semibold rounded-full">
+                            {% if language == 'uk' %}Оновлення{% else %}Updates{% endif %}
+                        </span>
+                        <span class="text-gray-400 text-xs">3 {% if language == 'uk' %}січня{% else %}January{% endif %} 2026</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 hover:text-orange-500 transition">
+                        {% if language == 'uk' %}
+                        Нові можливості GPS-трекінгу в Trexim
+                        {% else %}
+                        New GPS Tracking Features in Trexim
+                        {% endif %}
+                    </h3>
+                    <p class="text-gray-600 mb-4 text-sm">
+                        {% if language == 'uk' %}
+                        Представляємо розширені можливості відстеження вантажів в реальному часі з прогнозуванням затримок...
+                        {% else %}
+                        Introducing advanced real-time cargo tracking capabilities with delay prediction...
+                        {% endif %}
+                    </p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-400 text-xs">2 {% if language == 'uk' %}хв{% else %}min{% endif %}</span>
+                        <a href="#" class="text-orange-500 hover:text-orange-600 font-semibold text-sm">
+                            {% if language == 'uk' %}Читати →{% else %}Read →{% endif %}
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Post 5 -->
+            <article class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                <div class="relative h-48 bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center">
+                    <div class="text-6xl">⚖️</div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="px-3 py-1 bg-red-100 text-red-600 text-xs font-semibold rounded-full">
+                            {% if language == 'uk' %}Гіди{% else %}Guides{% endif %}
+                        </span>
+                        <span class="text-gray-400 text-xs">1 {% if language == 'uk' %}січня{% else %}January{% endif %} 2026</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 hover:text-orange-500 transition">
+                        {% if language == 'uk' %}
+                        Все про Е-ТТН: правила та штрафи
+                        {% else %}
+                        Everything About E-TTN: Rules and Penalties
+                        {% endif %}
+                    </h3>
+                    <p class="text-gray-600 mb-4 text-sm">
+                        {% if language == 'uk' %}
+                        Детальний огляд законодавства про електронні накладні та відповідальність за порушення...
+                        {% else %}
+                        Detailed overview of electronic waybill legislation and liability for violations...
+                        {% endif %}
+                    </p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-400 text-xs">6 {% if language == 'uk' %}хв{% else %}min{% endif %}</span>
+                        <a href="#" class="text-orange-500 hover:text-orange-600 font-semibold text-sm">
+                            {% if language == 'uk' %}Читати →{% else %}Read →{% endif %}
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Post 6 -->
+            <article class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                <div class="relative h-48 bg-gradient-to-br from-yellow-500 to-yellow-600 flex items-center justify-center">
+                    <div class="text-6xl">💡</div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="px-3 py-1 bg-yellow-100 text-yellow-600 text-xs font-semibold rounded-full">
+                            {% if language == 'uk' %}Технології{% else %}Technology{% endif %}
+                        </span>
+                        <span class="text-gray-400 text-xs">29 {% if language == 'uk' %}грудня{% else %}December{% endif %} 2025</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 hover:text-orange-500 transition">
+                        {% if language == 'uk' %}
+                        Автоматизація документообігу: економія часу
+                        {% else %}
+                        Document Workflow Automation: Time Savings
+                        {% endif %}
+                    </h3>
+                    <p class="text-gray-600 mb-4 text-sm">
+                        {% if language == 'uk' %}
+                        Як автоматизація документів може заощадити до 70% часу на паперову роботу...
+                        {% else %}
+                        How document automation can save up to 70% of time on paperwork...
+                        {% endif %}
+                    </p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-400 text-xs">4 {% if language == 'uk' %}хв{% else %}min{% endif %}</span>
+                        <a href="#" class="text-orange-500 hover:text-orange-600 font-semibold text-sm">
+                            {% if language == 'uk' %}Читати →{% else %}Read →{% endif %}
+                        </a>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <!-- Load More -->
+        <div class="text-center mt-12">
+            <button class="px-8 py-3 bg-white hover:bg-gray-50 text-slate-900 font-semibold rounded-xl border-2 border-gray-200 hover:border-orange-500 transition">
+                {% if language == 'uk' %}Завантажити ще{% else %}Load More{% endif %}
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter CTA -->
+<section class="py-16 px-6 bg-gradient-to-r from-orange-500 to-orange-600">
+    <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+            {% if language == 'uk' %}Підпишіться на нашу розсилку{% else %}Subscribe to Our Newsletter{% endif %}
+        </h2>
+        <p class="text-orange-100 mb-8 text-lg">
+            {% if language == 'uk' %}
+            Отримуйте останні новини та інсайти про логістику просто на пошту
+            {% else %}
+            Get the latest news and insights about logistics straight to your inbox
+            {% endif %}
+        </p>
+        <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+            <input type="email"
+                   placeholder="{% if language == 'uk' %}Ваш email{% else %}Your email{% endif %}"
+                   class="flex-1 px-6 py-3 rounded-xl border-0 focus:ring-2 focus:ring-white">
+            <button type="submit" class="px-8 py-3 bg-white text-orange-500 font-semibold rounded-xl hover:bg-orange-50 transition">
+                {% if language == 'uk' %}Підписатися{% else %}Subscribe{% endif %}
+            </button>
+        </form>
     </div>
 </section>
 {% endblock %}

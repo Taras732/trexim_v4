@@ -564,6 +564,129 @@ Trexim - AI Logistics OS
     </div>
 </section>
 
+<!-- Blog Section -->
+<section class="relative py-16 md:py-20 px-6 bg-white">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
+                {% if language == 'uk' %}Останні з блогу{% else %}Latest from Blog{% endif %}
+            </h2>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+                {% if language == 'uk' %}
+                Новини, інсайти та корисні матеріали про логістику та AI
+                {% else %}
+                News, insights and useful materials about logistics and AI
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+            <!-- Blog Post 1 -->
+            <article class="bg-white rounded-2xl overflow-hidden border-2 border-slate-200 hover:border-orange-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-2">
+                <div class="relative h-48 bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center">
+                    <div class="text-6xl">📋</div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="px-3 py-1 bg-orange-100 text-orange-600 text-xs font-semibold rounded-full">
+                            {% if language == 'uk' %}Новини{% else %}News{% endif %}
+                        </span>
+                        <span class="text-gray-400 text-xs">13 {% if language == 'uk' %}січня{% else %}Jan{% endif %} 2026</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 hover:text-orange-500 transition">
+                        {% if language == 'uk' %}
+                        Trexim готується до запуску: Е-ТТН 2026
+                        {% else %}
+                        Trexim Prepares for Launch: E-TTN 2026
+                        {% endif %}
+                    </h3>
+                    <p class="text-gray-600 mb-4 text-sm">
+                        {% if language == 'uk' %}
+                        З 1 січня 2026 року електронна товарно-транспортна накладна стає обов'язковою...
+                        {% else %}
+                        From January 1, 2026, electronic waybills become mandatory...
+                        {% endif %}
+                    </p>
+                    <a href="/blog?lang={{ language }}" class="text-orange-500 hover:text-orange-600 font-semibold text-sm">
+                        {% if language == 'uk' %}Читати далі →{% else %}Read More →{% endif %}
+                    </a>
+                </div>
+            </article>
+
+            <!-- Blog Post 2 -->
+            <article class="bg-white rounded-2xl overflow-hidden border-2 border-slate-200 hover:border-orange-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-2">
+                <div class="relative h-48 bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                    <div class="text-6xl">🤖</div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="px-3 py-1 bg-blue-100 text-blue-600 text-xs font-semibold rounded-full">
+                            {% if language == 'uk' %}Технології{% else %}Technology{% endif %}
+                        </span>
+                        <span class="text-gray-400 text-xs">10 {% if language == 'uk' %}січня{% else %}Jan{% endif %} 2026</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 hover:text-orange-500 transition">
+                        {% if language == 'uk' %}
+                        Як AI оптимізує маршрути в реальному часі
+                        {% else %}
+                        How AI Optimizes Routes in Real-Time
+                        {% endif %}
+                    </h3>
+                    <p class="text-gray-600 mb-4 text-sm">
+                        {% if language == 'uk' %}
+                        Штучний інтелект аналізує трафік, погоду та інші фактори для оптимальних маршрутів...
+                        {% else %}
+                        Artificial intelligence analyzes traffic, weather and other factors for optimal routes...
+                        {% endif %}
+                    </p>
+                    <a href="/blog?lang={{ language }}" class="text-orange-500 hover:text-orange-600 font-semibold text-sm">
+                        {% if language == 'uk' %}Читати далі →{% else %}Read More →{% endif %}
+                    </a>
+                </div>
+            </article>
+
+            <!-- Blog Post 3 -->
+            <article class="bg-white rounded-2xl overflow-hidden border-2 border-slate-200 hover:border-orange-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-2">
+                <div class="relative h-48 bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center">
+                    <div class="text-6xl">💼</div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="px-3 py-1 bg-green-100 text-green-600 text-xs font-semibold rounded-full">
+                            {% if language == 'uk' %}Гіди{% else %}Guides{% endif %}
+                        </span>
+                        <span class="text-gray-400 text-xs">8 {% if language == 'uk' %}січня{% else %}Jan{% endif %} 2026</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 hover:text-orange-500 transition">
+                        {% if language == 'uk' %}
+                        5 кроків для легалізації транспортного бізнесу
+                        {% else %}
+                        5 Steps to Legalize Your Transport Business
+                        {% endif %}
+                    </h3>
+                    <p class="text-gray-600 mb-4 text-sm">
+                        {% if language == 'uk' %}
+                        Покроковий гід по виходу з тіньової економіки та отримання переваг легального бізнесу...
+                        {% else %}
+                        Step-by-step guide to exiting shadow economy and getting legal business benefits...
+                        {% endif %}
+                    </p>
+                    <a href="/blog?lang={{ language }}" class="text-orange-500 hover:text-orange-600 font-semibold text-sm">
+                        {% if language == 'uk' %}Читати далі →{% else %}Read More →{% endif %}
+                    </a>
+                </div>
+            </article>
+        </div>
+
+        <div class="text-center">
+            <a href="/blog?lang={{ language }}"
+               class="inline-block px-8 py-3 bg-slate-900 hover:bg-orange-500 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105">
+                {% if language == 'uk' %}Всі статті блогу{% else %}View All Posts{% endif %}
+            </a>
+        </div>
+    </div>
+</section>
+
 <!-- CTA Section -->
 <section class="relative py-16 md:py-20 px-6 bg-gradient-to-b from-white to-slate-50">
     <div class="max-w-4xl mx-auto text-center">
