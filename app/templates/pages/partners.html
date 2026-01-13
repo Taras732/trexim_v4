@@ -1,0 +1,647 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if language == 'uk' %}
+Партнерам - Trexim
+{% else %}
+Partners - Trexim
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative min-h-[90vh] flex items-center justify-center px-6 pt-32 pb-20 overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-100">
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-20 right-10 w-72 h-72 bg-orange-500/5 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-20 left-10 w-96 h-96 bg-slate-900/5 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="relative z-10 max-w-6xl mx-auto text-center">
+        <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-6 tracking-tight leading-[1.1]">
+            {% if language == 'uk' %}
+            <span class="block text-slate-900">Отримуйте додатковий дохід</span>
+            <span class="block bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent mt-2">на ринку автоперевезень</span>
+            {% else %}
+            <span class="block text-slate-900">Earn Additional Revenue</span>
+            <span class="block bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent mt-2">in Auto Logistics Market</span>
+            {% endif %}
+        </h1>
+
+        <p class="text-lg md:text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+            {% if language == 'uk' %}
+            Нові регулярні клієнти без ризиків та витрат на маркетинг
+            {% else %}
+            New recurring clients without risks and marketing costs
+            {% endif %}
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a href="/contact?lang={{ language }}" class="px-10 py-4 bg-orange-500 text-white text-base font-semibold rounded-full hover:bg-orange-600 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl">
+                {% if language == 'uk' %}Приєднатися до пілоту{% else %}Join Pilot Program{% endif %}
+            </a>
+            <a href="/contact?lang={{ language }}" class="px-10 py-4 bg-white text-slate-900 text-base font-semibold rounded-full border-2 border-slate-900 hover:bg-slate-900 hover:text-white transition-all duration-300 hover:scale-105">
+                {% if language == 'uk' %}Зв'язатися з нами{% else %}Contact Us{% endif %}
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Problems Section -->
+<section class="relative py-16 md:py-20 px-6 bg-white">
+    <div class="max-w-7xl mx-auto">
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-10 max-w-4xl mx-auto text-center leading-[1.2]">
+            {% if language == 'uk' %}
+            Український логістичний бізнес більше не може конкурувати, покладаючись на ручні процеси
+            {% else %}
+            Ukrainian logistics businesses can no longer compete relying on manual processes
+            {% endif %}
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="relative p-10 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 text-white overflow-hidden group hover:scale-105 transition-transform duration-300">
+                <div class="absolute top-6 right-6 text-7xl font-bold opacity-10">01</div>
+                <div class="relative z-10">
+                    <div class="text-orange-400 text-base font-bold mb-4">01</div>
+                    <h3 class="text-xl md:text-2xl font-bold leading-tight">
+                        {% if language == 'uk' %}
+                        Відсутність прозорості призводить до тіньових операцій
+                        {% else %}
+                        Lack of transparency leads to shadow transactions
+                        {% endif %}
+                    </h3>
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+
+            <div class="relative p-10 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-800 text-white overflow-hidden group hover:scale-105 transition-transform duration-300">
+                <div class="absolute top-6 right-6 text-7xl font-bold opacity-10">02</div>
+                <div class="relative z-10">
+                    <div class="text-orange-400 text-base font-bold mb-4">02</div>
+                    <h3 class="text-xl md:text-2xl font-bold leading-tight">
+                        {% if language == 'uk' %}
+                        E-TTN та інтеграція з ЄС змушує до цифрової трансформації
+                        {% else %}
+                        E-TTN and EU integration forces digital transition
+                        {% endif %}
+                    </h3>
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+
+            <div class="relative p-10 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 text-white overflow-hidden group hover:scale-105 transition-transform duration-300">
+                <div class="absolute top-6 right-6 text-7xl font-bold opacity-10">03</div>
+                <div class="relative z-10">
+                    <div class="text-orange-400 text-base font-bold mb-4">03</div>
+                    <h3 class="text-xl md:text-2xl font-bold leading-tight">
+                        {% if language == 'uk' %}
+                        Фрагментовані цифрові рішення призводять до помилок
+                        {% else %}
+                        Fragmented digital solutions lead to errors
+                        {% endif %}
+                    </h3>
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+
+            <div class="relative p-10 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-800 text-white overflow-hidden group hover:scale-105 transition-transform duration-300">
+                <div class="absolute top-6 right-6 text-7xl font-bold opacity-10">04</div>
+                <div class="relative z-10">
+                    <div class="text-orange-400 text-base font-bold mb-4">04</div>
+                    <h3 class="text-xl md:text-2xl font-bold leading-tight">
+                        {% if language == 'uk' %}
+                        ШІ стає критичним компонентом контролю
+                        {% else %}
+                        AI becomes critical component of control
+                        {% endif %}
+                    </h3>
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Solution Section -->
+<section class="relative py-16 md:py-20 px-6 bg-slate-900 text-white overflow-hidden">
+    <div class="absolute inset-0">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="relative z-10 max-w-6xl mx-auto text-center">
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-5 leading-[1.2]">
+            {% if language == 'uk' %}
+            Trexim — перша в Україні операційна логістична екосистема
+            {% else %}
+            Trexim — Ukraine's first operational logistics ecosystem
+            {% endif %}
+        </h2>
+        <p class="text-lg text-slate-300 mb-12 max-w-2xl mx-auto">
+            {% if language == 'uk' %}
+            Всі учасники в одному місці. Нуль сірих зон в операціях.
+            {% else %}
+            All stakeholders in one place. Zero gray zones in operations.
+            {% endif %}
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-2xl border border-slate-700 hover:border-orange-500/50 transition-all duration-300">
+                <div class="text-4xl mb-4">🤝</div>
+                <h3 class="text-lg font-bold mb-3 text-orange-400">
+                    {% if language == 'uk' %}Всі зацікавлені{% else %}All Interested{% endif %}
+                </h3>
+                <p class="text-sm text-slate-400 leading-relaxed">
+                    {% if language == 'uk' %}
+                    логістичні компанії • перевізники • бізнес • держава • стратегічні партнери
+                    {% else %}
+                    logistics companies • carriers • business • government • strategic partners
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-2xl border border-slate-700 hover:border-orange-500/50 transition-all duration-300">
+                <div class="text-4xl mb-4">📊</div>
+                <h3 class="text-lg font-bold mb-3 text-orange-400">
+                    {% if language == 'uk' %}Trexim фіксує{% else %}Trexim Captures{% endif %}
+                </h3>
+                <p class="text-sm text-slate-400 leading-relaxed">
+                    {% if language == 'uk' %}
+                    події рейсів • документи • транзакції • GPS дані • підписи • статуси
+                    {% else %}
+                    trip events • documents • transactions • GPS data • signatures • statuses
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-2xl border border-slate-700 hover:border-orange-500/50 transition-all duration-300">
+                <div class="text-4xl mb-4">🤖</div>
+                <h3 class="text-lg font-bold mb-3 text-orange-400">
+                    {% if language == 'uk' %}Аналітика ШІ{% else %}AI Analytics{% endif %}
+                </h3>
+                <p class="text-sm text-slate-400 leading-relaxed">
+                    {% if language == 'uk' %}
+                    ШІ виявляє затримки, порушення та попереджає про операційні ризики
+                    {% else %}
+                    AI detects delays, violations and warns about operational risks
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Partner Types Section -->
+<section class="relative py-16 md:py-20 px-6 bg-gradient-to-b from-white to-slate-50">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-5 leading-[1.2]">
+                {% if language == 'uk' %}
+                Для нас партнерство означає взаємну вигоду та довіру
+                {% else %}
+                For us, partnership means mutual benefit and trust
+                {% endif %}
+            </h2>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+                {% if language == 'uk' %}
+                Ваші послуги — частина щоденних логістичних операцій в екосистемі
+                {% else %}
+                Your services are part of daily logistics operations in the ecosystem
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div class="group bg-white p-8 rounded-2xl border-2 border-slate-200 hover:border-orange-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5">
+                <div class="text-5xl mb-5 group-hover:scale-110 transition-transform duration-300">🏦</div>
+                <h3 class="text-xl font-bold text-slate-900 mb-3">
+                    {% if language == 'uk' %}Банки / Фінанси{% else %}Banks / Finance{% endif %}
+                </h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    {% if language == 'uk' %}
+                    Новий дохід від транзакцій з контрольованих логістичних платежів
+                    {% else %}
+                    New transaction revenue from controlled logistics payments
+                    {% endif %}
+                </p>
+                <div class="mt-6 w-12 h-1 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full group-hover:w-full transition-all duration-500"></div>
+            </div>
+
+            <div class="group bg-white p-8 rounded-2xl border-2 border-slate-200 hover:border-orange-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5">
+                <div class="text-5xl mb-5 group-hover:scale-110 transition-transform duration-300">🛡️</div>
+                <h3 class="text-xl font-bold text-slate-900 mb-3">
+                    {% if language == 'uk' %}Страхування{% else %}Insurance{% endif %}
+                </h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    {% if language == 'uk' %}
+                    Менше ризиків та швидші виплати завдяки реальним даним
+                    {% else %}
+                    Less risk and faster payouts thanks to real data
+                    {% endif %}
+                </p>
+                <div class="mt-6 w-12 h-1 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full group-hover:w-full transition-all duration-500"></div>
+            </div>
+
+            <div class="group bg-white p-8 rounded-2xl border-2 border-slate-200 hover:border-orange-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5">
+                <div class="text-5xl mb-5 group-hover:scale-110 transition-transform duration-300">⛽</div>
+                <h3 class="text-xl font-bold text-slate-900 mb-3">
+                    {% if language == 'uk' %}АЗС / Паливо{% else %}Fuel/Gas Stations{% endif %}
+                </h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    {% if language == 'uk' %}
+                    Гарантований B2B потік та регулярні продажі палива
+                    {% else %}
+                    Guaranteed B2B flow and recurring fuel sales
+                    {% endif %}
+                </p>
+                <div class="mt-6 w-12 h-1 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full group-hover:w-full transition-all duration-500"></div>
+            </div>
+
+            <div class="group bg-white p-8 rounded-2xl border-2 border-slate-200 hover:border-orange-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5">
+                <div class="text-5xl mb-5 group-hover:scale-110 transition-transform duration-300">📝</div>
+                <h3 class="text-xl font-bold text-slate-900 mb-3">
+                    {% if language == 'uk' %}EDI / ЕЦП{% else %}EDI/Digital Signature{% endif %}
+                </h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    {% if language == 'uk' %}
+                    Стабільний обсяг підписання та юридично захищений документообіг
+                    {% else %}
+                    Stable signing volume and legally protected document flow
+                    {% endif %}
+                </p>
+                <div class="mt-6 w-12 h-1 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full group-hover:w-full transition-all duration-500"></div>
+            </div>
+
+            <div class="group bg-white p-8 rounded-2xl border-2 border-slate-200 hover:border-orange-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5">
+                <div class="text-5xl mb-5 group-hover:scale-110 transition-transform duration-300">⚖️</div>
+                <h3 class="text-xl font-bold text-slate-900 mb-3">
+                    {% if language == 'uk' %}Юридичні компанії{% else %}Legal Companies{% endif %}
+                </h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    {% if language == 'uk' %}
+                    Стабільний потік справ та доказів через логування подій
+                    {% else %}
+                    Stable flow of cases and evidence through event logging
+                    {% endif %}
+                </p>
+                <div class="mt-6 w-12 h-1 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full group-hover:w-full transition-all duration-500"></div>
+            </div>
+
+            <div class="group bg-white p-8 rounded-2xl border-2 border-slate-200 hover:border-orange-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5">
+                <div class="text-5xl mb-5 group-hover:scale-110 transition-transform duration-300">💻</div>
+                <h3 class="text-xl font-bold text-slate-900 mb-3">
+                    {% if language == 'uk' %}IT/IoT/GPS/Телеком{% else %}IT/IoT/GPS/Telco{% endif %}
+                </h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    {% if language == 'uk' %}
+                    Масштабування послуг через дані, API та спільні продукти
+                    {% else %}
+                    Scale services through data, APIs and joint products
+                    {% endif %}
+                </p>
+                <div class="mt-6 w-12 h-1 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full group-hover:w-full transition-all duration-500"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Benefits Section -->
+<section class="relative py-16 md:py-20 px-6 bg-white">
+    <div class="max-w-7xl mx-auto">
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-10 text-center">
+            {% if language == 'uk' %}
+            Ранні партнери отримують найбільшу перевагу
+            {% else %}
+            Early partners get the biggest advantage
+            {% endif %}
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="relative p-10 rounded-3xl bg-gradient-to-br from-orange-500 to-orange-600 text-white overflow-hidden group hover:scale-105 transition-all duration-300">
+                <div class="absolute -top-4 -right-4 text-9xl font-bold opacity-10">01</div>
+                <div class="relative z-10">
+                    <div class="inline-block px-4 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-bold mb-6">01</div>
+                    <h3 class="text-2xl md:text-3xl font-bold leading-tight">
+                        {% if language == 'uk' %}
+                        Доступ до сегментованого логістичного напрямку
+                        {% else %}
+                        Access to segmented logistics direction
+                        {% endif %}
+                    </h3>
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-br from-white/0 via-white/5 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            </div>
+
+            <div class="relative p-10 rounded-3xl bg-gradient-to-br from-slate-700 to-slate-900 text-white overflow-hidden group hover:scale-105 transition-all duration-300">
+                <div class="absolute -top-4 -right-4 text-9xl font-bold opacity-10">02</div>
+                <div class="relative z-10">
+                    <div class="inline-block px-4 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-bold mb-6">02</div>
+                    <h3 class="text-2xl md:text-3xl font-bold leading-tight">
+                        {% if language == 'uk' %}
+                        Дохід з першого місяця та зростання з екосистемою
+                        {% else %}
+                        Revenue from first month and growth with ecosystem
+                        {% endif %}
+                    </h3>
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-br from-white/0 via-white/5 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            </div>
+
+            <div class="relative p-10 rounded-3xl bg-gradient-to-br from-orange-500 to-orange-600 text-white overflow-hidden group hover:scale-105 transition-all duration-300">
+                <div class="absolute -top-4 -right-4 text-9xl font-bold opacity-10">03</div>
+                <div class="relative z-10">
+                    <div class="inline-block px-4 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-bold mb-6">03</div>
+                    <h3 class="text-2xl md:text-3xl font-bold leading-tight">
+                        {% if language == 'uk' %}
+                        Потік клієнтів без витрат на маркетинг та продажі
+                        {% else %}
+                        Client flow without marketing and sales costs
+                        {% endif %}
+                    </h3>
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-br from-white/0 via-white/5 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            </div>
+
+            <div class="relative p-10 rounded-3xl bg-gradient-to-br from-slate-700 to-slate-900 text-white overflow-hidden group hover:scale-105 transition-all duration-300">
+                <div class="absolute -top-4 -right-4 text-9xl font-bold opacity-10">04</div>
+                <div class="relative z-10">
+                    <div class="inline-block px-4 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-bold mb-6">04</div>
+                    <h3 class="text-2xl md:text-3xl font-bold leading-tight">
+                        {% if language == 'uk' %}
+                        Інтеграція у всі можливі процеси в одному місці
+                        {% else %}
+                        Integration into all possible processes in one place
+                        {% endif %}
+                    </h3>
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-br from-white/0 via-white/5 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Market Data Section -->
+<section class="relative py-16 md:py-20 px-6 bg-slate-900 text-white overflow-hidden">
+    <div class="absolute inset-0">
+        <div class="absolute top-1/3 left-0 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="relative z-10 max-w-6xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center max-w-4xl mx-auto leading-tight">
+            {% if language == 'uk' %}
+            Український ринок вантажних перевезень переходить від відновлення до стабільного розвитку
+            {% else %}
+            Ukrainian cargo transportation market is transitioning from recovery to stable development
+            {% endif %}
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-slate-700">
+                <div class="text-xs font-bold text-orange-400 mb-2 tracking-wider">TAM</div>
+                <div class="text-4xl font-bold mb-4 text-white">370 {% if language == 'uk' %}млрд грн{% else %}billion UAH{% endif %}</div>
+                <div class="text-sm text-slate-300 mb-2">
+                    {% if language == 'uk' %}Загальний ринок автологістики{% else %}Total auto logistics market{% endif %}
+                </div>
+                <div class="text-xs text-slate-500">
+                    {% if language == 'uk' %}354,1 млн тонн вантажів щорічно{% else %}354.1 million tons of cargo annually{% endif %}
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-orange-500 to-orange-600 p-8 rounded-3xl shadow-xl">
+                <div class="text-xs font-bold text-orange-100 mb-2 tracking-wider">SAM</div>
+                <div class="text-4xl font-bold mb-4 text-white">160 {% if language == 'uk' %}млрд грн{% else %}billion UAH{% endif %}</div>
+                <div class="text-sm text-orange-50">
+                    {% if language == 'uk' %}Доступний сегмент для цифровізації{% else %}Available segment for digitalization{% endif %}
+                </div>
+            </div>
+
+            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-slate-700">
+                <div class="text-xs font-bold text-orange-400 mb-2 tracking-wider">SOM</div>
+                <div class="text-4xl font-bold mb-4 text-white">10 {% if language == 'uk' %}млрд грн{% else %}billion UAH{% endif %}</div>
+                <div class="text-sm text-slate-300">
+                    {% if language == 'uk' %}Досяжний сегмент для Trexim в перші 2 роки{% else %}Achievable segment for Trexim in first 2 years{% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-6 mb-8">
+            <div class="flex-1 bg-slate-800/30 backdrop-blur-sm p-6 rounded-2xl border border-slate-700">
+                <div class="text-3xl font-bold text-orange-400 mb-2">36%</div>
+                <div class="text-sm text-slate-300">
+                    {% if language == 'uk' %}36% відправлень — автомобільний транспорт{% else %}36% of shipments — road transport{% endif %}
+                </div>
+            </div>
+            <div class="flex-1 bg-slate-800/30 backdrop-blur-sm p-6 rounded-2xl border border-slate-700">
+                <div class="text-3xl font-bold text-orange-400 mb-2">70%</div>
+                <div class="text-sm text-slate-300">
+                    {% if language == 'uk' %}70% операцій — тіньова економіка{% else %}70% of operations — shadow economy{% endif %}
+                </div>
+            </div>
+        </div>
+
+        <p class="text-sm text-slate-400 text-center max-w-4xl mx-auto leading-relaxed">
+            {% if language == 'uk' %}
+            Масштабування через API інтеграції з банками, мережами АЗС та страховими подвоїть SOM за 2 роки, досягнувши ≈10–12% SAM
+            {% else %}
+            Scaling through API integrations with banks, fuel networks and insurance will double SOM in 2 years, reaching ≈10–12% SAM
+            {% endif %}
+        </p>
+    </div>
+</section>
+
+<!-- Pilot Program Section -->
+<section class="relative py-16 md:py-20 px-6 bg-gradient-to-b from-slate-50 to-white">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-6">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
+                {% if language == 'uk' %}Ми починаємо з контрольованого пілоту{% else %}We start with a controlled pilot{% endif %}
+            </h2>
+            <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+                {% if language == 'uk' %}Без ризиків для партнерів з чітким шляхом до масштабування{% else %}No risks for partners with clear path to scaling{% endif %}
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-16">
+            <div class="relative">
+                <div class="hidden lg:block absolute top-16 left-full w-full h-0.5 bg-gradient-to-r from-orange-500 to-transparent -ml-4 z-0"></div>
+                <div class="relative bg-white p-8 rounded-3xl border-2 border-slate-200 hover:border-orange-500 transition-all duration-300 hover:shadow-2xl group h-full">
+                    <div class="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 text-white text-xl font-bold rounded-2xl mb-6 group-hover:scale-110 transition-transform duration-300">01</div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-6 leading-tight">
+                        {% if language == 'uk' %}Контрольований пілот без фінансових ризиків{% else %}Controlled pilot without financial risks{% endif %}
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3">
+                            <div class="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                            <span class="text-slate-600 text-sm leading-relaxed">
+                                {% if language == 'uk' %}участь без підписок{% else %}participation without subscriptions{% endif %}
+                            </span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                            <span class="text-slate-600 text-sm leading-relaxed">
+                                {% if language == 'uk' %}технічна та операційна підтримка{% else %}technical and operational support{% endif %}
+                            </span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                            <span class="text-slate-600 text-sm leading-relaxed">
+                                {% if language == 'uk' %}чіткі KPI та критерії успіху{% else %}clear KPIs and success criteria{% endif %}
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="relative">
+                <div class="hidden lg:block absolute top-16 left-full w-full h-0.5 bg-gradient-to-r from-orange-500 to-transparent -ml-4 z-0"></div>
+                <div class="relative bg-white p-8 rounded-3xl border-2 border-slate-200 hover:border-orange-500 transition-all duration-300 hover:shadow-2xl group h-full">
+                    <div class="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 text-white text-xl font-bold rounded-2xl mb-6 group-hover:scale-110 transition-transform duration-300">02</div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-6 leading-tight">
+                        {% if language == 'uk' %}Запуск на реальному ринку{% else %}Launch in real market{% endif %}
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3">
+                            <div class="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                            <span class="text-slate-600 text-sm leading-relaxed">
+                                {% if language == 'uk' %}фокус на операційно складних сегментах (зерно, FMCG, e-commerce){% else %}focus on operationally complex segments (grain, FMCG, e-commerce){% endif %}
+                            </span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                            <span class="text-slate-600 text-sm leading-relaxed">
+                                {% if language == 'uk' %}реальні вантажні потоки, а не тестові сценарії{% else %}real cargo flows, not test scenarios{% endif %}
+                            </span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                            <span class="text-slate-600 text-sm leading-relaxed">
+                                {% if language == 'uk' %}валідація масштабованості моделі{% else %}model scalability validation{% endif %}
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="relative">
+                <div class="relative bg-white p-8 rounded-3xl border-2 border-slate-200 hover:border-orange-500 transition-all duration-300 hover:shadow-2xl group h-full">
+                    <div class="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 text-white text-xl font-bold rounded-2xl mb-6 group-hover:scale-110 transition-transform duration-300">03</div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-6 leading-tight">
+                        {% if language == 'uk' %}Перехід до комерційної моделі{% else %}Transition to commercial model{% endif %}
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3">
+                            <div class="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                            <span class="text-slate-600 text-sm leading-relaxed">
+                                {% if language == 'uk' %}рішення на основі результатів пілоту{% else %}decisions based on pilot results{% endif %}
+                            </span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                            <span class="text-slate-600 text-sm leading-relaxed">
+                                {% if language == 'uk' %}гнучкі формати співпраці{% else %}flexible cooperation formats{% endif %}
+                            </span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                            <span class="text-slate-600 text-sm leading-relaxed">
+                                {% if language == 'uk' %}масштабування разом з екосистемою{% else %}scaling together with ecosystem{% endif %}
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="relative py-16 md:py-20 px-6 bg-slate-900 text-white overflow-hidden">
+    <div class="absolute inset-0">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="relative z-10 max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+            <div>
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+                    {% if language == 'uk' %}
+                    В 2026 ви будете в величезній перевазі або поза грою
+                    {% else %}
+                    In 2026 you'll be in huge advantage or out of the game
+                    {% endif %}
+                </h2>
+                <p class="text-xl text-slate-300 mb-8 leading-relaxed">
+                    {% if language == 'uk' %}Зателефонуйте сьогодні, щоб завтра отримати доступ до пілоту{% else %}Call today to get pilot access tomorrow{% endif %}
+                </p>
+                <p class="text-sm text-slate-400 mb-12 leading-relaxed">
+                    {% if language == 'uk' %}Ми будуємо довгострокові партнерства та обговорюємо умови індивідуально з кожним партнером{% else %}We build long-term partnerships and discuss terms individually with each partner{% endif %}
+                </p>
+
+                <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-slate-700">
+                    <div class="text-2xl font-bold mb-2">Taras Smaliukh</div>
+                    <div class="text-orange-400 text-sm mb-6">CTO / CPO / Co-Founder</div>
+                    <div class="space-y-3">
+                        <a href="tel:+380990091802" class="flex items-center gap-3 text-slate-300 hover:text-orange-400 transition-colors">
+                            <span class="text-xl">📞</span>
+                            <span>+380 99 009 1802</span>
+                        </a>
+                        <a href="mailto:trexim.logistics@gmail.com" class="flex items-center gap-3 text-slate-300 hover:text-orange-400 transition-colors">
+                            <span class="text-xl">✉️</span>
+                            <span>trexim.logistics@gmail.com</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <form class="bg-white p-8 rounded-3xl shadow-2xl" x-data="{ partnerType: '' }">
+                    <div class="space-y-4">
+                        <div>
+                            <input type="text" name="name" required
+                                   placeholder="{% if language == 'uk' %}Повне ім'я{% else %}Full name{% endif %}"
+                                   class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"/>
+                        </div>
+                        <div>
+                            <input type="email" name="email" required
+                                   placeholder="Email"
+                                   class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"/>
+                        </div>
+                        <div>
+                            <input type="tel" name="phone" required
+                                   placeholder="{% if language == 'uk' %}Телефон{% else %}Phone{% endif %}"
+                                   class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"/>
+                        </div>
+                        <div>
+                            <input type="text" name="company" required
+                                   placeholder="{% if language == 'uk' %}Назва компанії{% else %}Company name{% endif %}"
+                                   class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"/>
+                        </div>
+                        <div>
+                            <select name="partnerType" x-model="partnerType" required
+                                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all">
+                                <option value="">{% if language == 'uk' %}Тип партнера{% else %}Partner type{% endif %}</option>
+                                <option value="banks">🏦 {% if language == 'uk' %}Банки / Фінанси{% else %}Banks / Finance{% endif %}</option>
+                                <option value="insurance">🛡️ {% if language == 'uk' %}Страхування{% else %}Insurance{% endif %}</option>
+                                <option value="fuel">⛽ {% if language == 'uk' %}АЗС / Паливо{% else %}Fuel/Gas Stations{% endif %}</option>
+                                <option value="edo">📝 {% if language == 'uk' %}EDI / ЕЦП{% else %}EDI/Digital Signature{% endif %}</option>
+                                <option value="legal">⚖️ {% if language == 'uk' %}Юридичні компанії{% else %}Legal Companies{% endif %}</option>
+                                <option value="tech">💻 {% if language == 'uk' %}IT/IoT/GPS/Телеком{% else %}IT/IoT/GPS/Telco{% endif %}</option>
+                            </select>
+                        </div>
+                        <div>
+                            <textarea name="message" rows="4"
+                                      placeholder="{% if language == 'uk' %}Повідомлення (необов'язково){% else %}Message (optional){% endif %}"
+                                      class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all resize-none"></textarea>
+                        </div>
+                        <button type="submit"
+                                class="w-full px-6 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl">
+                            {% if language == 'uk' %}Надіслати заявку{% else %}Submit application{% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

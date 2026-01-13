@@ -1,0 +1,513 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if language == 'uk' %}
+Інструменти - Trexim
+{% else %}
+Tools - Trexim
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative min-h-screen flex items-center justify-center px-6 overflow-hidden bg-gradient-to-b from-slate-900 via-slate-950 to-black">
+    <!-- Animated Background -->
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute w-96 h-96 bg-orange-500/10 rounded-full blur-3xl top-20 -left-20 animate-pulse"></div>
+        <div class="absolute w-96 h-96 bg-orange-600/10 rounded-full blur-3xl bottom-20 -right-20 animate-pulse delay-1000"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative z-10 max-w-5xl mx-auto text-center">
+        <div class="inline-flex items-center justify-center px-4 py-2 bg-orange-500/10 border border-orange-500/20 rounded-full mb-8">
+            <span class="text-orange-400 text-sm font-semibold tracking-wider">
+                {% if language == 'uk' %}ІНТЕРАКТИВНІ ІНСТРУМЕНТИ{% else %}INTERACTIVE TOOLS{% endif %}
+            </span>
+        </div>
+
+        <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight">
+            {% if language == 'uk' %}
+            <span class="block text-white mb-2">Розумні інструменти</span>
+            <span class="block bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">для вашої логістики</span>
+            {% else %}
+            <span class="block text-white mb-2">Smart tools</span>
+            <span class="block bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">for your logistics</span>
+            {% endif %}
+        </h1>
+
+        <p class="text-xl sm:text-2xl text-slate-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+            {% if language == 'uk' %}
+            Спробуйте наші AI-інструменти для оптимізації маршрутів, розрахунку витрат та керування фінансами
+            {% else %}
+            Try our AI tools for route optimization, cost calculation, and financial management
+            {% endif %}
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="#tools" class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-orange-500/50 transition-all duration-300 transform hover:scale-105">
+                {% if language == 'uk' %}Спробувати інструменти{% else %}Try Tools{% endif %}
+                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </a>
+            <a href="/contact?lang={{ language }}" class="inline-flex items-center justify-center px-8 py-4 bg-slate-800 text-white font-semibold rounded-xl hover:bg-slate-700 transition-all duration-300 border border-slate-700">
+                {% if language == 'uk' %}Зв'язатися з нами{% else %}Contact Us{% endif %}
+            </a>
+        </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+        </svg>
+    </div>
+</section>
+
+<!-- Interactive Tools Section -->
+<section id="tools" class="py-20 px-6 bg-gradient-to-b from-black via-slate-950 to-slate-900">
+    <div class="max-w-7xl mx-auto">
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+            <h2 class="text-4xl sm:text-5xl font-bold mb-6">
+                {% if language == 'uk' %}
+                <span class="text-white">Наші </span>
+                <span class="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">інструменти</span>
+                {% else %}
+                <span class="text-white">Our </span>
+                <span class="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">Tools</span>
+                {% endif %}
+            </h2>
+            <p class="text-xl text-slate-400 max-w-3xl mx-auto">
+                {% if language == 'uk' %}
+                Кожен інструмент підключений до Neural Core платформи Trexim
+                {% else %}
+                Each tool is connected to Trexim's Neural Core platform
+                {% endif %}
+            </p>
+        </div>
+
+        <!-- Tools Interface -->
+        <div class="bg-slate-800/50 backdrop-blur-sm rounded-3xl border border-slate-700 overflow-hidden" x-data="{ activeTool: 'route' }">
+            <div class="grid grid-cols-1 lg:grid-cols-12">
+                <!-- Sidebar with Tool Selection -->
+                <div class="lg:col-span-4 bg-slate-900/80 p-8 border-b lg:border-b-0 lg:border-r border-slate-700">
+                    <h3 class="text-2xl font-bold text-white mb-6">
+                        {% if language == 'uk' %}Оберіть інструмент{% else %}Choose Tool{% endif %}
+                    </h3>
+
+                    <!-- Tool Options -->
+                    <div class="space-y-4">
+                        <!-- Route Optimizer -->
+                        <button @click="activeTool = 'route'"
+                                :class="activeTool === 'route' ? 'bg-gradient-to-r from-orange-500 to-orange-600 shadow-lg shadow-orange-500/30' : 'bg-slate-800 hover:bg-slate-700'"
+                                class="w-full p-6 rounded-2xl text-left transition-all duration-300 group">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 text-3xl">🗺️</div>
+                                <div class="flex-1">
+                                    <h4 class="text-lg font-bold text-white mb-2">
+                                        {% if language == 'uk' %}Оптимізатор маршрутів{% else %}Route Optimizer{% endif %}
+                                    </h4>
+                                    <p class="text-sm text-slate-300">
+                                        {% if language == 'uk' %}
+                                        Знайдіть найоптимальніший маршрут з урахуванням трафіку та витрат
+                                        {% else %}
+                                        Find the most optimal route considering traffic and costs
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </button>
+
+                        <!-- Cost Estimator -->
+                        <button @click="activeTool = 'cost'"
+                                :class="activeTool === 'cost' ? 'bg-gradient-to-r from-orange-500 to-orange-600 shadow-lg shadow-orange-500/30' : 'bg-slate-800 hover:bg-slate-700'"
+                                class="w-full p-6 rounded-2xl text-left transition-all duration-300 group">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 text-3xl">📊</div>
+                                <div class="flex-1">
+                                    <h4 class="text-lg font-bold text-white mb-2">
+                                        {% if language == 'uk' %}Калькулятор витрат{% else %}Cost Estimator{% endif %}
+                                    </h4>
+                                    <p class="text-sm text-slate-300">
+                                        {% if language == 'uk' %}
+                                        Розрахуйте повну вартість перевезення з усіма витратами
+                                        {% else %}
+                                        Calculate the total cost of transportation with all expenses
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </button>
+
+                        <!-- Finance Hub -->
+                        <button @click="activeTool = 'finance'"
+                                :class="activeTool === 'finance' ? 'bg-gradient-to-r from-orange-500 to-orange-600 shadow-lg shadow-orange-500/30' : 'bg-slate-800 hover:bg-slate-700'"
+                                class="w-full p-6 rounded-2xl text-left transition-all duration-300 group">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 text-3xl">💳</div>
+                                <div class="flex-1">
+                                    <h4 class="text-lg font-bold text-white mb-2">
+                                        {% if language == 'uk' %}Фінансовий хаб{% else %}Finance Hub{% endif %}
+                                    </h4>
+                                    <p class="text-sm text-slate-300">
+                                        {% if language == 'uk' %}
+                                        Керуйте платежами, рахунками та фінансовими потоками
+                                        {% else %}
+                                        Manage payments, invoices, and financial flows
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- Info Box -->
+                    <div class="mt-8 p-4 bg-orange-500/10 border border-orange-500/20 rounded-xl">
+                        <div class="flex items-start space-x-3">
+                            <div class="flex-shrink-0 text-orange-400">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <p class="text-sm text-slate-300">
+                                {% if language == 'uk' %}
+                                Ці інструменти підключені безпосередньо до Neural Core Trexim і використовують машинне навчання для точних прогнозів
+                                {% else %}
+                                These tools connect directly to Trexim's Neural Core and use machine learning for accurate predictions
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool Content Area -->
+                <div class="lg:col-span-8 p-8">
+                    <!-- Route Optimizer -->
+                    <div x-show="activeTool === 'route'" x-transition class="space-y-6">
+                        <div class="flex items-center space-x-4 mb-8">
+                            <div class="text-4xl">🗺️</div>
+                            <div>
+                                <h3 class="text-3xl font-bold text-white">
+                                    {% if language == 'uk' %}Оптимізатор маршрутів{% else %}Route Optimizer{% endif %}
+                                </h3>
+                                <p class="text-slate-400">
+                                    {% if language == 'uk' %}Знайдіть найкращий маршрут для вашого вантажу{% else %}Find the best route for your cargo{% endif %}
+                                </p>
+                            </div>
+                        </div>
+
+                        <form class="space-y-6" @submit.prevent="alert('Demo mode: This will connect to Trexim API')">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">
+                                    {% if language == 'uk' %}Пункт відправлення{% else %}Origin{% endif %}
+                                </label>
+                                <input type="text"
+                                       placeholder="{% if language == 'uk' %}Наприклад: Київ, вул. Хрещатик 1{% else %}E.g.: Kyiv, Khreshchatyk St 1{% endif %}"
+                                       class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 transition">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">
+                                    {% if language == 'uk' %}Пункт призначення{% else %}Destination{% endif %}
+                                </label>
+                                <input type="text"
+                                       placeholder="{% if language == 'uk' %}Наприклад: Одеса, Дерибасівська 1{% else %}E.g.: Odesa, Deribasivska St 1{% endif %}"
+                                       class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 transition">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">
+                                    {% if language == 'uk' %}Тип вантажу{% else %}Shipment Type{% endif %}
+                                </label>
+                                <select class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-orange-500 transition">
+                                    <option>{% if language == 'uk' %}Генеральний вантаж{% else %}General Cargo{% endif %}</option>
+                                    <option>{% if language == 'uk' %}Зерно{% else %}Grain{% endif %}</option>
+                                    <option>{% if language == 'uk' %}FMCG{% else %}FMCG{% endif %}</option>
+                                    <option>{% if language == 'uk' %}E-commerce{% else %}E-commerce{% endif %}</option>
+                                    <option>{% if language == 'uk' %}Небезпечний вантаж{% else %}Hazardous Cargo{% endif %}</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">
+                                    {% if language == 'uk' %}Дата відправлення{% else %}Departure Date{% endif %}
+                                </label>
+                                <input type="date"
+                                       class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-orange-500 transition">
+                            </div>
+
+                            <button type="submit"
+                                    class="w-full px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-orange-500/50 transition-all duration-300 transform hover:scale-105">
+                                {% if language == 'uk' %}Знайти маршрут{% else %}Find Route{% endif %}
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Cost Estimator -->
+                    <div x-show="activeTool === 'cost'" x-transition class="space-y-6">
+                        <div class="flex items-center space-x-4 mb-8">
+                            <div class="text-4xl">📊</div>
+                            <div>
+                                <h3 class="text-3xl font-bold text-white">
+                                    {% if language == 'uk' %}Калькулятор витрат{% else %}Cost Estimator{% endif %}
+                                </h3>
+                                <p class="text-slate-400">
+                                    {% if language == 'uk' %}Розрахуйте повну вартість перевезення{% else %}Calculate total transportation cost{% endif %}
+                                </p>
+                            </div>
+                        </div>
+
+                        <form class="space-y-6" @submit.prevent="alert('Demo mode: This will connect to Trexim API')">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">
+                                    {% if language == 'uk' %}Звідки{% else %}From{% endif %}
+                                </label>
+                                <input type="text"
+                                       placeholder="{% if language == 'uk' %}Місто відправлення{% else %}Origin city{% endif %}"
+                                       class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 transition">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">
+                                    {% if language == 'uk' %}Куди{% else %}To{% endif %}
+                                </label>
+                                <input type="text"
+                                       placeholder="{% if language == 'uk' %}Місто призначення{% else %}Destination city{% endif %}"
+                                       class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 transition">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">
+                                    {% if language == 'uk' %}Вага вантажу (кг){% else %}Cargo Weight (kg){% endif %}
+                                </label>
+                                <input type="number"
+                                       placeholder="{% if language == 'uk' %}Наприклад: 1000{% else %}E.g.: 1000{% endif %}"
+                                       class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 transition">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">
+                                    {% if language == 'uk' %}Об'єм (м³){% else %}Volume (m³){% endif %}
+                                </label>
+                                <input type="number"
+                                       step="0.1"
+                                       placeholder="{% if language == 'uk' %}Наприклад: 5.5{% else %}E.g.: 5.5{% endif %}"
+                                       class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 transition">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">
+                                    {% if language == 'uk' %}Додаткові послуги{% else %}Additional Services{% endif %}
+                                </label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center space-x-3 text-slate-300 cursor-pointer">
+                                        <input type="checkbox" class="w-5 h-5 rounded border-slate-700 bg-slate-900 text-orange-500 focus:ring-orange-500">
+                                        <span>{% if language == 'uk' %}Страхування{% else %}Insurance{% endif %}</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 text-slate-300 cursor-pointer">
+                                        <input type="checkbox" class="w-5 h-5 rounded border-slate-700 bg-slate-900 text-orange-500 focus:ring-orange-500">
+                                        <span>{% if language == 'uk' %}Експрес-доставка{% else %}Express Delivery{% endif %}</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 text-slate-300 cursor-pointer">
+                                        <input type="checkbox" class="w-5 h-5 rounded border-slate-700 bg-slate-900 text-orange-500 focus:ring-orange-500">
+                                        <span>{% if language == 'uk' %}Температурний контроль{% else %}Temperature Control{% endif %}</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button type="submit"
+                                    class="w-full px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-orange-500/50 transition-all duration-300 transform hover:scale-105">
+                                {% if language == 'uk' %}Розрахувати вартість{% else %}Calculate Cost{% endif %}
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Finance Hub -->
+                    <div x-show="activeTool === 'finance'" x-transition class="space-y-6">
+                        <div class="flex items-center space-x-4 mb-8">
+                            <div class="text-4xl">💳</div>
+                            <div>
+                                <h3 class="text-3xl font-bold text-white">
+                                    {% if language == 'uk' %}Фінансовий хаб{% else %}Finance Hub{% endif %}
+                                </h3>
+                                <p class="text-slate-400">
+                                    {% if language == 'uk' %}Керуйте вашими фінансами{% else %}Manage your finances{% endif %}
+                                </p>
+                            </div>
+                        </div>
+
+                        <form class="space-y-6" @submit.prevent="alert('Demo mode: This will connect to Trexim API')">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">
+                                    {% if language == 'uk' %}Тип операції{% else %}Operation Type{% endif %}
+                                </label>
+                                <select class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-orange-500 transition">
+                                    <option>{% if language == 'uk' %}Виставити рахунок{% else %}Create Invoice{% endif %}</option>
+                                    <option>{% if language == 'uk' %}Прийняти платіж{% else %}Receive Payment{% endif %}</option>
+                                    <option>{% if language == 'uk' %}Відправити платіж{% else %}Send Payment{% endif %}</option>
+                                    <option>{% if language == 'uk' %}Перегляд балансу{% else %}View Balance{% endif %}</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">
+                                    {% if language == 'uk' %}Контрагент{% else %}Counterparty{% endif %}
+                                </label>
+                                <input type="text"
+                                       placeholder="{% if language == 'uk' %}Назва компанії або ПІБ{% else %}Company name or full name{% endif %}"
+                                       class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 transition">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">
+                                    {% if language == 'uk' %}Сума (грн){% else %}Amount (UAH){% endif %}
+                                </label>
+                                <input type="number"
+                                       placeholder="{% if language == 'uk' %}Наприклад: 50000{% else %}E.g.: 50000{% endif %}"
+                                       class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 transition">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">
+                                    {% if language == 'uk' %}Дата розрахунку{% else %}Settlement Date{% endif %}
+                                </label>
+                                <input type="date"
+                                       class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-orange-500 transition">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">
+                                    {% if language == 'uk' %}Опис{% else %}Description{% endif %}
+                                </label>
+                                <textarea
+                                    rows="3"
+                                    placeholder="{% if language == 'uk' %}Додаткова інформація про операцію{% else %}Additional information about the operation{% endif %}"
+                                    class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 transition"></textarea>
+                            </div>
+
+                            <button type="submit"
+                                    class="w-full px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-orange-500/50 transition-all duration-300 transform hover:scale-105">
+                                {% if language == 'uk' %}Обробити операцію{% else %}Process Operation{% endif %}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Benefits Section -->
+<section class="py-20 px-6 bg-gradient-to-b from-slate-900 to-black">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl sm:text-5xl font-bold mb-6">
+                {% if language == 'uk' %}
+                <span class="text-white">Чому наші </span>
+                <span class="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">інструменти</span>
+                {% else %}
+                <span class="text-white">Why our </span>
+                <span class="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">tools</span>
+                {% endif %}
+            </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Benefit 1 -->
+            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-slate-700 hover:border-orange-500/50 transition-all duration-300">
+                <div class="text-4xl mb-4">🤖</div>
+                <h3 class="text-xl font-bold text-white mb-3">
+                    {% if language == 'uk' %}AI-аналіз{% else %}AI Analysis{% endif %}
+                </h3>
+                <p class="text-slate-400">
+                    {% if language == 'uk' %}
+                    Машинне навчання для точних прогнозів та рекомендацій
+                    {% else %}
+                    Machine learning for accurate predictions and recommendations
+                    {% endif %}
+                </p>
+            </div>
+
+            <!-- Benefit 2 -->
+            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-slate-700 hover:border-orange-500/50 transition-all duration-300">
+                <div class="text-4xl mb-4">⚡</div>
+                <h3 class="text-xl font-bold text-white mb-3">
+                    {% if language == 'uk' %}Миттєві результати{% else %}Instant Results{% endif %}
+                </h3>
+                <p class="text-slate-400">
+                    {% if language == 'uk' %}
+                    Отримайте розрахунки за кілька секунд
+                    {% else %}
+                    Get calculations in seconds
+                    {% endif %}
+                </p>
+            </div>
+
+            <!-- Benefit 3 -->
+            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-slate-700 hover:border-orange-500/50 transition-all duration-300">
+                <div class="text-4xl mb-4">📈</div>
+                <h3 class="text-xl font-bold text-white mb-3">
+                    {% if language == 'uk' %}Актуальні дані{% else %}Real-time Data{% endif %}
+                </h3>
+                <p class="text-slate-400">
+                    {% if language == 'uk' %}
+                    Використовуємо найсвіжішу інформацію з ринку
+                    {% else %}
+                    We use the latest market information
+                    {% endif %}
+                </p>
+            </div>
+
+            <!-- Benefit 4 -->
+            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-slate-700 hover:border-orange-500/50 transition-all duration-300">
+                <div class="text-4xl mb-4">🔒</div>
+                <h3 class="text-xl font-bold text-white mb-3">
+                    {% if language == 'uk' %}Безпека{% else %}Security{% endif %}
+                </h3>
+                <p class="text-slate-400">
+                    {% if language == 'uk' %}
+                    Ваші дані захищені за стандартами банківської безпеки
+                    {% else %}
+                    Your data is protected by banking security standards
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-20 px-6 bg-gradient-to-br from-orange-500 via-orange-600 to-orange-700 relative overflow-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute w-64 h-64 bg-white rounded-full blur-3xl top-0 left-0"></div>
+        <div class="absolute w-64 h-64 bg-white rounded-full blur-3xl bottom-0 right-0"></div>
+    </div>
+
+    <div class="relative z-10 max-w-4xl mx-auto text-center">
+        <h2 class="text-4xl sm:text-5xl font-bold text-white mb-6">
+            {% if language == 'uk' %}
+            Готові розпочати?
+            {% else %}
+            Ready to start?
+            {% endif %}
+        </h2>
+        <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+            {% if language == 'uk' %}
+            Приєднуйтесь до пілотної програми та отримайте доступ до всіх інструментів безкоштовно
+            {% else %}
+            Join the pilot program and get access to all tools for free
+            {% endif %}
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/contact?lang={{ language }}" class="inline-flex items-center justify-center px-8 py-4 bg-white text-orange-600 font-semibold rounded-xl hover:bg-slate-100 transition-all duration-300 transform hover:scale-105">
+                {% if language == 'uk' %}Приєднатися до пілоту{% else %}Join Pilot{% endif %}
+            </a>
+            <a href="/pricing?lang={{ language }}" class="inline-flex items-center justify-center px-8 py-4 bg-transparent text-white font-semibold rounded-xl border-2 border-white hover:bg-white hover:text-orange-600 transition-all duration-300">
+                {% if language == 'uk' %}Дізнатися більше{% else %}Learn More{% endif %}
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

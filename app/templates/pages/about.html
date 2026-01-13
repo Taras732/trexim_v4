@@ -1,0 +1,471 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if language == 'uk' %}
+Про нас - Trexim
+{% else %}
+About Us - Trexim
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative min-h-screen flex items-center justify-center px-6 overflow-hidden bg-gradient-to-b from-slate-900 via-slate-950 to-black">
+    <!-- Animated Background -->
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute w-96 h-96 bg-orange-500/10 rounded-full blur-3xl top-20 -left-20 animate-pulse"></div>
+        <div class="absolute w-96 h-96 bg-orange-600/10 rounded-full blur-3xl bottom-20 -right-20 animate-pulse delay-1000"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative z-10 max-w-5xl mx-auto text-center">
+        <div class="inline-flex items-center justify-center px-4 py-2 bg-orange-500/10 border border-orange-500/20 rounded-full mb-8">
+            <span class="text-orange-400 text-sm font-semibold tracking-wider">
+                {% if language == 'uk' %}ПРО TREXIM{% else %}ABOUT TREXIM{% endif %}
+            </span>
+        </div>
+
+        <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight">
+            {% if language == 'uk' %}
+            <span class="block text-white mb-2">Ми створюємо</span>
+            <span class="block bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">майбутнє логістики</span>
+            {% else %}
+            <span class="block text-white mb-2">We create</span>
+            <span class="block bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">the future of logistics</span>
+            {% endif %}
+        </h1>
+
+        <p class="text-xl sm:text-2xl text-slate-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+            {% if language == 'uk' %}
+            Перша AI операційна система для автомобільної логістики в Україні
+            {% else %}
+            The first AI operating system for automotive logistics in Ukraine
+            {% endif %}
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="#mission" class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-orange-500/50 transition-all duration-300 transform hover:scale-105">
+                {% if language == 'uk' %}Наша місія{% else %}Our Mission{% endif %}
+                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </a>
+            <a href="#team" class="inline-flex items-center justify-center px-8 py-4 bg-slate-800 text-white font-semibold rounded-xl hover:bg-slate-700 transition-all duration-300 border border-slate-700">
+                {% if language == 'uk' %}Наша команда{% else %}Our Team{% endif %}
+            </a>
+        </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+        </svg>
+    </div>
+</section>
+
+<!-- Mission Section -->
+<section id="mission" class="py-20 px-6 bg-gradient-to-b from-black via-slate-950 to-slate-900">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl sm:text-5xl font-bold mb-6">
+                {% if language == 'uk' %}
+                <span class="text-white">Наша </span>
+                <span class="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">місія</span>
+                {% else %}
+                <span class="text-white">Our </span>
+                <span class="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">Mission</span>
+                {% endif %}
+            </h2>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <!-- Mission Text -->
+            <div class="space-y-6">
+                <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-slate-700">
+                    <div class="text-4xl mb-4">🎯</div>
+                    <h3 class="text-2xl font-bold text-white mb-4">
+                        {% if language == 'uk' %}Чому ми існуємо{% else %}Why We Exist{% endif %}
+                    </h3>
+                    <p class="text-slate-300 text-lg leading-relaxed">
+                        {% if language == 'uk' %}
+                        Ми віримо, що логістика в Україні має працювати інакше. Замість десятків розрізнених систем, таблиць Excel та паперових документів — одна AI-платформа, яка об'єднує всіх учасників ринку.
+                        {% else %}
+                        We believe that logistics in Ukraine should work differently. Instead of dozens of disparate systems, Excel spreadsheets, and paper documents — one AI platform that unites all market participants.
+                        {% endif %}
+                    </p>
+                </div>
+
+                <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-slate-700">
+                    <div class="text-4xl mb-4">🚀</div>
+                    <h3 class="text-2xl font-bold text-white mb-4">
+                        {% if language == 'uk' %}Що ми робимо{% else %}What We Do{% endif %}
+                    </h3>
+                    <p class="text-slate-300 text-lg leading-relaxed">
+                        {% if language == 'uk' %}
+                        Створюємо Neural Core — AI операційну систему, яка автоматизує всі процеси від пошуку вантажу до фінансових розрахунків. Перевізникам, вантажовідправникам та логістичним компаніям більше не потрібно витрачати години на рутинні задачі.
+                        {% else %}
+                        We create Neural Core — an AI operating system that automates all processes from cargo search to financial settlements. Carriers, shippers, and logistics companies no longer need to spend hours on routine tasks.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="space-y-6">
+                <div class="bg-gradient-to-br from-orange-500/20 to-orange-600/20 backdrop-blur-sm p-8 rounded-3xl border border-orange-500/30">
+                    <div class="text-6xl font-bold text-white mb-2">370</div>
+                    <div class="text-orange-400 text-sm font-semibold mb-2">
+                        {% if language == 'uk' %}МЛРД ГРН{% else %}BILLION UAH{% endif %}
+                    </div>
+                    <p class="text-slate-300">
+                        {% if language == 'uk' %}
+                        Загальний обсяг ринку автологістики в Україні
+                        {% else %}
+                        Total automotive logistics market in Ukraine
+                        {% endif %}
+                    </p>
+                </div>
+
+                <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-slate-700">
+                    <div class="text-6xl font-bold text-white mb-2">2026</div>
+                    <div class="text-orange-400 text-sm font-semibold mb-2">
+                        {% if language == 'uk' %}РІК ПІЛОТУ{% else %}PILOT YEAR{% endif %}
+                    </div>
+                    <p class="text-slate-300">
+                        {% if language == 'uk' %}
+                        Запуск повноцінної платформи з усіма функціями
+                        {% else %}
+                        Launch of full-featured platform
+                        {% endif %}
+                    </p>
+                </div>
+
+                <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-slate-700">
+                    <div class="text-6xl font-bold text-white mb-2">100%</div>
+                    <div class="text-orange-400 text-sm font-semibold mb-2">
+                        {% if language == 'uk' %}БЕЗКОШТОВНО{% else %}FREE{% endif %}
+                    </div>
+                    <p class="text-slate-300">
+                        {% if language == 'uk' %}
+                        Участь у пілотній програмі для всіх учасників
+                        {% else %}
+                        Pilot program participation for all participants
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Values Section -->
+<section class="py-20 px-6 bg-gradient-to-b from-slate-900 to-black">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl sm:text-5xl font-bold mb-6">
+                {% if language == 'uk' %}
+                <span class="text-white">Наші </span>
+                <span class="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">цінності</span>
+                {% else %}
+                <span class="text-white">Our </span>
+                <span class="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">Values</span>
+                {% endif %}
+            </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Value 1 -->
+            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-slate-700 hover:border-orange-500/50 transition-all duration-300">
+                <div class="text-5xl mb-6">🤝</div>
+                <h3 class="text-2xl font-bold text-white mb-4">
+                    {% if language == 'uk' %}Співпраця, не конкуренція{% else %}Collaboration, not competition{% endif %}
+                </h3>
+                <p class="text-slate-300 text-lg leading-relaxed">
+                    {% if language == 'uk' %}
+                    Ми об'єднуємо всіх учасників ринку — перевізників, вантажовідправників, банки, страхові компанії. Разом ми сильніші.
+                    {% else %}
+                    We unite all market participants — carriers, shippers, banks, insurance companies. Together we are stronger.
+                    {% endif %}
+                </p>
+            </div>
+
+            <!-- Value 2 -->
+            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-slate-700 hover:border-orange-500/50 transition-all duration-300">
+                <div class="text-5xl mb-6">🧠</div>
+                <h3 class="text-2xl font-bold text-white mb-4">
+                    {% if language == 'uk' %}AI для бізнесу, не для хайпу{% else %}AI for business, not for hype{% endif %}
+                </h3>
+                <p class="text-slate-300 text-lg leading-relaxed">
+                    {% if language == 'uk' %}
+                    Використовуємо штучний інтелект там, де він дійсно допомагає — автоматизація, прогнозування, оптимізація. Без зайвого шуму.
+                    {% else %}
+                    We use artificial intelligence where it really helps — automation, forecasting, optimization. Without unnecessary noise.
+                    {% endif %}
+                </p>
+            </div>
+
+            <!-- Value 3 -->
+            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-slate-700 hover:border-orange-500/50 transition-all duration-300">
+                <div class="text-5xl mb-6">🇺🇦</div>
+                <h3 class="text-2xl font-bold text-white mb-4">
+                    {% if language == 'uk' %}Створено для України{% else %}Made for Ukraine{% endif %}
+                </h3>
+                <p class="text-slate-300 text-lg leading-relaxed">
+                    {% if language == 'uk' %}
+                    Розуміємо специфіку українського ринку: Е-ТТН 2026, тіньову економіку, складні податкові схеми. Це наша ДНК.
+                    {% else %}
+                    We understand the specifics of the Ukrainian market: E-TTN 2026, shadow economy, complex tax schemes. It's our DNA.
+                    {% endif %}
+                </p>
+            </div>
+
+            <!-- Value 4 -->
+            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-slate-700 hover:border-orange-500/50 transition-all duration-300">
+                <div class="text-5xl mb-6">⚡</div>
+                <h3 class="text-2xl font-bold text-white mb-4">
+                    {% if language == 'uk' %}Швидко, просто, прозорó{% else %}Fast, simple, transparent{% endif %}
+                </h3>
+                <p class="text-slate-300 text-lg leading-relaxed">
+                    {% if language == 'uk' %}
+                    Жодних складних інтерфейсів, довгих навчань, прихованих комісій. Ви бачите всі процеси та витрати в режимі реального часу.
+                    {% else %}
+                    No complex interfaces, long training, or hidden fees. You see all processes and costs in real time.
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Vision Section -->
+<section class="py-20 px-6 bg-gradient-to-b from-black to-slate-950">
+    <div class="max-w-5xl mx-auto">
+        <div class="bg-gradient-to-br from-orange-500/10 to-orange-600/10 backdrop-blur-sm p-12 rounded-3xl border border-orange-500/20">
+            <div class="text-center mb-8">
+                <div class="text-6xl mb-6">🔮</div>
+                <h2 class="text-4xl sm:text-5xl font-bold mb-6">
+                    {% if language == 'uk' %}
+                    <span class="text-white">Наше </span>
+                    <span class="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">бачення</span>
+                    {% else %}
+                    <span class="text-white">Our </span>
+                    <span class="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">Vision</span>
+                    {% endif %}
+                </h2>
+            </div>
+
+            <div class="space-y-6 text-slate-300 text-lg leading-relaxed">
+                <p>
+                    {% if language == 'uk' %}
+                    Ми бачимо майбутнє, в якому українська логістика працює як єдиний організм. Перевізник отримує замовлення автоматично, маршрут будується з урахуванням трафіку та погоди, оплата проходить миттєво через банк-партнер, страховка оформлюється в один клік, а всі документи генеруються без участі людини.
+                    {% else %}
+                    We envision a future where Ukrainian logistics works as a single organism. The carrier receives orders automatically, routes are built considering traffic and weather, payment is instant through partner banks, insurance is issued with one click, and all documents are generated without human involvement.
+                    {% endif %}
+                </p>
+
+                <p>
+                    {% if language == 'uk' %}
+                    Це не фантастика — це Trexim. І ми запускаємо це вже в 2026 році.
+                    {% else %}
+                    This is not fiction — this is Trexim. And we're launching it in 2026.
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="mt-8 text-center">
+                <a href="/contact?lang={{ language }}" class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-orange-500/50 transition-all duration-300 transform hover:scale-105">
+                    {% if language == 'uk' %}Приєднатися до майбутнього{% else %}Join the Future{% endif %}
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section id="team" class="py-20 px-6 bg-gradient-to-b from-slate-950 to-slate-900">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl sm:text-5xl font-bold mb-6">
+                {% if language == 'uk' %}
+                <span class="text-white">Наша </span>
+                <span class="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">команда</span>
+                {% else %}
+                <span class="text-white">Our </span>
+                <span class="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">Team</span>
+                {% endif %}
+            </h2>
+            <p class="text-xl text-slate-400 max-w-3xl mx-auto">
+                {% if language == 'uk' %}
+                Експерти з логістики, технологій та AI, які створюють майбутнє українського транспорту
+                {% else %}
+                Experts in logistics, technology, and AI creating the future of Ukrainian transport
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Team Member 1 -->
+            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-slate-700 hover:border-orange-500/50 transition-all duration-300 text-center">
+                <div class="w-24 h-24 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full mx-auto mb-6 flex items-center justify-center text-white text-3xl font-bold">
+                    T
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">Taras</h3>
+                <div class="text-orange-400 text-sm font-semibold mb-4">
+                    {% if language == 'uk' %}Засновник & CEO{% else %}Founder & CEO{% endif %}
+                </div>
+                <p class="text-slate-400">
+                    {% if language == 'uk' %}
+                    15+ років досвіду в логістиці та технологіях
+                    {% else %}
+                    15+ years of experience in logistics and technology
+                    {% endif %}
+                </p>
+            </div>
+
+            <!-- Team Member 2 -->
+            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-slate-700 hover:border-orange-500/50 transition-all duration-300 text-center">
+                <div class="w-24 h-24 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full mx-auto mb-6 flex items-center justify-center text-white text-3xl font-bold">
+                    M
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">Maksym</h3>
+                <div class="text-orange-400 text-sm font-semibold mb-4">
+                    {% if language == 'uk' %}CTO{% else %}CTO{% endif %}
+                </div>
+                <p class="text-slate-400">
+                    {% if language == 'uk' %}
+                    Експерт з AI та розподілених систем
+                    {% else %}
+                    Expert in AI and distributed systems
+                    {% endif %}
+                </p>
+            </div>
+
+            <!-- Team Member 3 -->
+            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-slate-700 hover:border-orange-500/50 transition-all duration-300 text-center">
+                <div class="w-24 h-24 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full mx-auto mb-6 flex items-center justify-center text-white text-3xl font-bold">
+                    O
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">Olena</h3>
+                <div class="text-orange-400 text-sm font-semibold mb-4">
+                    {% if language == 'uk' %}Head of Operations{% else %}Head of Operations{% endif %}
+                </div>
+                <p class="text-slate-400">
+                    {% if language == 'uk' %}
+                    10+ років в управлінні логістичними операціями
+                    {% else %}
+                    10+ years in logistics operations management
+                    {% endif %}
+                </p>
+            </div>
+
+            <!-- Team Member 4 -->
+            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-slate-700 hover:border-orange-500/50 transition-all duration-300 text-center">
+                <div class="w-24 h-24 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full mx-auto mb-6 flex items-center justify-center text-white text-3xl font-bold">
+                    A
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">Andriy</h3>
+                <div class="text-orange-400 text-sm font-semibold mb-4">
+                    {% if language == 'uk' %}Lead AI Engineer{% else %}Lead AI Engineer{% endif %}
+                </div>
+                <p class="text-slate-400">
+                    {% if language == 'uk' %}
+                    Спеціаліст з машинного навчання та NLP
+                    {% else %}
+                    Machine learning and NLP specialist
+                    {% endif %}
+                </p>
+            </div>
+
+            <!-- Team Member 5 -->
+            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-slate-700 hover:border-orange-500/50 transition-all duration-300 text-center">
+                <div class="w-24 h-24 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full mx-auto mb-6 flex items-center justify-center text-white text-3xl font-bold">
+                    I
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">Iryna</h3>
+                <div class="text-orange-400 text-sm font-semibold mb-4">
+                    {% if language == 'uk' %}Head of Product{% else %}Head of Product{% endif %}
+                </div>
+                <p class="text-slate-400">
+                    {% if language == 'uk' %}
+                    Досвід у створенні B2B SaaS продуктів
+                    {% else %}
+                    Experience in building B2B SaaS products
+                    {% endif %}
+                </p>
+            </div>
+
+            <!-- Team Member 6 -->
+            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-slate-700 hover:border-orange-500/50 transition-all duration-300 text-center">
+                <div class="w-24 h-24 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full mx-auto mb-6 flex items-center justify-center text-white text-3xl font-bold">
+                    D
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">Dmytro</h3>
+                <div class="text-orange-400 text-sm font-semibold mb-4">
+                    {% if language == 'uk' %}Head of Partnerships{% else %}Head of Partnerships{% endif %}
+                </div>
+                <p class="text-slate-400">
+                    {% if language == 'uk' %}
+                    Експерт зі стратегічних партнерств
+                    {% else %}
+                    Strategic partnerships expert
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <!-- Join Team CTA -->
+        <div class="mt-16 text-center">
+            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-slate-700 inline-block">
+                <h3 class="text-2xl font-bold text-white mb-4">
+                    {% if language == 'uk' %}Хочеш приєднатися?{% else %}Want to join?{% endif %}
+                </h3>
+                <p class="text-slate-400 mb-6">
+                    {% if language == 'uk' %}
+                    Ми завжди шукаємо талановитих людей, які хочуть змінити логістику
+                    {% else %}
+                    We're always looking for talented people who want to change logistics
+                    {% endif %}
+                </p>
+                <a href="/contact?lang={{ language }}" class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-orange-500/50 transition-all duration-300 transform hover:scale-105">
+                    {% if language == 'uk' %}Зв'язатися з нами{% else %}Contact Us{% endif %}
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-20 px-6 bg-gradient-to-br from-orange-500 via-orange-600 to-orange-700 relative overflow-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute w-64 h-64 bg-white rounded-full blur-3xl top-0 left-0"></div>
+        <div class="absolute w-64 h-64 bg-white rounded-full blur-3xl bottom-0 right-0"></div>
+    </div>
+
+    <div class="relative z-10 max-w-4xl mx-auto text-center">
+        <h2 class="text-4xl sm:text-5xl font-bold text-white mb-6">
+            {% if language == 'uk' %}
+            Будуймо майбутнє разом
+            {% else %}
+            Let's build the future together
+            {% endif %}
+        </h2>
+        <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+            {% if language == 'uk' %}
+            Приєднуйтесь до пілотної програми та станьте частиною революції в українській логістиці
+            {% else %}
+            Join the pilot program and become part of the revolution in Ukrainian logistics
+            {% endif %}
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/contact?lang={{ language }}" class="inline-flex items-center justify-center px-8 py-4 bg-white text-orange-600 font-semibold rounded-xl hover:bg-slate-100 transition-all duration-300 transform hover:scale-105">
+                {% if language == 'uk' %}Приєднатися до пілоту{% else %}Join Pilot{% endif %}
+            </a>
+            <a href="/pricing?lang={{ language }}" class="inline-flex items-center justify-center px-8 py-4 bg-transparent text-white font-semibold rounded-xl border-2 border-white hover:bg-white hover:text-orange-600 transition-all duration-300">
+                {% if language == 'uk' %}Дізнатися більше{% else %}Learn More{% endif %}
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

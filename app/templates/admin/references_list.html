@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Довідники - Trexim Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-white shadow">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <a href="/admin/dashboard" class="text-blue-600 hover:text-blue-800">← Dashboard</a>
+                <h1 class="text-2xl font-bold">Довідники</h1>
+            </div>
+            <a href="/admin/logout" class="text-red-600 hover:text-red-800">Вийти</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for key, ref in references.items() %}
+            <a href="/admin/references/{{ key }}" class="bg-white p-8 rounded-lg shadow hover:shadow-lg transition block">
+                <h3 class="text-xl font-bold mb-2">{{ ref.name_uk }}</h3>
+                <p class="text-gray-600 mb-4">{{ ref.name_en }}</p>
+                <p class="text-sm text-gray-500">Записів: {{ ref.count }}</p>
+            </a>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+</html>

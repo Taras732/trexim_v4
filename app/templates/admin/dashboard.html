@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trexim Admin - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-white shadow">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <h1 class="text-2xl font-bold">Trexim Admin</h1>
+            <a href="/admin/logout" class="text-red-600 hover:text-red-800">Вийти</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <h2 class="text-3xl font-bold mb-8">Панель керування</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Blog Management Card -->
+            <a href="/admin/blog" class="bg-white p-8 rounded-lg shadow hover:shadow-lg transition block">
+                <div class="text-4xl mb-4">📝</div>
+                <h3 class="text-xl font-bold mb-2">Управління блогом</h3>
+                <p class="text-gray-600">Створення та редагування статей блогу</p>
+            </a>
+
+            <!-- References Card -->
+            <a href="/admin/references" class="bg-white p-8 rounded-lg shadow hover:shadow-lg transition block">
+                <div class="text-4xl mb-4">📚</div>
+                <h3 class="text-xl font-bold mb-2">Довідники</h3>
+                <p class="text-gray-600">Управління довідниками та списками</p>
+            </a>
+
+            <!-- Orders Card (placeholder) -->
+            <div class="bg-gray-50 p-8 rounded-lg shadow opacity-50">
+                <div class="text-4xl mb-4">📦</div>
+                <h3 class="text-xl font-bold mb-2">Замовлення</h3>
+                <p class="text-gray-600">Скоро буде доступно</p>
+            </div>
+
+            <!-- Analytics Card (placeholder) -->
+            <div class="bg-gray-50 p-8 rounded-lg shadow opacity-50">
+                <div class="text-4xl mb-4">📊</div>
+                <h3 class="text-xl font-bold mb-2">Аналітика</h3>
+                <p class="text-gray-600">Скоро буде доступно</p>
+            </div>
+
+            <!-- Users Card (placeholder) -->
+            <div class="bg-gray-50 p-8 rounded-lg shadow opacity-50">
+                <div class="text-4xl mb-4">👥</div>
+                <h3 class="text-xl font-bold mb-2">Користувачі</h3>
+                <p class="text-gray-600">Скоро буде доступно</p>
+            </div>
+
+            <!-- Settings Card (placeholder) -->
+            <div class="bg-gray-50 p-8 rounded-lg shadow opacity-50">
+                <div class="text-4xl mb-4">⚙️</div>
+                <h3 class="text-xl font-bold mb-2">Налаштування</h3>
+                <p class="text-gray-600">Скоро буде доступно</p>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Довідник - Trexim Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-white shadow">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <a href="/admin/references" class="text-blue-600 hover:text-blue-800">← Назад</a>
+                <h1 class="text-2xl font-bold">{{ reference_type }}</h1>
+            </div>
+            <a href="/admin/logout" class="text-red-600 hover:text-red-800">Вийти</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8" x-data="{ showModal: false, formData: {} }">
+        <div class="mb-6 flex justify-between items-center">
+            <h2 class="text-2xl font-bold">Записи</h2>
+            <button @click="showModal = true; formData = {}"
+                    class="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition">
+                + Додати запис
+            </button>
+        </div>
+
+        <!-- Items Table -->
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <table class="w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Код</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Назва (UK)</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Назва (EN)</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Активний</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Дії</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for item in items %}
+                    <tr>
+                        <td class="px-6 py-4">{{ item.code }}</td>
+                        <td class="px-6 py-4">{{ item.name_uk }}</td>
+                        <td class="px-6 py-4">{{ item.name_en }}</td>
+                        <td class="px-6 py-4">
+                            {% if item.active %}
+                            <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Так</span>
+                            {% else %}
+                            <span class="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800">Ні</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex space-x-2">
+                                <button @click="showModal = true; formData = {{ item | tojson }}"
+                                        class="text-blue-600 hover:text-blue-800">Редагувати</button>
+                                <button hx-delete="/admin/references/{{ reference_type }}/{{ item.id }}"
+                                        hx-confirm="Видалити цей запис?"
+                                        class="text-red-600 hover:text-red-800">Видалити</button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Modal -->
+        <div x-show="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" x-cloak>
+            <div class="bg-white rounded-lg p-8 max-w-2xl w-full mx-4">
+                <h3 class="text-2xl font-bold mb-6">
+                    <span x-text="formData.id ? 'Редагувати запис' : 'Новий запис'"></span>
+                </h3>
+
+                <form class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Код</label>
+                        <input type="text" x-model="formData.code" required
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Назва (UK)</label>
+                        <input type="text" x-model="formData.name_uk" required
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Назва (EN)</label>
+                        <input type="text" x-model="formData.name_en" required
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    </div>
+
+                    <div class="flex items-center">
+                        <input type="checkbox" x-model="formData.active" class="mr-2">
+                        <label class="text-sm font-medium text-gray-700">Активний</label>
+                    </div>
+
+                    <div class="flex justify-end space-x-4 pt-4">
+                        <button type="button" @click="showModal = false"
+                                class="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50">
+                            Скасувати
+                        </button>
+                        <button type="submit"
+                                class="px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800">
+                            Зберегти
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,464 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if language == 'uk' %}
+Тарифи - Trexim
+{% else %}
+Pricing - Trexim
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative min-h-[90vh] flex items-center justify-center px-6 pt-32 pb-20 overflow-hidden bg-gradient-to-b from-slate-900 via-slate-950 to-black">
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-20 right-10 w-72 h-72 bg-orange-500/5 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-20 left-10 w-96 h-96 bg-orange-500/3 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="relative z-10 max-w-4xl mx-auto text-center">
+        <h1 class="text-5xl sm:text-6xl md:text-7xl font-bold mb-6 leading-tight">
+            <span class="block text-white mb-2">
+                {% if language == 'uk' %}Пілот — {% else %}Pilot — {% endif %}
+            </span>
+            <span class="block bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
+                {% if language == 'uk' %}Повністю безкоштовно{% else %}Completely Free{% endif %}
+            </span>
+        </h1>
+
+        <p class="text-lg md:text-xl text-slate-300 mb-10 max-w-3xl mx-auto leading-relaxed">
+            {% if language == 'uk' %}
+            Отримайте повний доступ до AI операційної системи без жодних фінансових ризиків
+            {% else %}
+            Get full access to AI operating system without any financial risks
+            {% endif %}
+        </p>
+
+        <div class="flex justify-center">
+            <a href="/contact?lang={{ language }}"
+               class="px-10 py-4 bg-orange-500 text-white text-base font-bold rounded-xl hover:bg-orange-600 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-orange-500/50">
+                {% if language == 'uk' %}Отримати безкоштовний доступ{% else %}Get Free Access{% endif %}
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Pilot Features Section -->
+<section class="relative py-16 md:py-20 px-6 bg-gradient-to-b from-slate-50 to-white">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
+                {% if language == 'uk' %}Що включено в пілот{% else %}What's Included in Pilot{% endif %}
+            </h2>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+                {% if language == 'uk' %}
+                Нуль фінансових зобов'язань, максимум можливостей
+                {% else %}
+                Zero financial commitments, maximum opportunities
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Feature 1 -->
+            <div class="bg-white p-8 rounded-2xl border-2 border-slate-200 hover:border-orange-500 transition-all duration-300 hover:shadow-xl">
+                <div class="text-5xl mb-5">💳</div>
+                <h3 class="text-xl font-bold text-slate-900 mb-3">
+                    {% if language == 'uk' %}Участь без підписок{% else %}Participation without subscriptions{% endif %}
+                </h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    {% if language == 'uk' %}
+                    Нуль фінансових зобов'язань на весь період пілотної програми
+                    {% else %}
+                    Zero financial commitments for the entire pilot program
+                    {% endif %}
+                </p>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="bg-white p-8 rounded-2xl border-2 border-slate-200 hover:border-orange-500 transition-all duration-300 hover:shadow-xl">
+                <div class="text-5xl mb-5">🛠️</div>
+                <h3 class="text-xl font-bold text-slate-900 mb-3">
+                    {% if language == 'uk' %}Технічна та операційна підтримка{% else %}Technical and operational support{% endif %}
+                </h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    {% if language == 'uk' %}
+                    Команда допомагає на етапі впровадження та адаптації
+                    {% else %}
+                    Team helps at implementation and adaptation stage
+                    {% endif %}
+                </p>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="bg-white p-8 rounded-2xl border-2 border-slate-200 hover:border-orange-500 transition-all duration-300 hover:shadow-xl">
+                <div class="text-5xl mb-5">📊</div>
+                <h3 class="text-xl font-bold text-slate-900 mb-3">
+                    {% if language == 'uk' %}Чіткі KPI та критерії успіху{% else %}Clear KPIs and success criteria{% endif %}
+                </h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    {% if language == 'uk' %}
+                    Вимірюємо результати разом та коригуємо стратегію
+                    {% else %}
+                    Measure results together and adjust strategy
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Three Stages Section -->
+<section class="relative py-16 md:py-20 px-6 bg-slate-900 text-white overflow-hidden">
+    <div class="absolute inset-0">
+        <div class="absolute top-0 left-0 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-5">
+                {% if language == 'uk' %}Три етапи пілоту 2026{% else %}Three Stages of 2026 Pilot{% endif %}
+            </h2>
+            <p class="text-lg text-slate-300 max-w-2xl mx-auto">
+                {% if language == 'uk' %}
+                Поступовий запуск з контролем на кожному етапі
+                {% else %}
+                Gradual launch with control at each stage
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Stage 1: Q1-Q2 2026 -->
+            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border-2 border-slate-700 hover:border-orange-500 transition-all duration-300">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 text-white text-2xl font-bold rounded-2xl mb-6">
+                    01
+                </div>
+                <div class="text-sm font-bold text-orange-400 mb-2 tracking-wider">Q1-Q2 2026</div>
+                <h3 class="text-2xl font-bold mb-6 leading-tight">
+                    {% if language == 'uk' %}Контрольований пілот без фінансових ризиків{% else %}Controlled pilot without financial risks{% endif %}
+                </h3>
+                <ul class="space-y-4">
+                    <li class="flex items-start gap-3">
+                        <div class="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                        <span class="text-slate-300 text-sm leading-relaxed">
+                            {% if language == 'uk' %}Участь без підписок{% else %}Participation without subscriptions{% endif %}
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <div class="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                        <span class="text-slate-300 text-sm leading-relaxed">
+                            {% if language == 'uk' %}Технічна та операційна підтримка{% else %}Technical and operational support{% endif %}
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <div class="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                        <span class="text-slate-300 text-sm leading-relaxed">
+                            {% if language == 'uk' %}Чіткі KPI та критерії успіху{% else %}Clear KPIs and success criteria{% endif %}
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Stage 2: Q3 2026 -->
+            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border-2 border-slate-700 hover:border-orange-500 transition-all duration-300">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 text-white text-2xl font-bold rounded-2xl mb-6">
+                    02
+                </div>
+                <div class="text-sm font-bold text-orange-400 mb-2 tracking-wider">Q3 2026</div>
+                <h3 class="text-2xl font-bold mb-6 leading-tight">
+                    {% if language == 'uk' %}Запуск на реальному ринку{% else %}Launch in real market{% endif %}
+                </h3>
+                <ul class="space-y-4">
+                    <li class="flex items-start gap-3">
+                        <div class="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                        <span class="text-slate-300 text-sm leading-relaxed">
+                            {% if language == 'uk' %}Фокус на операційно складних сегментах (зерно, FMCG, e-commerce){% else %}Focus on operationally complex segments (grain, FMCG, e-commerce){% endif %}
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <div class="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                        <span class="text-slate-300 text-sm leading-relaxed">
+                            {% if language == 'uk' %}Реальні вантажні потоки, а не тестові сценарії{% else %}Real cargo flows, not test scenarios{% endif %}
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <div class="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                        <span class="text-slate-300 text-sm leading-relaxed">
+                            {% if language == 'uk' %}Валідація масштабованості моделі{% else %}Model scalability validation{% endif %}
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Stage 3: Q4 2026+ -->
+            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border-2 border-slate-700 hover:border-orange-500 transition-all duration-300">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 text-white text-2xl font-bold rounded-2xl mb-6">
+                    03
+                </div>
+                <div class="text-sm font-bold text-orange-400 mb-2 tracking-wider">Q4 2026+</div>
+                <h3 class="text-2xl font-bold mb-6 leading-tight">
+                    {% if language == 'uk' %}Перехід до комерційної моделі{% else %}Transition to commercial model{% endif %}
+                </h3>
+                <ul class="space-y-4">
+                    <li class="flex items-start gap-3">
+                        <div class="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                        <span class="text-slate-300 text-sm leading-relaxed">
+                            {% if language == 'uk' %}Рішення на основі результатів пілоту{% else %}Decisions based on pilot results{% endif %}
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <div class="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                        <span class="text-slate-300 text-sm leading-relaxed">
+                            {% if language == 'uk' %}Гнучкі формати співпраці{% else %}Flexible cooperation formats{% endif %}
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <div class="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                        <span class="text-slate-300 text-sm leading-relaxed">
+                            {% if language == 'uk' %}Масштабування разом з екосистемою{% else %}Scaling together with ecosystem{% endif %}
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Future Pricing Model Section -->
+<section class="relative py-16 md:py-20 px-6 bg-gradient-to-b from-white to-slate-50">
+    <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-5">
+                {% if language == 'uk' %}Майбутня модель ціноутворення{% else %}Future Pricing Model{% endif %}
+            </h2>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+                {% if language == 'uk' %}
+                Після пілоту перехід на комерційну модель на основі результатів
+                {% else %}
+                After pilot, transition to commercial model based on results
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="bg-white p-10 rounded-3xl border-2 border-slate-200 shadow-xl">
+            <h3 class="text-2xl font-bold text-slate-900 mb-6">
+                {% if language == 'uk' %}Принципи майбутньої моделі:{% else %}Principles of Future Model:{% endif %}
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Principle 1 -->
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center">
+                        <span class="text-2xl">💰</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-900 mb-2">
+                            {% if language == 'uk' %}Прозорість та передбачувані витрати{% else %}Transparency and predictable costs{% endif %}
+                        </h4>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            {% if language == 'uk' %}
+                            Ніяких прихованих платежів. Ви завжди знаєте скільки платите і за що.
+                            {% else %}
+                            No hidden fees. You always know how much you pay and for what.
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Principle 2 -->
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center">
+                        <span class="text-2xl">📈</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-900 mb-2">
+                            {% if language == 'uk' %}Оплата за реальну цінність та результати{% else %}Payment for real value and results{% endif %}
+                        </h4>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            {% if language == 'uk' %}
+                            Платите тільки за те, що використовуєте та отримуєте від цього вигоду.
+                            {% else %}
+                            Pay only for what you use and benefit from.
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Principle 3 -->
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center">
+                        <span class="text-2xl">🎯</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-900 mb-2">
+                            {% if language == 'uk' %}Гнучкі пакети для різних типів бізнесу{% else %}Flexible packages for different business types{% endif %}
+                        </h4>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            {% if language == 'uk' %}
+                            Кожен бізнес унікальний. Модель адаптується під ваші потреби.
+                            {% else %}
+                            Every business is unique. Model adapts to your needs.
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Principle 4 -->
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center">
+                        <span class="text-2xl">🚀</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-900 mb-2">
+                            {% if language == 'uk' %}Масштабування разом з вашим зростанням{% else %}Scaling together with your growth{% endif %}
+                        </h4>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            {% if language == 'uk' %}
+                            Чим більше ви ростете, тим більше економите на масштабі.
+                            {% else %}
+                            The more you grow, the more you save on scale.
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Current Offer Highlight -->
+<section class="relative py-16 md:py-20 px-6 bg-gradient-to-br from-orange-500 to-orange-600 text-white overflow-hidden">
+    <div class="absolute inset-0">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="relative z-10 max-w-4xl mx-auto text-center">
+        <div class="inline-block px-6 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-bold mb-6">
+            {% if language == 'uk' %}ОБМЕЖЕНА ПРОПОЗИЦІЯ{% else %}LIMITED OFFER{% endif %}
+        </div>
+
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
+            {% if language == 'uk' %}
+            Приєднуйтесь до пілоту сьогодні
+            {% else %}
+            Join the Pilot Today
+            {% endif %}
+        </h2>
+
+        <p class="text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed opacity-90">
+            {% if language == 'uk' %}
+            Безкоштовний доступ до всіх можливостей AI операційної системи протягом всього 2026 року
+            {% else %}
+            Free access to all AI operating system features throughout 2026
+            {% endif %}
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a href="/contact?lang={{ language }}"
+               class="px-10 py-4 bg-white text-orange-600 text-base font-bold rounded-xl hover:bg-slate-50 transition-all duration-300 hover:scale-105 shadow-lg">
+                {% if language == 'uk' %}Отримати доступ зараз{% else %}Get Access Now{% endif %}
+            </a>
+            <a href="/partners?lang={{ language }}"
+               class="px-10 py-4 bg-transparent border-2 border-white text-white text-base font-bold rounded-xl hover:bg-white/10 transition-all duration-300 hover:scale-105">
+                {% if language == 'uk' %}Дізнатися про партнерство{% else %}Learn About Partnership{% endif %}
+            </a>
+        </div>
+
+        <p class="mt-8 text-sm opacity-75">
+            {% if language == 'uk' %}
+            Кількість місць обмежена • Пріоритет для ранніх учасників
+            {% else %}
+            Limited spots available • Priority for early participants
+            {% endif %}
+        </p>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="relative py-16 md:py-20 px-6 bg-white">
+    <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+                {% if language == 'uk' %}Часті запитання{% else %}Frequently Asked Questions{% endif %}
+            </h2>
+        </div>
+
+        <div class="space-y-4">
+            <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                <h3 class="font-bold text-slate-900 mb-2">
+                    {% if language == 'uk' %}Чи справді пілот безкоштовний?{% else %}Is the pilot really free?{% endif %}
+                </h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    {% if language == 'uk' %}
+                    Так, участь у пілотній програмі 2026 року повністю безкоштовна. Без прихованих платежів, підписок чи комісій.
+                    {% else %}
+                    Yes, participation in the 2026 pilot program is completely free. No hidden fees, subscriptions or commissions.
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                <h3 class="font-bold text-slate-900 mb-2">
+                    {% if language == 'uk' %}Що буде після завершення пілоту?{% else %}What happens after the pilot ends?{% endif %}
+                </h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    {% if language == 'uk' %}
+                    Після пілоту ви зможете обрати комерційний план на основі вашого досвіду та потреб. Жодних зобов'язань продовжувати.
+                    {% else %}
+                    After the pilot, you can choose a commercial plan based on your experience and needs. No obligation to continue.
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                <h3 class="font-bold text-slate-900 mb-2">
+                    {% if language == 'uk' %}Скільки часу займає впровадження?{% else %}How long does implementation take?{% endif %}
+                </h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    {% if language == 'uk' %}
+                    Базове впровадження займає 2-4 тижні. Наша команда надає повну підтримку на всіх етапах.
+                    {% else %}
+                    Basic implementation takes 2-4 weeks. Our team provides full support at all stages.
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                <h3 class="font-bold text-slate-900 mb-2">
+                    {% if language == 'uk' %}Яка підтримка надається?{% else %}What support is provided?{% endif %}
+                </h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    {% if language == 'uk' %}
+                    Повна технічна та операційна підтримка: навчання команди, інтеграція систем, консультації по оптимізації процесів.
+                    {% else %}
+                    Full technical and operational support: team training, system integration, process optimization consulting.
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Final CTA -->
+<section class="relative py-16 md:py-20 px-6 bg-gradient-to-b from-slate-50 to-white">
+    <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
+            {% if language == 'uk' %}Готові приєднатися?{% else %}Ready to Join?{% endif %}
+        </h2>
+        <p class="text-lg text-slate-600 mb-10 max-w-2xl mx-auto">
+            {% if language == 'uk' %}
+            Залиште заявку та наша команда зв'яжеться з вами протягом 24 годин
+            {% else %}
+            Submit your application and our team will contact you within 24 hours
+            {% endif %}
+        </p>
+        <a href="/contact?lang={{ language }}"
+           class="inline-block px-10 py-4 bg-orange-500 text-white text-base font-bold rounded-xl hover:bg-orange-600 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-orange-500/50">
+            {% if language == 'uk' %}Залишити заявку{% else %}Submit Application{% endif %}
+        </a>
+    </div>
+</section>
+{% endblock %}

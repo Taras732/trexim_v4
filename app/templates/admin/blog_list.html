@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Management - Trexim Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-white shadow">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <a href="/admin/dashboard" class="text-blue-600 hover:text-blue-800">← Dashboard</a>
+                <h1 class="text-2xl font-bold">Управління блогом</h1>
+            </div>
+            <a href="/admin/logout" class="text-red-600 hover:text-red-800">Вийти</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="mb-6 flex justify-between items-center">
+            <h2 class="text-2xl font-bold">Всі пости</h2>
+            <a href="/admin/blog/new" class="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition">
+                + Новий пост
+            </a>
+        </div>
+
+        <!-- Posts Table -->
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <table class="w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Назва</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Категорія</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Статус</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Дата</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Дії</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for post in posts %}
+                    <tr>
+                        <td class="px-6 py-4">{{ post.title }}</td>
+                        <td class="px-6 py-4">{{ post.category }}</td>
+                        <td class="px-6 py-4">
+                            <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">
+                                {{ post.status }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">{{ post.date }}</td>
+                        <td class="px-6 py-4">
+                            <div class="flex space-x-2">
+                                <a href="/admin/blog/{{ post.id }}/edit" class="text-blue-600 hover:text-blue-800">Редагувати</a>
+                                <button hx-delete="/admin/blog/{{ post.id }}"
+                                        hx-confirm="Видалити цей пост?"
+                                        class="text-red-600 hover:text-red-800">
+                                    Видалити
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>
