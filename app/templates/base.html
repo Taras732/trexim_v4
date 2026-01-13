@@ -64,11 +64,22 @@
                     </a>
                 </div>
 
-                <!-- Language Switcher -->
-                <div class="flex items-center space-x-4">
-                    <a href="?lang=uk" class="text-sm {% if language == 'uk' %}font-bold{% endif %}">UK</a>
-                    <span class="text-gray-400">/</span>
-                    <a href="?lang=en" class="text-sm {% if language == 'en' %}font-bold{% endif %}">EN</a>
+                <!-- Right side actions -->
+                <div class="flex items-center space-x-6">
+                    <!-- Language Switcher -->
+                    <div class="flex items-center space-x-2">
+                        <a href="?lang=uk" class="text-sm {% if language == 'uk' %}font-bold text-black{% else %}text-gray-500{% endif %}">UK</a>
+                        <span class="text-gray-400">/</span>
+                        <a href="?lang=en" class="text-sm {% if language == 'en' %}font-bold text-black{% else %}text-gray-500{% endif %}">EN</a>
+                    </div>
+
+                    <!-- Auth buttons -->
+                    <a href="/admin" class="text-sm hover:text-brand-blue transition">
+                        {{ 'Увійти' if language == 'uk' else 'Sign In' }}
+                    </a>
+                    <a href="/contact?lang={{ language }}" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg text-sm font-semibold transition">
+                        {{ 'Почати' if language == 'uk' else 'Get Started' }}
+                    </a>
                 </div>
 
                 <!-- Mobile menu button -->
