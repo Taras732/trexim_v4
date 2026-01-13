@@ -3,6 +3,8 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
+import os
+from pathlib import Path
 
 try:
     from .config import settings
@@ -16,11 +18,16 @@ app = FastAPI(title=settings.APP_NAME)
 # Add session middleware for authentication
 app.add_middleware(SessionMiddleware, secret_key="trexim-secret-key-2026")
 
+# Determine base directory (works for both local and production)
+base_dir = Path(__file__).parent
+static_dir = base_dir / "static"
+templates_dir = base_dir / "templates"
+
 # Mount static files
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
 
 # Templates
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory=str(templates_dir))
 
 # Include routers
 app.include_router(pages.router)

@@ -1,9 +1,11 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from pathlib import Path
 
 router = APIRouter()
-templates = Jinja2Templates(directory="templates")
+templates_dir = Path(__file__).parent.parent / "templates"
+templates = Jinja2Templates(directory=str(templates_dir))
 
 @router.get("/about", response_class=HTMLResponse)
 async def about(request: Request, lang: str = "uk"):

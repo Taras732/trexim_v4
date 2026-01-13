@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Request, Form, Depends, HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
+from pathlib import Path
 
 try:
     from ..config import settings
@@ -8,7 +9,8 @@ except ImportError:
     from config import settings
 
 router = APIRouter(prefix="/admin")
-templates = Jinja2Templates(directory="templates")
+templates_dir = Path(__file__).parent.parent / "templates"
+templates = Jinja2Templates(directory=str(templates_dir))
 
 # Simple authentication check
 def check_auth(request: Request):
