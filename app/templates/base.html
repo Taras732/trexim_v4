@@ -132,9 +132,9 @@
                         <a href="?lang=en" class="text-sm {% if language == 'en' %}font-bold text-black{% else %}text-gray-500{% endif %}">EN</a>
                     </div>
 
-                    <!-- Auth buttons -->
-                    <a href="/admin" class="text-sm hover:text-brand-blue transition">
-                        {{ 'Увійти' if language == 'uk' else 'Sign In' }}
+                    <!-- Hidden admin link - visible only on hover -->
+                    <a href="/admin" class="text-sm text-transparent hover:text-gray-400 transition select-none" title="Admin">
+                        •
                     </a>
                     <a href="/contact?lang={{ language }}" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg text-sm font-semibold transition">
                         {{ 'Почати' if language == 'uk' else 'Get Started' }}
@@ -182,52 +182,76 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-brand-black text-white py-12 mt-20">
+    <footer class="bg-brand-black text-white py-12">
         <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+                <!-- About Trexim -->
                 <div>
-                    <h3 class="text-xl font-bold mb-4">TREXIM</h3>
-                    <p class="text-gray-400">
-                        {{ 'Операційна система для автоперевезень' if language == 'uk' else 'Operating System for Auto Transportation' }}
+                    <h3 class="text-xl font-bold mb-4">Trexim.ai</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        {% if language == 'uk' %}
+                        AI-платформа для автоматизації автологістики, документів та управлінських рішень на основі даних.
+                        {% else %}
+                        AI platform for automating auto logistics, documents, and data-driven management decisions.
+                        {% endif %}
                     </p>
                 </div>
 
+                <!-- Navigation -->
                 <div>
-                    <h4 class="font-semibold mb-4">{{ 'Компанія' if language == 'uk' else 'Company' }}</h4>
-                    <ul class="space-y-2 text-gray-400">
+                    <h4 class="font-semibold mb-4">{{ 'Навігація' if language == 'uk' else 'Navigation' }}</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
                         <li><a href="/about?lang={{ language }}" class="hover:text-white transition">{{ 'Про нас' if language == 'uk' else 'About' }}</a></li>
                         <li><a href="/services?lang={{ language }}" class="hover:text-white transition">{{ 'Послуги' if language == 'uk' else 'Services' }}</a></li>
-                        <li><a href="/partners?lang={{ language }}" class="hover:text-white transition">{{ 'Партнери' if language == 'uk' else 'Partners' }}</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="font-semibold mb-4">{{ 'Ресурси' if language == 'uk' else 'Resources' }}</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="/blog?lang={{ language }}" class="hover:text-white transition">{{ 'Блог' if language == 'uk' else 'Blog' }}</a></li>
-                        <li><a href="/tools?lang={{ language }}" class="hover:text-white transition">{{ 'Інструменти' if language == 'uk' else 'Tools' }}</a></li>
+                        <li><a href="/partners?lang={{ language }}" class="hover:text-white transition">{{ 'Партнерам' if language == 'uk' else 'Partners' }}</a></li>
                         <li><a href="/pricing?lang={{ language }}" class="hover:text-white transition">{{ 'Тарифи' if language == 'uk' else 'Pricing' }}</a></li>
                     </ul>
                 </div>
 
+                <!-- Resources -->
                 <div>
-                    <h4 class="font-semibold mb-4">{{ 'Контакти' if language == 'uk' else 'Contact' }}</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li>
-                            <span>{{ 'Митна пл., 1А, Одеса, 65000' if language == 'uk' else 'Myttna sq., 1A, Odesa, 65000' }}</span>
-                        </li>
-                        <li>
+                    <h4 class="font-semibold mb-4">{{ 'Ресурси' if language == 'uk' else 'Resources' }}</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="/tools?lang={{ language }}" class="hover:text-white transition">{{ 'Інструменти' if language == 'uk' else 'Tools' }}</a></li>
+                        <li><a href="/blog?lang={{ language }}" class="hover:text-white transition">{{ 'Блог' if language == 'uk' else 'Blog' }}</a></li>
+                        <li><a href="/contact?lang={{ language }}" class="hover:text-white transition">{{ 'Контакти' if language == 'uk' else 'Contact' }}</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact + CTA -->
+                <div>
+                    <h4 class="font-semibold mb-4">{{ "Зв'язатися з нами" if language == 'uk' else 'Contact Us' }}</h4>
+                    <ul class="space-y-3 text-gray-400 text-sm mb-6">
+                        <li class="flex items-center gap-2">
+                            <span>📧</span>
                             <a href="mailto:trexim.logistics@gmail.com" class="hover:text-white transition">trexim.logistics@gmail.com</a>
                         </li>
-                        <li>
-                            <a href="tel:+380990091802" class="hover:text-white transition">+380 99 009 1802</a>
+                        <li class="flex items-center gap-2">
+                            <span>🕒</span>
+                            <span>{{ 'Відповідаємо протягом 24 годин' if language == 'uk' else 'We respond within 24 hours' }}</span>
                         </li>
                     </ul>
+                    <a href="/contact?lang={{ language }}&type=demo"
+                       class="inline-block px-6 py-2 bg-orange-500 text-white text-sm font-bold rounded-lg hover:bg-orange-600 transition-all duration-300">
+                        Request a demo
+                    </a>
                 </div>
             </div>
 
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
-                <p>&copy; 2026 Trexim. {{ 'Всі права захищені.' if language == 'uk' else 'All rights reserved.' }}</p>
+            <!-- Bottom bar -->
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-500 text-sm">
+                    &copy; 2026 Trexim.ai. {{ 'Всі права захищені.' if language == 'uk' else 'All rights reserved.' }}
+                </p>
+                <div class="flex items-center gap-6 text-gray-500 text-sm">
+                    <a href="/privacy?lang={{ language }}" class="hover:text-white transition">Privacy Policy</a>
+                    <a href="/terms?lang={{ language }}" class="hover:text-white transition">Terms of Service</a>
+                    <div class="flex items-center gap-2">
+                        <a href="?lang=uk" class="{% if language == 'uk' %}text-white{% else %}hover:text-white{% endif %} transition">UA</a>
+                        <span class="text-gray-600">|</span>
+                        <a href="?lang=en" class="{% if language == 'en' %}text-white{% else %}hover:text-white{% endif %} transition">EN</a>
+                    </div>
+                </div>
             </div>
         </div>
     </footer>

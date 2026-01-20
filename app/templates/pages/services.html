@@ -1,43 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="relative py-16 md:py-20 px-6 bg-gradient-to-b from-slate-900 to-black">
-    <div class="absolute inset-0 overflow-hidden">
-        <div class="absolute top-20 right-10 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-20 left-10 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl"></div>
-    </div>
-
-    <div class="relative z-10 max-w-7xl mx-auto text-center">
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-            {% if language == 'uk' %}
-                Послуги Trexim
-            {% else %}
-                Trexim Services
-            {% endif %}
-        </h1>
-        <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
-            {% if language == 'uk' %}
-                Комплексні рішення для автоматизації логістики на базі штучного інтелекту
-            {% else %}
-                Comprehensive AI-powered logistics automation solutions
-            {% endif %}
-        </p>
-    </div>
-</section>
-
 <!-- Main Services -->
 <section class="relative py-16 md:py-20 px-6 bg-white">
     <div class="max-w-7xl mx-auto">
         <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
-                {% if language == 'uk' %}Основні послуги{% else %}Core Services{% endif %}
-            </h2>
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
+                {% if language == 'uk' %}Практичні рішення для автоматизації логістики{% else %}Practical Solutions for Logistics Automation{% endif %}
+            </h1>
             <p class="text-lg text-gray-600 max-w-2xl mx-auto">
                 {% if language == 'uk' %}
-                    Повний спектр інструментів для управління логістикою
+                    Інструменти, які зменшують ручну роботу, підвищують контроль і допомагають приймати обґрунтовані рішення.
                 {% else %}
-                    Complete toolkit for logistics management
+                    Tools that reduce manual work, increase control, and help make informed decisions.
                 {% endif %}
             </p>
         </div>
@@ -328,26 +303,21 @@
     <div class="max-w-4xl mx-auto text-center">
         <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
             {% if language == 'uk' %}
-                Готові розпочати?
+                Готові дізнатися, як Trexim може допомогти вашому бізнесу?
             {% else %}
-                Ready to get started?
+                Ready to see how Trexim can help your business?
             {% endif %}
         </h2>
         <p class="text-lg md:text-xl text-gray-300 mb-8">
             {% if language == 'uk' %}
-                Приєднуйтесь до пілотної програми та отримайте доступ до всіх послуг безкоштовно
+                Отримайте персоналізовану демонстрацію платформи та дізнайтеся про можливості для вашої компанії
             {% else %}
-                Join our pilot program and get free access to all services
+                Get a personalized platform demo and learn about opportunities for your company
             {% endif %}
         </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/contact?lang={{ language }}" class="inline-block px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg transition-all transform hover:scale-105">
-                {% if language == 'uk' %}Зв'язатися з нами{% else %}Contact Us{% endif %}
-            </a>
-            <a href="/pricing?lang={{ language }}" class="inline-block px-8 py-4 bg-white hover:bg-gray-100 text-slate-900 font-semibold rounded-lg transition-all transform hover:scale-105">
-                {% if language == 'uk' %}Переглянути тарифи{% else %}View Pricing{% endif %}
-            </a>
-        </div>
+        <a href="/contact?lang={{ language }}&type=expert" class="inline-block px-10 py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-all transform hover:scale-105 shadow-lg hover:shadow-orange-500/50">
+            {% if language == 'uk' %}Зв'язатися з експертом{% else %}Talk to an Expert{% endif %}
+        </a>
     </div>
 </section>
 {% endblock %}
