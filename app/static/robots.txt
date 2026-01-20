@@ -1,0 +1,21 @@
+# Robots.txt for Trexim
+# https://trexim.com
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://trexim.com/sitemap.xml
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /api/
+
+# Allow search engines to crawl all public pages
+Allow: /about
+Allow: /services
+Allow: /partners
+Allow: /pricing
+Allow: /tools
+Allow: /blog
+Allow: /contact

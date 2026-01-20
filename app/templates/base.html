@@ -5,17 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Trexim - {{ 'Операційна система для автоперевезень' if language == 'uk' else 'Operating System for Auto Transportation' }}{% endblock %}</title>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZL9HVQJVXW"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="{% block meta_description %}{{ 'Trexim — AI-платформа для логістики: прогнозування доставки, автоматизація документообігу, GPS-трекінг та повний контроль операцій.' if language == 'uk' else 'Trexim — AI logistics platform: predictive delivery, document automation, GPS tracking and full operational control.' }}{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}{{ 'логістика, AI логістика, автоматизація логістики, прогнозування доставки, GPS трекінг, TMS система, управління перевезеннями' if language == 'uk' else 'logistics software, AI logistics platform, logistics automation, predictive routing, GPS tracking, TMS system, transportation management' }}{% endblock %}">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Trexim">
+    <link rel="canonical" href="{% block canonical_url %}https://trexim.com{{ request.path }}{% endblock %}">
 
-      gtag('config', 'G-ZL9HVQJVXW');
-    </script>
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://trexim.com{{ request.path }}">
+    <meta property="og:title" content="{% block og_title %}Trexim - {{ 'AI-платформа для логістики' if language == 'uk' else 'AI Logistics Platform' }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ 'Прогнозування доставки, автоматизація документообігу та повний контроль операцій.' if language == 'uk' else 'Predictive delivery, document automation and full operational control.' }}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}https://trexim.com/static/images/og-image.png{% endblock %}">
+    <meta property="og:locale" content="{{ 'uk_UA' if language == 'uk' else 'en_US' }}">
+    <meta property="og:site_name" content="Trexim">
 
-    <!-- Tailwind CSS -->
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://trexim.com{{ request.path }}">
+    <meta name="twitter:title" content="{% block twitter_title %}Trexim - {{ 'AI-платформа для логістики' if language == 'uk' else 'AI Logistics Platform' }}{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}{{ 'Прогнозування доставки, автоматизація документообігу та повний контроль операцій.' if language == 'uk' else 'Predictive delivery, document automation and full operational control.' }}{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}https://trexim.com/static/images/og-image.png{% endblock %}">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/static/images/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/svg+xml" href="/static/images/favicon.svg">
+    <link rel="shortcut icon" href="/static/images/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/images/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-title" content="TreximAI">
+    <link rel="manifest" href="/static/images/site.webmanifest">
+
+    <!-- DNS Prefetch for external resources -->
+    <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+
+    <!-- Preconnect for critical resources -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+
+    <!-- Tailwind CSS - загружається першим для уникнення FOUC -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -31,11 +62,29 @@
         }
     </script>
 
-    <!-- Alpine.js -->
+    <!-- Alpine.js - defer для відкладеного завантаження -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-    <!-- HTMX -->
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <!-- HTMX - defer для відкладеного завантаження -->
+    <script defer src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+    <!-- Google Analytics - відкладене завантаження після основного контенту -->
+    <script>
+      // Defer GA loading until after page load
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          var script = document.createElement('script');
+          script.src = 'https://www.googletagmanager.com/gtag/js?id=G-ZL9HVQJVXW';
+          script.async = true;
+          document.head.appendChild(script);
+
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-ZL9HVQJVXW');
+        }, 100);
+      });
+    </script>
 
     {% block head %}{% endblock %}
 </head>

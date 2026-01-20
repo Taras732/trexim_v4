@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+    <!-- Home Page -->
+    <url>
+        <loc>https://trexim.com/</loc>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://trexim.com/?lang=uk"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://trexim.com/?lang=en"/>
+        <lastmod>2026-01-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
+
+    <!-- About Page -->
+    <url>
+        <loc>https://trexim.com/about</loc>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://trexim.com/about?lang=uk"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://trexim.com/about?lang=en"/>
+        <lastmod>2026-01-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Services Page -->
+    <url>
+        <loc>https://trexim.com/services</loc>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://trexim.com/services?lang=uk"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://trexim.com/services?lang=en"/>
+        <lastmod>2026-01-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Partners Page -->
+    <url>
+        <loc>https://trexim.com/partners</loc>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://trexim.com/partners?lang=uk"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://trexim.com/partners?lang=en"/>
+        <lastmod>2026-01-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- Pricing Page -->
+    <url>
+        <loc>https://trexim.com/pricing</loc>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://trexim.com/pricing?lang=uk"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://trexim.com/pricing?lang=en"/>
+        <lastmod>2026-01-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Tools Page -->
+    <url>
+        <loc>https://trexim.com/tools</loc>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://trexim.com/tools?lang=uk"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://trexim.com/tools?lang=en"/>
+        <lastmod>2026-01-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Blog Page -->
+    <url>
+        <loc>https://trexim.com/blog</loc>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://trexim.com/blog?lang=uk"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://trexim.com/blog?lang=en"/>
+        <lastmod>2026-01-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- Contact Page -->
+    <url>
+        <loc>https://trexim.com/contact</loc>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://trexim.com/contact?lang=uk"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://trexim.com/contact?lang=en"/>
+        <lastmod>2026-01-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+</urlset>

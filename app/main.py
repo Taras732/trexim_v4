@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
@@ -39,6 +39,14 @@ async def root(request: Request, lang: str = "uk"):
         "pages/home.html",
         {"request": request, "language": lang}
     )
+
+@app.get("/sitemap.xml")
+async def sitemap():
+    return FileResponse(static_dir / "sitemap.xml", media_type="application/xml")
+
+@app.get("/robots.txt")
+async def robots():
+    return FileResponse(static_dir / "robots.txt", media_type="text/plain")
 
 if __name__ == "__main__":
     import uvicorn
