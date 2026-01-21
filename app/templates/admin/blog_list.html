@@ -34,8 +34,9 @@
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Назва</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Slug</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Категорія</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Статус</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Мови</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Дата</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Дії</th>
                     </tr>
@@ -43,22 +44,35 @@
                 <tbody class="divide-y divide-gray-200">
                     {% for post in posts %}
                     <tr>
-                        <td class="px-6 py-4">{{ post.title }}</td>
-                        <td class="px-6 py-4">{{ post.category }}</td>
+                        <td class="px-6 py-4 font-medium">{{ post.title }}</td>
+                        <td class="px-6 py-4 text-gray-500 text-sm font-mono">{{ post.slug }}</td>
                         <td class="px-6 py-4">
-                            <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">
-                                {{ post.status }}
+                            <span class="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800">
+                                {{ post.category }}
                             </span>
                         </td>
-                        <td class="px-6 py-4">{{ post.date }}</td>
                         <td class="px-6 py-4">
-                            <div class="flex space-x-2">
-                                <a href="/admin/blog/{{ post.id }}/edit" class="text-blue-600 hover:text-blue-800">Редагувати</a>
-                                <button hx-delete="/admin/blog/{{ post.id }}"
-                                        hx-confirm="Видалити цей пост?"
-                                        class="text-red-600 hover:text-red-800">
-                                    Видалити
-                                </button>
+                            <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">
+                                {{ post.language }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-500">{{ post.date }}</td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center space-x-2">
+                                <a href="/blog/{{ post.slug }}?lang=uk" target="_blank" class="text-green-600 hover:text-green-800 text-sm" title="Переглянути UK">
+                                    👁UK
+                                </a>
+                                <a href="/blog/{{ post.slug }}?lang=en" target="_blank" class="text-green-600 hover:text-green-800 text-sm" title="Переглянути EN">
+                                    👁EN
+                                </a>
+                                <a href="/admin/blog/{{ post.slug }}/edit" class="text-blue-600 hover:text-blue-800 text-sm" title="Редагувати">
+                                    ✏️
+                                </a>
+                                <form action="/admin/blog/{{ post.slug }}/delete" method="POST" class="inline" onsubmit="return confirm('Видалити цю статтю?');">
+                                    <button type="submit" class="text-red-600 hover:text-red-800 text-sm" title="Видалити">
+                                        🗑️
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>

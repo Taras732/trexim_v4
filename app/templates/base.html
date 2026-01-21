@@ -112,8 +112,8 @@
                     <a href="/pricing?lang={{ language }}" class="hover:text-brand-blue transition">
                         {{ 'Тарифи' if language == 'uk' else 'Pricing' }}
                     </a>
-                    <a href="/tools?lang={{ language }}" class="hover:text-brand-blue transition">
-                        {{ 'Інструменти' if language == 'uk' else 'Tools' }}
+                    <!-- <a href="/tools?lang={{ language }}" class="hover:text-brand-blue transition">
+                        {{ 'Інструменти' if language == 'uk' else 'Tools' }} -->
                     </a>
                     <a href="/blog?lang={{ language }}" class="hover:text-brand-blue transition">
                         {{ 'Блог' if language == 'uk' else 'Blog' }}
@@ -136,7 +136,8 @@
                     <a href="/admin" class="text-sm text-transparent hover:text-gray-400 transition select-none" title="Admin">
                         •
                     </a>
-                    <a href="/contact?lang={{ language }}" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg text-sm font-semibold transition">
+                    <!-- Hidden Get Started button - visible only on hover -->
+                    <a href="/contact?lang={{ language }}" class="bg-transparent hover:bg-orange-500 text-transparent hover:text-white px-6 py-2 rounded-lg text-sm font-semibold transition select-none">
                         {{ 'Почати' if language == 'uk' else 'Get Started' }}
                     </a>
                 </div>
@@ -233,7 +234,7 @@
                     </ul>
                     <a href="/contact?lang={{ language }}&type=demo"
                        class="inline-block px-6 py-2 bg-orange-500 text-white text-sm font-bold rounded-lg hover:bg-orange-600 transition-all duration-300">
-                        Request a demo
+                        Request demo
                     </a>
                 </div>
             </div>

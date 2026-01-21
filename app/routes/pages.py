@@ -1,7 +1,12 @@
 from fastapi import APIRouter, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
+
+try:
+    from ..data import load_posts, get_post, get_related_posts
+except ImportError:
+    from data import load_posts, get_post, get_related_posts
 
 router = APIRouter()
 templates_dir = Path(__file__).parent.parent / "templates"
@@ -42,6 +47,67 @@ async def tools(request: Request, lang: str = "uk"):
         {"request": request, "language": lang}
     )
 
+# API endpoint for blog posts - MUST be before /blog/{slug} to avoid conflict
+@router.get("/api/blog/posts")
+async def api_blog_posts(lang: str = "uk"):
+    """API endpoint for blog posts - used for client-side filtering"""
+    posts = load_posts()
+    lang_key = "uk" if lang == "uk" else "en"
+
+    result = []
+    for slug, post_data in posts.items():
+        post = post_data.get(lang_key, post_data.get("en", {}))
+        # Map category to filter key
+        category_map = {
+            # Ukrainian
+            "Новини": "news",
+            "Гіди": "guides",
+            "Технології": "tech",
+            "Оновлення": "updates",
+            # English
+            "News": "news",
+            "Guides": "guides",
+            "Technology": "tech",
+            "Updates": "updates"
+        }
+        result.append({
+            "slug": slug,
+            "title": post.get("title", ""),
+            "excerpt": post.get("excerpt", ""),
+            "category": post.get("category", ""),
+            "category_key": category_map.get(post.get("category", ""), "news"),
+            "date": post.get("date", ""),
+            "read_time": post.get("read_time", "5"),
+            "emoji": post.get("emoji", ""),
+            "color": post.get("color", "orange")
+        })
+
+    return JSONResponse(content=result)
+
+# Blog routes - data loaded from JSON file
+@router.get("/blog/{slug}", response_class=HTMLResponse)
+async def blog_post(request: Request, slug: str, lang: str = "uk"):
+    post_data = get_post(slug)
+    if not post_data:
+        return templates.TemplateResponse(
+            "pages/404.html",
+            {"request": request, "language": lang},
+            status_code=404
+        )
+
+    lang_key = "uk" if lang == "uk" else "en"
+    post = post_data.get(lang_key, post_data.get("en"))
+
+    return templates.TemplateResponse(
+        "pages/blog_post.html",
+        {
+            "request": request,
+            "language": lang,
+            "post": post,
+            "related_posts": get_related_posts(slug, lang)
+        }
+    )
+
 @router.get("/blog", response_class=HTMLResponse)
 async def blog(request: Request, lang: str = "uk"):
     return templates.TemplateResponse(
@@ -55,3 +121,389 @@ async def contact(request: Request, lang: str = "uk"):
         "pages/contact.html",
         {"request": request, "language": lang}
     )
+
+# Legacy BLOG_POSTS for backwards compatibility with admin (will be removed)
+BLOG_POSTS = {
+    "e-ttn-2026-launch": {
+        "uk": {
+            "title": "Trexim готується до запуску: Е-ТТН 2026",
+            "excerpt": "З 1 січня 2026 року електронна товарно-транспортна накладна стає обов'язковою. Trexim допоможе вашому бізнесу підготуватися до змін.",
+            "category": "Новини",
+            "date": "13 січня 2026",
+            "read_time": "5",
+            "emoji": "📋",
+            "color": "orange",
+            "tags": ["Е-ТТН", "2026", "Законодавство", "Trexim"],
+            "content": """
+                <p>З 1 січня 2026 року електронна товарно-транспортна накладна (е-ТТН) стає обов'язковою для всіх вантажоперевезень в Україні. Це означає кардинальні зміни для логістичного бізнесу.</p>
+
+                <h2>Що таке е-ТТН?</h2>
+                <p>Електронна товарно-транспортна накладна — це цифровий документ, який замінює паперову ТТН. Він містить всю необхідну інформацію про вантаж, відправника, отримувача та перевізника.</p>
+
+                <h2>Переваги е-ТТН</h2>
+                <ul>
+                    <li><strong>Швидкість:</strong> Документи оформлюються за лічені хвилини замість годин</li>
+                    <li><strong>Точність:</strong> Автоматична валідація даних виключає помилки</li>
+                    <li><strong>Прозорість:</strong> Всі учасники перевезення мають доступ до актуальної інформації</li>
+                    <li><strong>Економія:</strong> Немає витрат на папір, друк та зберігання документів</li>
+                </ul>
+
+                <h2>Як Trexim допоможе?</h2>
+                <p>Trexim — це AI-платформа для логістики, яка вже готова до роботи з е-ТТН. Наша система автоматично генерує електронні накладні, інтегрується з державними реєстрами та забезпечує повну відповідність законодавству.</p>
+
+                <h2>Що потрібно зробити зараз?</h2>
+                <ol>
+                    <li>Оцініть готовність вашої компанії до переходу на е-ТТН</li>
+                    <li>Виберіть надійну платформу для роботи з електронними документами</li>
+                    <li>Проведіть навчання персоналу</li>
+                    <li>Протестуйте систему до офіційного запуску</li>
+                </ol>
+
+                <p>Не відкладайте підготовку на останній момент. Компанії, які раніше адаптуються до нових вимог, отримають конкурентну перевагу на ринку.</p>
+            """
+        },
+        "en": {
+            "title": "Trexim Prepares for Launch: E-TTN 2026",
+            "excerpt": "From January 1, 2026, electronic waybills become mandatory. Trexim will help your business prepare for changes.",
+            "category": "News",
+            "date": "January 13, 2026",
+            "read_time": "5",
+            "emoji": "📋",
+            "color": "orange",
+            "tags": ["E-TTN", "2026", "Legislation", "Trexim"],
+            "content": """
+                <p>From January 1, 2026, the electronic consignment note (e-TTN) becomes mandatory for all freight transportation in Ukraine. This means fundamental changes for the logistics business.</p>
+
+                <h2>What is e-TTN?</h2>
+                <p>An electronic consignment note is a digital document that replaces the paper waybill. It contains all necessary information about the cargo, sender, recipient, and carrier.</p>
+
+                <h2>Benefits of e-TTN</h2>
+                <ul>
+                    <li><strong>Speed:</strong> Documents are processed in minutes instead of hours</li>
+                    <li><strong>Accuracy:</strong> Automatic data validation eliminates errors</li>
+                    <li><strong>Transparency:</strong> All transportation participants have access to current information</li>
+                    <li><strong>Savings:</strong> No costs for paper, printing, and document storage</li>
+                </ul>
+
+                <h2>How Trexim Helps</h2>
+                <p>Trexim is an AI logistics platform that is already ready to work with e-TTN. Our system automatically generates electronic waybills, integrates with government registries, and ensures full legal compliance.</p>
+
+                <h2>What to Do Now</h2>
+                <ol>
+                    <li>Assess your company's readiness for the transition to e-TTN</li>
+                    <li>Choose a reliable platform for working with electronic documents</li>
+                    <li>Train your staff</li>
+                    <li>Test the system before the official launch</li>
+                </ol>
+
+                <p>Don't delay preparation until the last moment. Companies that adapt to new requirements earlier will gain a competitive advantage in the market.</p>
+            """
+        }
+    },
+    "ai-route-optimization": {
+        "uk": {
+            "title": "Як AI оптимізує маршрути в реальному часі",
+            "excerpt": "Штучний інтелект аналізує трафік, погоду та інші фактори для побудови оптимальних маршрутів.",
+            "category": "Технології",
+            "date": "10 січня 2026",
+            "read_time": "3",
+            "emoji": "🤖",
+            "color": "orange",
+            "tags": ["AI", "Маршрутизація", "Оптимізація"],
+            "content": """
+                <p>Штучний інтелект революціонізує логістику, і одна з найважливіших областей — це оптимізація маршрутів у реальному часі.</p>
+
+                <h2>Як працює AI-оптимізація?</h2>
+                <p>AI-система аналізує десятки факторів одночасно: трафік, погоду, дорожні роботи, час доставки, витрати на паливо та багато іншого. На основі цих даних алгоритм будує оптимальний маршрут.</p>
+
+                <h2>Переваги AI-маршрутизації</h2>
+                <ul>
+                    <li>Економія до 20% на паливі</li>
+                    <li>Скорочення часу доставки на 15-30%</li>
+                    <li>Зменшення зносу транспорту</li>
+                    <li>Підвищення задоволеності клієнтів</li>
+                </ul>
+
+                <h2>Trexim AI Router</h2>
+                <p>Наш AI Router використовує машинне навчання для постійного вдосконалення маршрутів. Система навчається на історичних даних вашої компанії та адаптується до специфіки вашого бізнесу.</p>
+            """
+        },
+        "en": {
+            "title": "How AI Optimizes Routes in Real-Time",
+            "excerpt": "Artificial intelligence analyzes traffic, weather and other factors to build optimal routes.",
+            "category": "Technology",
+            "date": "January 10, 2026",
+            "read_time": "3",
+            "emoji": "🤖",
+            "color": "orange",
+            "tags": ["AI", "Routing", "Optimization"],
+            "content": """
+                <p>Artificial intelligence is revolutionizing logistics, and one of the most important areas is real-time route optimization.</p>
+
+                <h2>How Does AI Optimization Work?</h2>
+                <p>The AI system analyzes dozens of factors simultaneously: traffic, weather, road works, delivery times, fuel costs, and much more. Based on this data, the algorithm builds the optimal route.</p>
+
+                <h2>Benefits of AI Routing</h2>
+                <ul>
+                    <li>Up to 20% fuel savings</li>
+                    <li>15-30% reduction in delivery time</li>
+                    <li>Reduced vehicle wear</li>
+                    <li>Increased customer satisfaction</li>
+                </ul>
+
+                <h2>Trexim AI Router</h2>
+                <p>Our AI Router uses machine learning to continuously improve routes. The system learns from your company's historical data and adapts to your business specifics.</p>
+            """
+        }
+    },
+    "legalize-transport-business": {
+        "uk": {
+            "title": "5 кроків для легалізації транспортного бізнесу",
+            "excerpt": "Покроковий гід по виходу з тіньової економіки та отримання всіх переваг легального бізнесу.",
+            "category": "Гіди",
+            "date": "8 січня 2026",
+            "read_time": "7",
+            "emoji": "💼",
+            "color": "blue",
+            "tags": ["Легалізація", "Бізнес", "Гід"],
+            "content": """
+                <p>Легалізація транспортного бізнесу — це не лише вимога закону, але й можливість для зростання та розвитку.</p>
+
+                <h2>Крок 1: Аудит поточного стану</h2>
+                <p>Проаналізуйте всі бізнес-процеси та виявіть слабкі місця в документообігу та обліку.</p>
+
+                <h2>Крок 2: Оформлення документів</h2>
+                <p>Підготуйте всі необхідні ліцензії, дозволи та сертифікати для легальної діяльності.</p>
+
+                <h2>Крок 3: Впровадження обліку</h2>
+                <p>Налаштуйте систему обліку, яка відповідає законодавчим вимогам.</p>
+
+                <h2>Крок 4: Автоматизація процесів</h2>
+                <p>Використовуйте сучасні технології для автоматизації документообігу та звітності.</p>
+
+                <h2>Крок 5: Постійний моніторинг</h2>
+                <p>Регулярно перевіряйте відповідність вашої діяльності законодавству.</p>
+            """
+        },
+        "en": {
+            "title": "5 Steps to Legalize Your Transport Business",
+            "excerpt": "Step-by-step guide to exiting shadow economy and getting all benefits of legal business.",
+            "category": "Guides",
+            "date": "January 8, 2026",
+            "read_time": "7",
+            "emoji": "💼",
+            "color": "blue",
+            "tags": ["Legalization", "Business", "Guide"],
+            "content": """
+                <p>Legalizing a transport business is not just a legal requirement, but also an opportunity for growth and development.</p>
+
+                <h2>Step 1: Current State Audit</h2>
+                <p>Analyze all business processes and identify weaknesses in document flow and accounting.</p>
+
+                <h2>Step 2: Documentation</h2>
+                <p>Prepare all necessary licenses, permits, and certificates for legal operation.</p>
+
+                <h2>Step 3: Accounting Implementation</h2>
+                <p>Set up an accounting system that meets legal requirements.</p>
+
+                <h2>Step 4: Process Automation</h2>
+                <p>Use modern technology to automate document flow and reporting.</p>
+
+                <h2>Step 5: Continuous Monitoring</h2>
+                <p>Regularly check your compliance with legislation.</p>
+            """
+        }
+    },
+    "ukraine-freight-market-2026": {
+        "uk": {
+            "title": "Ринок вантажоперевезень України 2026",
+            "excerpt": "Огляд ключових трендів та статистики українського ринку логістики на початок 2026 року.",
+            "category": "Новини",
+            "date": "5 січня 2026",
+            "read_time": "4",
+            "emoji": "📊",
+            "color": "green",
+            "tags": ["Ринок", "Статистика", "Україна"],
+            "content": """
+                <p>Український ринок вантажоперевезень переживає період трансформації. Розглянемо ключові тренди 2026 року.</p>
+
+                <h2>Обсяг ринку</h2>
+                <p>Загальний обсяг ринку автологістики України оцінюється в ₴370 млрд, з потенціалом зростання на 15-20% щороку.</p>
+
+                <h2>Ключові тренди</h2>
+                <ul>
+                    <li>Цифровізація та автоматизація</li>
+                    <li>Впровадження е-ТТН</li>
+                    <li>Зростання попиту на прозорість</li>
+                    <li>Консолідація ринку</li>
+                </ul>
+            """
+        },
+        "en": {
+            "title": "Ukraine's Freight Market 2026",
+            "excerpt": "Overview of key trends and statistics of Ukrainian logistics market at the beginning of 2026.",
+            "category": "News",
+            "date": "January 5, 2026",
+            "read_time": "4",
+            "emoji": "📊",
+            "color": "green",
+            "tags": ["Market", "Statistics", "Ukraine"],
+            "content": """
+                <p>The Ukrainian freight market is undergoing a period of transformation. Let's look at the key trends of 2026.</p>
+
+                <h2>Market Size</h2>
+                <p>The total volume of Ukraine's auto logistics market is estimated at ₴370 billion, with potential growth of 15-20% annually.</p>
+
+                <h2>Key Trends</h2>
+                <ul>
+                    <li>Digitalization and automation</li>
+                    <li>E-TTN implementation</li>
+                    <li>Growing demand for transparency</li>
+                    <li>Market consolidation</li>
+                </ul>
+            """
+        }
+    },
+    "gps-tracking-features": {
+        "uk": {
+            "title": "Нові можливості GPS-трекінгу в Trexim",
+            "excerpt": "Представляємо розширені можливості відстеження вантажів в реальному часі з прогнозуванням затримок.",
+            "category": "Оновлення",
+            "date": "3 січня 2026",
+            "read_time": "2",
+            "emoji": "🚛",
+            "color": "purple",
+            "tags": ["GPS", "Трекінг", "Оновлення"],
+            "content": """
+                <p>Ми раді представити нові можливості GPS-трекінгу в платформі Trexim.</p>
+
+                <h2>Нові функції</h2>
+                <ul>
+                    <li>Відстеження кожні 30 секунд</li>
+                    <li>AI-прогнозування ETA</li>
+                    <li>Автоматичні сповіщення про затримки</li>
+                    <li>Геозони та алерти</li>
+                </ul>
+            """
+        },
+        "en": {
+            "title": "New GPS Tracking Features in Trexim",
+            "excerpt": "Introducing advanced real-time cargo tracking capabilities with delay prediction.",
+            "category": "Updates",
+            "date": "January 3, 2026",
+            "read_time": "2",
+            "emoji": "🚛",
+            "color": "purple",
+            "tags": ["GPS", "Tracking", "Updates"],
+            "content": """
+                <p>We are excited to introduce new GPS tracking capabilities in the Trexim platform.</p>
+
+                <h2>New Features</h2>
+                <ul>
+                    <li>Tracking every 30 seconds</li>
+                    <li>AI-powered ETA prediction</li>
+                    <li>Automatic delay notifications</li>
+                    <li>Geofences and alerts</li>
+                </ul>
+            """
+        }
+    },
+    "e-ttn-rules-penalties": {
+        "uk": {
+            "title": "Все про Е-ТТН: правила та штрафи",
+            "excerpt": "Детальний огляд законодавства про електронні накладні та відповідальність за порушення.",
+            "category": "Гіди",
+            "date": "1 січня 2026",
+            "read_time": "6",
+            "emoji": "⚖️",
+            "color": "red",
+            "tags": ["Е-ТТН", "Законодавство", "Штрафи"],
+            "content": """
+                <p>Детальний огляд правил використання е-ТТН та відповідальності за порушення.</p>
+
+                <h2>Основні вимоги</h2>
+                <p>Кожне вантажоперевезення повинно супроводжуватися електронною накладною.</p>
+
+                <h2>Штрафи за порушення</h2>
+                <ul>
+                    <li>Відсутність е-ТТН: до 17 000 грн</li>
+                    <li>Неповні дані: до 8 500 грн</li>
+                    <li>Повторне порушення: до 34 000 грн</li>
+                </ul>
+            """
+        },
+        "en": {
+            "title": "Everything About E-TTN: Rules and Penalties",
+            "excerpt": "Detailed overview of electronic waybill legislation and liability for violations.",
+            "category": "Guides",
+            "date": "January 1, 2026",
+            "read_time": "6",
+            "emoji": "⚖️",
+            "color": "red",
+            "tags": ["E-TTN", "Legislation", "Penalties"],
+            "content": """
+                <p>A detailed overview of e-TTN usage rules and liability for violations.</p>
+
+                <h2>Basic Requirements</h2>
+                <p>Every freight shipment must be accompanied by an electronic waybill.</p>
+
+                <h2>Penalties for Violations</h2>
+                <ul>
+                    <li>Missing e-TTN: up to UAH 17,000</li>
+                    <li>Incomplete data: up to UAH 8,500</li>
+                    <li>Repeated violation: up to UAH 34,000</li>
+                </ul>
+            """
+        }
+    },
+    "document-automation": {
+        "uk": {
+            "title": "Автоматизація документообігу: економія часу",
+            "excerpt": "Як автоматизація документів може заощадити до 70% часу на паперову роботу.",
+            "category": "Технології",
+            "date": "29 грудня 2025",
+            "read_time": "4",
+            "emoji": "💡",
+            "color": "yellow",
+            "tags": ["Автоматизація", "Документообіг", "Ефективність"],
+            "content": """
+                <p>Автоматизація документообігу — це один з найефективніших способів підвищити продуктивність логістичного бізнесу.</p>
+
+                <h2>Що можна автоматизувати?</h2>
+                <ul>
+                    <li>Генерація ТТН та актів</li>
+                    <li>Підписання документів</li>
+                    <li>Звітність та аналітика</li>
+                    <li>Комунікація з партнерами</li>
+                </ul>
+
+                <h2>Результати автоматизації</h2>
+                <p>Компанії, які впровадили автоматизацію документообігу, заощаджують до 15 годин на тиждень на рутинній роботі.</p>
+            """
+        },
+        "en": {
+            "title": "Document Workflow Automation: Time Savings",
+            "excerpt": "How document automation can save up to 70% of time on paperwork.",
+            "category": "Technology",
+            "date": "December 29, 2025",
+            "read_time": "4",
+            "emoji": "💡",
+            "color": "yellow",
+            "tags": ["Automation", "Documents", "Efficiency"],
+            "content": """
+                <p>Document workflow automation is one of the most effective ways to increase productivity in the logistics business.</p>
+
+                <h2>What Can Be Automated?</h2>
+                <ul>
+                    <li>Waybill and act generation</li>
+                    <li>Document signing</li>
+                    <li>Reporting and analytics</li>
+                    <li>Partner communication</li>
+                </ul>
+
+                <h2>Automation Results</h2>
+                <p>Companies that have implemented document automation save up to 15 hours per week on routine work.</p>
+            """
+        }
+    }
+}

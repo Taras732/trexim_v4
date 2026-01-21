@@ -1,12 +1,29 @@
 from fastapi import APIRouter, Request, Form, Depends, HTTPException
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
+from typing import Optional
 
 try:
     from ..config import settings
+    from ..data import (
+        get_all_posts_for_admin,
+        get_post,
+        create_post,
+        update_post,
+        delete_post,
+        generate_slug
+    )
 except ImportError:
     from config import settings
+    from data import (
+        get_all_posts_for_admin,
+        get_post,
+        create_post,
+        update_post,
+        delete_post,
+        generate_slug
+    )
 
 router = APIRouter(prefix="/admin")
 templates_dir = Path(__file__).parent.parent / "templates"
@@ -52,10 +69,7 @@ async def admin_dashboard(request: Request, _: bool = Depends(check_auth)):
 # Blog routes
 @router.get("/blog", response_class=HTMLResponse)
 async def admin_blog_list(request: Request, _: bool = Depends(check_auth)):
-    # Mock blog posts data
-    posts = [
-        {"id": 1, "title": "Тестовий пост", "category": "Новини", "status": "Опубліковано", "date": "2026-01-13", "language": "uk"},
-    ]
+    posts = get_all_posts_for_admin()
     return templates.TemplateResponse(
         "admin/blog_list.html",
         {"request": request, "posts": posts}
@@ -65,32 +79,135 @@ async def admin_blog_list(request: Request, _: bool = Depends(check_auth)):
 async def admin_blog_new(request: Request, _: bool = Depends(check_auth)):
     return templates.TemplateResponse(
         "admin/blog_form.html",
-        {"request": request, "post": None, "action": "create"}
+        {"request": request, "post": None, "slug": None, "action": "create"}
     )
 
-@router.get("/blog/{post_id}/edit", response_class=HTMLResponse)
-async def admin_blog_edit(request: Request, post_id: int, _: bool = Depends(check_auth)):
-    # Mock post data
-    post = {"id": post_id, "title": "Тестовий пост", "slug": "test-post", "content": "Контент посту..."}
+@router.get("/blog/{slug}/edit", response_class=HTMLResponse)
+async def admin_blog_edit(request: Request, slug: str, _: bool = Depends(check_auth)):
+    post_data = get_post(slug)
+    if not post_data:
+        return RedirectResponse(url="/admin/blog", status_code=303)
+
     return templates.TemplateResponse(
         "admin/blog_form.html",
-        {"request": request, "post": post, "action": "update"}
+        {"request": request, "post": post_data, "slug": slug, "action": "update"}
     )
 
 @router.post("/blog")
-async def admin_blog_create(request: Request, _: bool = Depends(check_auth)):
-    # TODO: Implement blog post creation
+async def admin_blog_create(
+    request: Request,
+    _: bool = Depends(check_auth),
+    slug: str = Form(None),
+    title_uk: str = Form(...),
+    title_en: str = Form(...),
+    excerpt_uk: str = Form(...),
+    excerpt_en: str = Form(...),
+    category_uk: str = Form(...),
+    category_en: str = Form(...),
+    date_uk: str = Form(...),
+    date_en: str = Form(...),
+    read_time: str = Form(...),
+    emoji: str = Form(...),
+    color: str = Form("orange"),
+    tags_uk: str = Form(""),
+    tags_en: str = Form(""),
+    content_uk: str = Form(...),
+    content_en: str = Form(...)
+):
+    # Generate slug from title if not provided
+    if not slug:
+        slug = generate_slug(title_uk)
+
+    uk_data = {
+        "title": title_uk,
+        "excerpt": excerpt_uk,
+        "category": category_uk,
+        "date": date_uk,
+        "read_time": read_time,
+        "emoji": emoji,
+        "color": color,
+        "tags": [t.strip() for t in tags_uk.split(",") if t.strip()],
+        "content": content_uk
+    }
+
+    en_data = {
+        "title": title_en,
+        "excerpt": excerpt_en,
+        "category": category_en,
+        "date": date_en,
+        "read_time": read_time,
+        "emoji": emoji,
+        "color": color,
+        "tags": [t.strip() for t in tags_en.split(",") if t.strip()],
+        "content": content_en
+    }
+
+    success = create_post(slug, uk_data, en_data)
+    if not success:
+        return templates.TemplateResponse(
+            "admin/blog_form.html",
+            {"request": request, "post": None, "slug": None, "action": "create", "error": "Стаття з таким slug вже існує"}
+        )
+
     return RedirectResponse(url="/admin/blog", status_code=303)
 
-@router.post("/blog/{post_id}")
-async def admin_blog_update(request: Request, post_id: int, _: bool = Depends(check_auth)):
-    # TODO: Implement blog post update
+@router.post("/blog/{slug}/update")
+async def admin_blog_update_post(
+    request: Request,
+    slug: str,
+    _: bool = Depends(check_auth),
+    title_uk: str = Form(...),
+    title_en: str = Form(...),
+    excerpt_uk: str = Form(...),
+    excerpt_en: str = Form(...),
+    category_uk: str = Form(...),
+    category_en: str = Form(...),
+    date_uk: str = Form(...),
+    date_en: str = Form(...),
+    read_time: str = Form(...),
+    emoji: str = Form(...),
+    color: str = Form("orange"),
+    tags_uk: str = Form(""),
+    tags_en: str = Form(""),
+    content_uk: str = Form(...),
+    content_en: str = Form(...)
+):
+    uk_data = {
+        "title": title_uk,
+        "excerpt": excerpt_uk,
+        "category": category_uk,
+        "date": date_uk,
+        "read_time": read_time,
+        "emoji": emoji,
+        "color": color,
+        "tags": [t.strip() for t in tags_uk.split(",") if t.strip()],
+        "content": content_uk
+    }
+
+    en_data = {
+        "title": title_en,
+        "excerpt": excerpt_en,
+        "category": category_en,
+        "date": date_en,
+        "read_time": read_time,
+        "emoji": emoji,
+        "color": color,
+        "tags": [t.strip() for t in tags_en.split(",") if t.strip()],
+        "content": content_en
+    }
+
+    update_post(slug, uk_data, en_data)
     return RedirectResponse(url="/admin/blog", status_code=303)
 
-@router.delete("/blog/{post_id}")
-async def admin_blog_delete(request: Request, post_id: int, _: bool = Depends(check_auth)):
-    # TODO: Implement blog post deletion
-    return {"success": True}
+@router.post("/blog/{slug}/delete")
+async def admin_blog_delete_post(request: Request, slug: str, _: bool = Depends(check_auth)):
+    delete_post(slug)
+    return RedirectResponse(url="/admin/blog", status_code=303)
+
+@router.delete("/blog/{slug}")
+async def admin_blog_delete_api(request: Request, slug: str, _: bool = Depends(check_auth)):
+    success = delete_post(slug)
+    return JSONResponse({"success": success})
 
 # References routes
 @router.get("/references", response_class=HTMLResponse)

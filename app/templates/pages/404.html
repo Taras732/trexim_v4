@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if language == 'uk' %}
+Сторінку не знайдено - Trexim
+{% else %}
+Page Not Found - Trexim
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<section class="relative min-h-[80vh] flex items-center justify-center px-6 bg-gradient-to-b from-slate-900 to-slate-800">
+    <div class="text-center">
+        <div class="text-9xl mb-8">🔍</div>
+        <h1 class="text-6xl md:text-8xl font-bold text-white mb-4">404</h1>
+        <h2 class="text-2xl md:text-3xl font-bold text-slate-300 mb-6">
+            {% if language == 'uk' %}Сторінку не знайдено{% else %}Page Not Found{% endif %}
+        </h2>
+        <p class="text-lg text-slate-400 mb-10 max-w-md mx-auto">
+            {% if language == 'uk' %}
+            Схоже, ця сторінка загубилась в дорозі. Можливо, вона ще в процесі доставки.
+            {% else %}
+            Looks like this page got lost on the way. Maybe it's still in transit.
+            {% endif %}
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/?lang={{ language }}" class="px-8 py-4 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 transition-all duration-300 hover:scale-105">
+                {% if language == 'uk' %}На головну{% else %}Home{% endif %}
+            </a>
+            <a href="/blog?lang={{ language }}" class="px-8 py-4 bg-slate-700 text-white font-bold rounded-xl hover:bg-slate-600 transition-all duration-300 hover:scale-105">
+                {% if language == 'uk' %}Читати блог{% else %}Read Blog{% endif %}
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

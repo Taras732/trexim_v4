@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% if post %}Редагувати{% else %}Створити{% endif %} пост - Trexim Admin</title>
+    <title>{% if action == 'create' %}Нова стаття{% else %}Редагування статті{% endif %} - Trexim Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100">
@@ -11,8 +11,10 @@
     <header class="bg-white shadow">
         <div class="container mx-auto px-4 py-4 flex items-center justify-between">
             <div class="flex items-center space-x-4">
-                <a href="/admin/blog" class="text-blue-600 hover:text-blue-800">← Назад до списку</a>
-                <h1 class="text-2xl font-bold">{% if post %}Редагувати{% else %}Створити{% endif %} пост</h1>
+                <a href="/admin/blog" class="text-blue-600 hover:text-blue-800">&larr; Назад до списку</a>
+                <h1 class="text-2xl font-bold">
+                    {% if action == 'create' %}Нова стаття{% else %}Редагування: {{ post.uk.title }}{% endif %}
+                </h1>
             </div>
             <a href="/admin/logout" class="text-red-600 hover:text-red-800">Вийти</a>
         </div>
@@ -20,57 +22,163 @@
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-8">
-        <form method="POST" action="{% if post %}/admin/blog/{{ post.id }}{% else %}/admin/blog{% endif %}" class="max-w-4xl mx-auto">
-            <div class="bg-white rounded-lg shadow p-8 space-y-6">
-                <div>
-                    <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Назва</label>
-                    <input type="text" id="title" name="title" required
-                           value="{{ post.title if post else '' }}"
-                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                </div>
+        {% if error %}
+        <div class="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+            {{ error }}
+        </div>
+        {% endif %}
 
-                <div>
-                    <label for="slug" class="block text-sm font-medium text-gray-700 mb-2">Slug (URL)</label>
-                    <input type="text" id="slug" name="slug" required
-                           value="{{ post.slug if post else '' }}"
-                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                </div>
+        <form method="POST" action="{% if action == 'create' %}/admin/blog{% else %}/admin/blog/{{ slug }}/update{% endif %}" class="space-y-8">
 
-                <div>
-                    <label for="content" class="block text-sm font-medium text-gray-700 mb-2">Контент (Markdown)</label>
-                    <textarea id="content" name="content" rows="15" required
-                              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 font-mono">{{ post.content if post else '' }}</textarea>
-                </div>
+            <!-- Basic Info -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-bold mb-4 border-b pb-2">Основна інформація</h2>
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {% if action == 'create' %}
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Slug (URL)</label>
+                        <input type="text" name="slug" value=""
+                               placeholder="auto-generated-from-title"
+                               class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm">
+                        <p class="text-xs text-gray-500 mt-1">Залиште порожнім для автогенерації з назви</p>
+                    </div>
+                    {% endif %}
+
                     <div>
-                        <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Категорія</label>
-                        <select id="category" name="category"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                            <option value="news">Новини</option>
-                            <option value="guides">Гіди</option>
-                            <option value="updates">Оновлення</option>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Emoji</label>
+                        <input type="text" name="emoji" value="{{ post.uk.emoji if post else '' }}" required
+                               placeholder="📋"
+                               class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-2xl">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Колір</label>
+                        <select name="color" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="orange" {% if post and post.uk.color == 'orange' %}selected{% endif %}>Orange</option>
+                            <option value="blue" {% if post and post.uk.color == 'blue' %}selected{% endif %}>Blue</option>
+                            <option value="green" {% if post and post.uk.color == 'green' %}selected{% endif %}>Green</option>
+                            <option value="purple" {% if post and post.uk.color == 'purple' %}selected{% endif %}>Purple</option>
+                            <option value="red" {% if post and post.uk.color == 'red' %}selected{% endif %}>Red</option>
+                            <option value="yellow" {% if post and post.uk.color == 'yellow' %}selected{% endif %}>Yellow</option>
                         </select>
                     </div>
 
                     <div>
-                        <label for="status" class="block text-sm font-medium text-gray-700 mb-2">Статус</label>
-                        <select id="status" name="status"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                            <option value="draft">Чернетка</option>
-                            <option value="published">Опубліковано</option>
-                        </select>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Час читання (хв)</label>
+                        <input type="text" name="read_time" value="{{ post.uk.read_time if post else '5' }}" required
+                               class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                     </div>
                 </div>
+            </div>
 
-                <div class="flex justify-end space-x-4">
-                    <a href="/admin/blog" class="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
-                        Скасувати
-                    </a>
-                    <button type="submit" class="px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition">
-                        {% if post %}Оновити{% else %}Створити{% endif %}
-                    </button>
+            <!-- Ukrainian Content -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-bold mb-4 border-b pb-2 flex items-center gap-2">
+                    <span class="text-2xl">🇺🇦</span> Українська версія
+                </h2>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Назва</label>
+                        <input type="text" name="title_uk" value="{{ post.uk.title if post else '' }}" required
+                               class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Короткий опис (excerpt)</label>
+                        <textarea name="excerpt_uk" rows="2" required
+                                  class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">{{ post.uk.excerpt if post else '' }}</textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Категорія</label>
+                            <input type="text" name="category_uk" value="{{ post.uk.category if post else '' }}" required
+                                   placeholder="Новини, Технології, Гіди..."
+                                   class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Дата</label>
+                            <input type="text" name="date_uk" value="{{ post.uk.date if post else '' }}" required
+                                   placeholder="13 січня 2026"
+                                   class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Теги (через кому)</label>
+                        <input type="text" name="tags_uk" value="{{ post.uk.tags | join(', ') if post and post.uk.tags else '' }}"
+                               placeholder="AI, Логістика, Новини"
+                               class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Контент (HTML)</label>
+                        <textarea name="content_uk" rows="12" required
+                                  class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm">{{ post.uk.content if post else '' }}</textarea>
+                        <p class="text-xs text-gray-500 mt-1">Використовуйте HTML теги: &lt;p&gt;, &lt;h2&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;strong&gt; тощо</p>
+                    </div>
                 </div>
+            </div>
+
+            <!-- English Content -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-bold mb-4 border-b pb-2 flex items-center gap-2">
+                    <span class="text-2xl">🇬🇧</span> English version
+                </h2>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                        <input type="text" name="title_en" value="{{ post.en.title if post else '' }}" required
+                               class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Excerpt</label>
+                        <textarea name="excerpt_en" rows="2" required
+                                  class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">{{ post.en.excerpt if post else '' }}</textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                            <input type="text" name="category_en" value="{{ post.en.category if post else '' }}" required
+                                   placeholder="News, Technology, Guides..."
+                                   class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                            <input type="text" name="date_en" value="{{ post.en.date if post else '' }}" required
+                                   placeholder="January 13, 2026"
+                                   class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tags (comma separated)</label>
+                        <input type="text" name="tags_en" value="{{ post.en.tags | join(', ') if post and post.en.tags else '' }}"
+                               placeholder="AI, Logistics, News"
+                               class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Content (HTML)</label>
+                        <textarea name="content_en" rows="12" required
+                                  class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm">{{ post.en.content if post else '' }}</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex justify-between items-center">
+                <a href="/admin/blog" class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition">
+                    Скасувати
+                </a>
+                <button type="submit" class="px-8 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition">
+                    {% if action == 'create' %}Створити статтю{% else %}Зберегти зміни{% endif %}
+                </button>
             </div>
         </form>
     </main>
