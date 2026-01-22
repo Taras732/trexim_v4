@@ -53,6 +53,11 @@ logs/
 # Uploads
 static/uploads/*
 !static/uploads/.gitkeep
+uploads/*/originals/*
+uploads/*/optimized/*
+!uploads/*/.gitkeep
+!uploads/*/originals/.gitkeep
+!uploads/*/optimized/.gitkeep
 
 # Claude artifacts
 .claude/

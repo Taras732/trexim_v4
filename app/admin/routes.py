@@ -1,8 +1,12 @@
-from fastapi import APIRouter, Request, Form, Depends, HTTPException
+"""
+Admin routes - all admin panel endpoints
+"""
+from fastapi import APIRouter, Request, Form, Depends
 from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
-from typing import Optional
+
+from .auth import check_auth
 
 try:
     from ..config import settings
@@ -25,27 +29,28 @@ except ImportError:
         generate_slug
     )
 
-router = APIRouter(prefix="/admin")
+router = APIRouter(prefix="/admin", tags=["admin"])
+
+# Templates - use admin templates from main templates folder
 templates_dir = Path(__file__).parent.parent / "templates"
 templates = Jinja2Templates(directory=str(templates_dir))
 
-# Simple authentication check
-def check_auth(request: Request):
-    if not request.session.get("authenticated"):
-        raise HTTPException(status_code=401, detail="Not authenticated")
-    return True
+
+# =============================================================================
+# AUTH ROUTES
+# =============================================================================
 
 @router.get("", response_class=HTMLResponse)
 async def admin_login(request: Request):
+    """Admin login page"""
     if request.session.get("authenticated"):
         return RedirectResponse(url="/admin/dashboard")
-    return templates.TemplateResponse(
-        "admin/login.html",
-        {"request": request}
-    )
+    return templates.TemplateResponse("admin/login.html", {"request": request})
+
 
 @router.post("/login")
 async def admin_login_post(request: Request, password: str = Form(...)):
+    """Process admin login"""
     if password == settings.ADMIN_PASSWORD:
         request.session["authenticated"] = True
         return RedirectResponse(url="/admin/dashboard", status_code=303)
@@ -54,36 +59,46 @@ async def admin_login_post(request: Request, password: str = Form(...)):
         {"request": request, "error": "Невірний пароль"}
     )
 
+
 @router.get("/logout")
 async def admin_logout(request: Request):
+    """Admin logout"""
     request.session.clear()
     return RedirectResponse(url="/admin")
 
+
 @router.get("/dashboard", response_class=HTMLResponse)
 async def admin_dashboard(request: Request, _: bool = Depends(check_auth)):
-    return templates.TemplateResponse(
-        "admin/dashboard.html",
-        {"request": request}
-    )
+    """Admin dashboard"""
+    return templates.TemplateResponse("admin/dashboard.html", {"request": request})
 
-# Blog routes
+
+# =============================================================================
+# BLOG ROUTES
+# =============================================================================
+
 @router.get("/blog", response_class=HTMLResponse)
 async def admin_blog_list(request: Request, _: bool = Depends(check_auth)):
+    """Blog posts list"""
     posts = get_all_posts_for_admin()
     return templates.TemplateResponse(
         "admin/blog_list.html",
         {"request": request, "posts": posts}
     )
 
+
 @router.get("/blog/new", response_class=HTMLResponse)
 async def admin_blog_new(request: Request, _: bool = Depends(check_auth)):
+    """New blog post form"""
     return templates.TemplateResponse(
         "admin/blog_form.html",
         {"request": request, "post": None, "slug": None, "action": "create"}
     )
 
+
 @router.get("/blog/{slug}/edit", response_class=HTMLResponse)
 async def admin_blog_edit(request: Request, slug: str, _: bool = Depends(check_auth)):
+    """Edit blog post form"""
     post_data = get_post(slug)
     if not post_data:
         return RedirectResponse(url="/admin/blog", status_code=303)
@@ -92,6 +107,7 @@ async def admin_blog_edit(request: Request, slug: str, _: bool = Depends(check_a
         "admin/blog_form.html",
         {"request": request, "post": post_data, "slug": slug, "action": "update"}
     )
+
 
 @router.post("/blog")
 async def admin_blog_create(
@@ -114,7 +130,7 @@ async def admin_blog_create(
     content_uk: str = Form(...),
     content_en: str = Form(...)
 ):
-    # Generate slug from title if not provided
+    """Create new blog post"""
     if not slug:
         slug = generate_slug(title_uk)
 
@@ -151,6 +167,7 @@ async def admin_blog_create(
 
     return RedirectResponse(url="/admin/blog", status_code=303)
 
+
 @router.post("/blog/{slug}/update")
 async def admin_blog_update_post(
     request: Request,
@@ -172,6 +189,7 @@ async def admin_blog_update_post(
     content_uk: str = Form(...),
     content_en: str = Form(...)
 ):
+    """Update blog post"""
     uk_data = {
         "title": title_uk,
         "excerpt": excerpt_uk,
@@ -199,19 +217,28 @@ async def admin_blog_update_post(
     update_post(slug, uk_data, en_data)
     return RedirectResponse(url="/admin/blog", status_code=303)
 
+
 @router.post("/blog/{slug}/delete")
 async def admin_blog_delete_post(request: Request, slug: str, _: bool = Depends(check_auth)):
+    """Delete blog post (form submission)"""
     delete_post(slug)
     return RedirectResponse(url="/admin/blog", status_code=303)
 
+
 @router.delete("/blog/{slug}")
 async def admin_blog_delete_api(request: Request, slug: str, _: bool = Depends(check_auth)):
+    """Delete blog post (API)"""
     success = delete_post(slug)
     return JSONResponse({"success": success})
 
-# References routes
+
+# =============================================================================
+# REFERENCES ROUTES (placeholder)
+# =============================================================================
+
 @router.get("/references", response_class=HTMLResponse)
 async def admin_references_list(request: Request, _: bool = Depends(check_auth)):
+    """References list"""
     references = {
         "blog_categories": {"count": 5, "name_uk": "Категорії блогу", "name_en": "Blog Categories"},
         "post_statuses": {"count": 3, "name_uk": "Статуси постів", "name_en": "Post Statuses"},
@@ -225,9 +252,10 @@ async def admin_references_list(request: Request, _: bool = Depends(check_auth))
         {"request": request, "references": references}
     )
 
+
 @router.get("/references/{reference_type}", response_class=HTMLResponse)
 async def admin_reference_items(request: Request, reference_type: str, _: bool = Depends(check_auth)):
-    # Mock reference items
+    """Reference items list"""
     items = []
     if reference_type == "blog_categories":
         items = [
@@ -245,18 +273,3 @@ async def admin_reference_items(request: Request, reference_type: str, _: bool =
         "admin/reference_items.html",
         {"request": request, "reference_type": reference_type, "items": items}
     )
-
-@router.post("/references/{reference_type}")
-async def admin_reference_create(request: Request, reference_type: str, _: bool = Depends(check_auth)):
-    # TODO: Implement reference item creation
-    return {"success": True}
-
-@router.put("/references/{reference_type}/{item_id}")
-async def admin_reference_update(request: Request, reference_type: str, item_id: int, _: bool = Depends(check_auth)):
-    # TODO: Implement reference item update
-    return {"success": True}
-
-@router.delete("/references/{reference_type}/{item_id}")
-async def admin_reference_delete(request: Request, reference_type: str, item_id: int, _: bool = Depends(check_auth)):
-    # TODO: Implement reference item deletion
-    return {"success": True}
