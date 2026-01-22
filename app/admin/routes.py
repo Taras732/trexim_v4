@@ -16,7 +16,15 @@ try:
         create_post,
         update_post,
         delete_post,
-        generate_slug
+        generate_slug,
+        get_all_reference_types,
+        get_reference_items,
+        get_reference_meta,
+        create_reference_item,
+        update_reference_item,
+        delete_reference_item,
+        get_active_categories,
+        get_active_tags
     )
 except ImportError:
     from config import settings
@@ -26,7 +34,15 @@ except ImportError:
         create_post,
         update_post,
         delete_post,
-        generate_slug
+        generate_slug,
+        get_all_reference_types,
+        get_reference_items,
+        get_reference_meta,
+        create_reference_item,
+        update_reference_item,
+        delete_reference_item,
+        get_active_categories,
+        get_active_tags
     )
 
 router = APIRouter(prefix="/admin", tags=["admin"])
@@ -90,9 +106,18 @@ async def admin_blog_list(request: Request, _: bool = Depends(check_auth)):
 @router.get("/blog/new", response_class=HTMLResponse)
 async def admin_blog_new(request: Request, _: bool = Depends(check_auth)):
     """New blog post form"""
+    categories = get_active_categories()
+    tags = get_active_tags()
     return templates.TemplateResponse(
         "admin/blog_form.html",
-        {"request": request, "post": None, "slug": None, "action": "create"}
+        {
+            "request": request,
+            "post": None,
+            "slug": None,
+            "action": "create",
+            "categories": categories,
+            "tags": tags
+        }
     )
 
 
@@ -103,9 +128,18 @@ async def admin_blog_edit(request: Request, slug: str, _: bool = Depends(check_a
     if not post_data:
         return RedirectResponse(url="/admin/blog", status_code=303)
 
+    categories = get_active_categories()
+    tags = get_active_tags()
     return templates.TemplateResponse(
         "admin/blog_form.html",
-        {"request": request, "post": post_data, "slug": slug, "action": "update"}
+        {
+            "request": request,
+            "post": post_data,
+            "slug": slug,
+            "action": "update",
+            "categories": categories,
+            "tags": tags
+        }
     )
 
 
@@ -233,20 +267,13 @@ async def admin_blog_delete_api(request: Request, slug: str, _: bool = Depends(c
 
 
 # =============================================================================
-# REFERENCES ROUTES (placeholder)
+# REFERENCES ROUTES
 # =============================================================================
 
 @router.get("/references", response_class=HTMLResponse)
 async def admin_references_list(request: Request, _: bool = Depends(check_auth)):
     """References list"""
-    references = {
-        "blog_categories": {"count": 5, "name_uk": "Категорії блогу", "name_en": "Blog Categories"},
-        "post_statuses": {"count": 3, "name_uk": "Статуси постів", "name_en": "Post Statuses"},
-        "cities": {"count": 10, "name_uk": "Міста", "name_en": "Cities"},
-        "cargo_types": {"count": 8, "name_uk": "Типи вантажу", "name_en": "Cargo Types"},
-        "order_statuses": {"count": 6, "name_uk": "Статуси замовлень", "name_en": "Order Statuses"},
-        "languages": {"count": 2, "name_uk": "Мови", "name_en": "Languages"},
-    }
+    references = get_all_reference_types()
     return templates.TemplateResponse(
         "admin/references_list.html",
         {"request": request, "references": references}
@@ -256,20 +283,73 @@ async def admin_references_list(request: Request, _: bool = Depends(check_auth))
 @router.get("/references/{reference_type}", response_class=HTMLResponse)
 async def admin_reference_items(request: Request, reference_type: str, _: bool = Depends(check_auth)):
     """Reference items list"""
-    items = []
-    if reference_type == "blog_categories":
-        items = [
-            {"id": 1, "code": "news", "name_uk": "Новини", "name_en": "News", "description_uk": "Новини компанії", "description_en": "Company news", "active": True},
-            {"id": 2, "code": "guides", "name_uk": "Гіди", "name_en": "Guides", "description_uk": "Корисні гіди", "description_en": "Useful guides", "active": True},
-        ]
-    elif reference_type == "cities":
-        items = [
-            {"id": 1, "code": "kyiv", "name_uk": "Київ", "name_en": "Kyiv", "active": True},
-            {"id": 2, "code": "odesa", "name_uk": "Одеса", "name_en": "Odesa", "active": True},
-            {"id": 3, "code": "lviv", "name_uk": "Львів", "name_en": "Lviv", "active": True},
-        ]
-
+    items = get_reference_items(reference_type)
+    meta = get_reference_meta(reference_type)
     return templates.TemplateResponse(
         "admin/reference_items.html",
-        {"request": request, "reference_type": reference_type, "items": items}
+        {
+            "request": request,
+            "reference_type": reference_type,
+            "reference_name": meta["name_uk"],
+            "items": items
+        }
     )
+
+
+@router.post("/references/{reference_type}")
+async def admin_reference_create(
+    request: Request,
+    reference_type: str,
+    _: bool = Depends(check_auth),
+    code: str = Form(...),
+    name_uk: str = Form(...),
+    name_en: str = Form(...),
+    active: str = Form(None)
+):
+    """Create new reference item"""
+    is_active = active == "true" or active == "on"
+    create_reference_item(reference_type, code, name_uk, name_en, is_active)
+    return RedirectResponse(url=f"/admin/references/{reference_type}", status_code=303)
+
+
+@router.post("/references/{reference_type}/{item_id}/update")
+async def admin_reference_update(
+    request: Request,
+    reference_type: str,
+    item_id: int,
+    _: bool = Depends(check_auth),
+    code: str = Form(...),
+    name_uk: str = Form(...),
+    name_en: str = Form(...),
+    active: str = Form(None)
+):
+    """Update reference item"""
+    is_active = active == "true" or active == "on"
+    update_reference_item(reference_type, item_id, code, name_uk, name_en, is_active)
+    return RedirectResponse(url=f"/admin/references/{reference_type}", status_code=303)
+
+
+@router.post("/references/{reference_type}/{item_id}/delete")
+async def admin_reference_delete(
+    request: Request,
+    reference_type: str,
+    item_id: int,
+    _: bool = Depends(check_auth)
+):
+    """Delete reference item"""
+    success, error = delete_reference_item(reference_type, item_id)
+    if not success and error:
+        # Return to page with error message
+        items = get_reference_items(reference_type)
+        meta = get_reference_meta(reference_type)
+        return templates.TemplateResponse(
+            "admin/reference_items.html",
+            {
+                "request": request,
+                "reference_type": reference_type,
+                "reference_name": meta["name_uk"],
+                "items": items,
+                "error": error
+            }
+        )
+    return RedirectResponse(url=f"/admin/references/{reference_type}", status_code=303)

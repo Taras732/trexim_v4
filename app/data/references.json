@@ -1,0 +1,146 @@
+{
+    "blog_categories": {
+        "name_uk": "Категорії блогу",
+        "name_en": "Blog Categories",
+        "items": [
+            {
+                "id": 1,
+                "code": "news",
+                "name_uk": "Новини",
+                "name_en": "News",
+                "active": true
+            },
+            {
+                "id": 2,
+                "code": "guides",
+                "name_uk": "Гіди та поради",
+                "name_en": "Guides & Tips",
+                "active": true
+            },
+            {
+                "id": 3,
+                "code": "technology",
+                "name_uk": "Технології",
+                "name_en": "Technology",
+                "active": true
+            },
+            {
+                "id": 4,
+                "code": "industry",
+                "name_uk": "Індустрія",
+                "name_en": "Industry",
+                "active": true
+            },
+            {
+                "id": 5,
+                "code": "case-studies",
+                "name_uk": "Кейси",
+                "name_en": "Case Studies",
+                "active": true
+            },
+            {
+                "id": 6,
+                "code": "111",
+                "name_uk": "ааа",
+                "name_en": "xxx",
+                "active": true
+            }
+        ]
+    },
+    "blog_tags": {
+        "name_uk": "Теги блогу",
+        "name_en": "Blog Tags",
+        "items": [
+            {
+                "id": 1,
+                "code": "ai",
+                "name_uk": "AI",
+                "name_en": "AI",
+                "active": true
+            },
+            {
+                "id": 2,
+                "code": "logistics",
+                "name_uk": "Логістика",
+                "name_en": "Logistics",
+                "active": true
+            },
+            {
+                "id": 3,
+                "code": "automation",
+                "name_uk": "Автоматизація",
+                "name_en": "Automation",
+                "active": true
+            },
+            {
+                "id": 4,
+                "code": "e-ttn",
+                "name_uk": "Е-ТТН",
+                "name_en": "E-TTN",
+                "active": true
+            },
+            {
+                "id": 5,
+                "code": "tracking",
+                "name_uk": "Трекінг",
+                "name_en": "Tracking",
+                "active": true
+            },
+            {
+                "id": 6,
+                "code": "optimization",
+                "name_uk": "Оптимізація",
+                "name_en": "Optimization",
+                "active": true
+            },
+            {
+                "id": 7,
+                "code": "documents",
+                "name_uk": "Документи",
+                "name_en": "Documents",
+                "active": true
+            },
+            {
+                "id": 8,
+                "code": "ukraine",
+                "name_uk": "Україна",
+                "name_en": "Ukraine",
+                "active": true
+            },
+            {
+                "id": 9,
+                "code": "222",
+                "name_uk": "eee",
+                "name_en": "ууу",
+                "active": true
+            }
+        ]
+    },
+    "post_statuses": {
+        "name_uk": "Статуси постів",
+        "name_en": "Post Statuses",
+        "items": [
+            {
+                "id": 1,
+                "code": "draft",
+                "name_uk": "Чернетка",
+                "name_en": "Draft",
+                "active": true
+            },
+            {
+                "id": 2,
+                "code": "scheduled",
+                "name_uk": "Заплановано",
+                "name_en": "Scheduled",
+                "active": true
+            },
+            {
+                "id": 3,
+                "code": "published",
+                "name_uk": "Опубліковано",
+                "name_en": "Published",
+                "active": true
+            }
+        ]
+    }
+}

@@ -15,17 +15,20 @@ try:
     from .routes import pages, blog
     from .api import router as api_router
     from .admin import router as admin_router
+    from .analytics import AnalyticsMiddleware
 except ImportError:
     from config import settings
     from routes import pages, blog
     from api import router as api_router
     from admin import router as admin_router
+    from analytics import AnalyticsMiddleware
 
 # Initialize app
 app = FastAPI(title=settings.APP_NAME)
 
 # Middleware
 app.add_middleware(SessionMiddleware, secret_key="trexim-secret-key-2026")
+app.add_middleware(AnalyticsMiddleware)
 
 # Paths
 base_dir = Path(__file__).parent

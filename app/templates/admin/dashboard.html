@@ -1,67 +1,375 @@
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trexim Admin - Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100">
-    <!-- Header -->
-    <header class="bg-white shadow">
-        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
-            <h1 class="text-2xl font-bold">Trexim Admin</h1>
-            <a href="/admin/logout" class="text-red-600 hover:text-red-800">Вийти</a>
-        </div>
-    </header>
+{% extends "admin/base.html" %}
 
-    <!-- Main Content -->
-    <main class="container mx-auto px-4 py-8">
-        <h2 class="text-3xl font-bold mb-8">Панель керування</h2>
+{% block title %}Dashboard - Trexim Admin{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Blog Management Card -->
-            <a href="/admin/blog" class="bg-white p-8 rounded-lg shadow hover:shadow-lg transition block">
-                <div class="text-4xl mb-4">📝</div>
-                <h3 class="text-xl font-bold mb-2">Управління блогом</h3>
-                <p class="text-gray-600">Створення та редагування статей блогу</p>
-            </a>
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
 
-            <!-- References Card -->
-            <a href="/admin/references" class="bg-white p-8 rounded-lg shadow hover:shadow-lg transition block">
-                <div class="text-4xl mb-4">📚</div>
-                <h3 class="text-xl font-bold mb-2">Довідники</h3>
-                <p class="text-gray-600">Управління довідниками та списками</p>
-            </a>
-
-            <!-- Orders Card (placeholder) -->
-            <div class="bg-gray-50 p-8 rounded-lg shadow opacity-50">
-                <div class="text-4xl mb-4">📦</div>
-                <h3 class="text-xl font-bold mb-2">Замовлення</h3>
-                <p class="text-gray-600">Скоро буде доступно</p>
-            </div>
-
-            <!-- Analytics Card (placeholder) -->
-            <div class="bg-gray-50 p-8 rounded-lg shadow opacity-50">
-                <div class="text-4xl mb-4">📊</div>
-                <h3 class="text-xl font-bold mb-2">Аналітика</h3>
-                <p class="text-gray-600">Скоро буде доступно</p>
-            </div>
-
-            <!-- Users Card (placeholder) -->
-            <div class="bg-gray-50 p-8 rounded-lg shadow opacity-50">
-                <div class="text-4xl mb-4">👥</div>
-                <h3 class="text-xl font-bold mb-2">Користувачі</h3>
-                <p class="text-gray-600">Скоро буде доступно</p>
-            </div>
-
-            <!-- Settings Card (placeholder) -->
-            <div class="bg-gray-50 p-8 rounded-lg shadow opacity-50">
-                <div class="text-4xl mb-4">⚙️</div>
-                <h3 class="text-xl font-bold mb-2">Налаштування</h3>
-                <p class="text-gray-600">Скоро буде доступно</p>
+{% block content %}
+<div x-data="dashboardData()" x-init="fetchData()">
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Total Visitors -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Відвідувачі</p>
+                    <p class="text-3xl font-bold text-gray-900 mt-1" x-text="formatNumber(stats.visitors.count)">--</p>
+                    <p class="text-sm mt-2 flex items-center"
+                       :class="stats.visitors.change >= 0 ? 'text-green-600' : 'text-red-600'">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                             :class="stats.visitors.change >= 0 ? '' : 'rotate-180'">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                        </svg>
+                        <span x-text="(stats.visitors.change >= 0 ? '+' : '') + stats.visitors.change + '% за тиждень'"></span>
+                    </p>
+                </div>
+                <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
+                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                </div>
             </div>
         </div>
-    </main>
-</body>
-</html>
+
+        <!-- Page Views -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Перегляди</p>
+                    <p class="text-3xl font-bold text-gray-900 mt-1" x-text="formatNumber(stats.page_views.count)">--</p>
+                    <p class="text-sm mt-2 flex items-center"
+                       :class="stats.page_views.change >= 0 ? 'text-green-600' : 'text-red-600'">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                             :class="stats.page_views.change >= 0 ? '' : 'rotate-180'">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                        </svg>
+                        <span x-text="(stats.page_views.change >= 0 ? '+' : '') + stats.page_views.change + '% за тиждень'"></span>
+                    </p>
+                </div>
+                <div class="w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center">
+                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Avg. Session Duration -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Сер. час на сайті</p>
+                    <p class="text-3xl font-bold text-gray-900 mt-1" x-text="stats.avg_time.formatted || '0:00'">--</p>
+                    <p class="text-sm text-gray-500 mt-2">
+                        хвилин на сесію
+                    </p>
+                </div>
+                <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
+                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Clicks -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Кліки на CTA</p>
+                    <p class="text-3xl font-bold text-gray-900 mt-1" x-text="formatNumber(stats.cta_clicks.count)">--</p>
+                    <p class="text-sm mt-2 flex items-center"
+                       :class="stats.cta_clicks.change >= 0 ? 'text-green-600' : 'text-red-600'">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                             :class="stats.cta_clicks.change >= 0 ? '' : 'rotate-180'">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                        </svg>
+                        <span x-text="(stats.cta_clicks.change >= 0 ? '+' : '') + stats.cta_clicks.change + '% за тиждень'"></span>
+                    </p>
+                </div>
+                <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center">
+                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <!-- Traffic Chart -->
+        <div class="lg:col-span-2 bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-gray-900">Відвідування за тиждень</h3>
+                <select x-model="selectedDays" @change="fetchData()"
+                        class="text-sm border-gray-200 rounded-lg focus:ring-orange-500 focus:border-orange-500">
+                    <option value="7">Останні 7 днів</option>
+                    <option value="14">Останні 14 днів</option>
+                    <option value="30">Останні 30 днів</option>
+                </select>
+            </div>
+            <div class="h-80">
+                <canvas id="trafficChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Traffic Sources -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <h3 class="text-lg font-semibold text-gray-900 mb-6">Джерела трафіку</h3>
+            <div class="h-64">
+                <canvas id="sourcesChart"></canvas>
+            </div>
+            <div class="mt-4 space-y-3">
+                <template x-for="source in stats.sources.slice(0, 4)" :key="source.name">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <span class="w-3 h-3 rounded-full mr-2" :style="'background-color:' + getSourceColor(source.name)"></span>
+                            <span class="text-sm text-gray-600" x-text="source.name"></span>
+                        </div>
+                        <span class="text-sm font-medium text-gray-900" x-text="source.percentage + '%'"></span>
+                    </div>
+                </template>
+                <div x-show="stats.sources.length === 0" class="text-sm text-gray-500 text-center py-4">
+                    Немає даних
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Row -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Popular Pages -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <h3 class="text-lg font-semibold text-gray-900 mb-6">Популярні сторінки</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="pb-3">Сторінка</th>
+                            <th class="pb-3 text-right">Перегляди</th>
+                            <th class="pb-3 text-right">Відвідувачі</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <template x-for="page in stats.popular_pages" :key="page.path">
+                            <tr>
+                                <td class="py-3">
+                                    <a :href="page.path" target="_blank" class="text-sm text-gray-900 hover:text-orange-500" x-text="page.path"></a>
+                                    <p class="text-xs text-gray-500" x-text="page.name"></p>
+                                </td>
+                                <td class="py-3 text-right text-sm text-gray-900" x-text="formatNumber(page.views)"></td>
+                                <td class="py-3 text-right text-sm text-gray-500" x-text="formatNumber(page.visitors)"></td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+                <div x-show="stats.popular_pages.length === 0" class="py-8 text-center text-gray-500">
+                    Немає даних. Перегляньте сайт щоб побачити статистику.
+                </div>
+            </div>
+        </div>
+
+        <!-- Device & Browser Stats -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <h3 class="text-lg font-semibold text-gray-900 mb-6">Пристрої та браузери</h3>
+            <div class="space-y-6">
+                <!-- Devices -->
+                <div>
+                    <h4 class="text-sm font-medium text-gray-700 mb-3">Пристрої</h4>
+                    <div class="space-y-2">
+                        <template x-for="device in stats.devices" :key="device.name">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center flex-1">
+                                    <span class="text-sm text-gray-600 w-20" x-text="device.name"></span>
+                                    <div class="flex-1 mx-3 bg-gray-200 rounded-full h-2">
+                                        <div class="bg-orange-500 h-2 rounded-full" :style="'width: ' + device.percentage + '%'"></div>
+                                    </div>
+                                </div>
+                                <span class="text-sm font-medium text-gray-900 w-12 text-right" x-text="device.percentage + '%'"></span>
+                            </div>
+                        </template>
+                        <div x-show="stats.devices.length === 0" class="text-sm text-gray-500">Немає даних</div>
+                    </div>
+                </div>
+                <!-- Browsers -->
+                <div>
+                    <h4 class="text-sm font-medium text-gray-700 mb-3">Браузери</h4>
+                    <div class="space-y-2">
+                        <template x-for="browser in stats.browsers.slice(0, 4)" :key="browser.name">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center flex-1">
+                                    <span class="text-sm text-gray-600 w-20" x-text="browser.name"></span>
+                                    <div class="flex-1 mx-3 bg-gray-200 rounded-full h-2">
+                                        <div class="bg-blue-500 h-2 rounded-full" :style="'width: ' + browser.percentage + '%'"></div>
+                                    </div>
+                                </div>
+                                <span class="text-sm font-medium text-gray-900 w-12 text-right" x-text="browser.percentage + '%'"></span>
+                            </div>
+                        </template>
+                        <div x-show="stats.browsers.length === 0" class="text-sm text-gray-500">Немає даних</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function dashboardData() {
+    return {
+        selectedDays: 7,
+        trafficChart: null,
+        sourcesChart: null,
+        stats: {
+            visitors: { count: 0, change: 0 },
+            page_views: { count: 0, change: 0 },
+            avg_time: { formatted: '0:00', minutes: 0 },
+            cta_clicks: { count: 0, change: 0 },
+            traffic_by_day: { labels: [], visitors: [], views: [] },
+            sources: [],
+            popular_pages: [],
+            devices: [],
+            browsers: []
+        },
+
+        async fetchData() {
+            try {
+                const response = await fetch(`/api/analytics/summary?days=${this.selectedDays}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    this.stats = { ...this.stats, ...data };
+                    this.$nextTick(() => this.updateCharts());
+                }
+            } catch (error) {
+                console.error('Error fetching analytics:', error);
+            }
+        },
+
+        formatNumber(num) {
+            if (num === undefined || num === null) return '--';
+            return num.toLocaleString('uk-UA');
+        },
+
+        getSourceColor(name) {
+            const colors = {
+                'Direct': '#3b82f6',
+                'Google': '#f97316',
+                'Facebook': '#1877f2',
+                'Instagram': '#e4405f',
+                'LinkedIn': '#0077b5',
+                'Telegram': '#0088cc',
+                'Internal': '#6b7280',
+                'Other': '#a855f7'
+            };
+            return colors[name] || '#6b7280';
+        },
+
+        updateCharts() {
+            this.updateTrafficChart();
+            this.updateSourcesChart();
+        },
+
+        updateTrafficChart() {
+            const ctx = document.getElementById('trafficChart');
+            if (!ctx) return;
+
+            if (this.trafficChart) {
+                this.trafficChart.destroy();
+            }
+
+            this.trafficChart = new Chart(ctx.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: this.stats.traffic_by_day.labels,
+                    datasets: [{
+                        label: 'Відвідувачі',
+                        data: this.stats.traffic_by_day.visitors,
+                        borderColor: '#f97316',
+                        backgroundColor: 'rgba(249, 115, 22, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#f97316',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }, {
+                        label: 'Перегляди',
+                        data: this.stats.traffic_by_day.views,
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#3b82f6',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            align: 'end',
+                            labels: { usePointStyle: true, padding: 20 }
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: 'rgba(0, 0, 0, 0.05)' } },
+                        x: { grid: { display: false } }
+                    },
+                    interaction: { intersect: false, mode: 'index' }
+                }
+            });
+        },
+
+        updateSourcesChart() {
+            const ctx = document.getElementById('sourcesChart');
+            if (!ctx) return;
+
+            if (this.sourcesChart) {
+                this.sourcesChart.destroy();
+            }
+
+            const sources = this.stats.sources.slice(0, 4);
+            if (sources.length === 0) {
+                sources.push({ name: 'Немає даних', percentage: 100 });
+            }
+
+            const labels = sources.map(s => s.name);
+            const data = sources.map(s => s.percentage);
+            const colors = sources.map(s => this.getSourceColor(s.name));
+
+            this.sourcesChart = new Chart(ctx.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: colors,
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+    }
+}
+</script>
+{% endblock %}
