@@ -32,7 +32,7 @@ async def get_blog_posts(lang: str = "uk"):
     - slug, title, excerpt, category, category_key
     - date, read_time, emoji, color
     """
-    posts = get_all_posts()
+    posts = get_all_postslang()
     lang_key = "uk" if lang == "uk" else "en"
 
     result = []
