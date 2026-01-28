@@ -4,10 +4,7 @@ Blog API - JSON endpoints for blog functionality
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 
-try:
-    from ..data import load_posts
-except ImportError:
-    from data import load_posts
+from ..data import load_posts
 
 router = APIRouter(prefix="/blog", tags=["blog"])
 
