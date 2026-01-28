@@ -24,6 +24,20 @@ app = FastAPI(title=settings.APP_NAME)
 app.add_middleware(SessionMiddleware, secret_key=settings.SESSION_SECRET_KEY)
 app.add_middleware(AnalyticsMiddleware)
 
+# WWW redirect middleware
+@app.middleware("http")
+async def redirect_www_to_non_www(request: Request, call_next):
+    host = request.headers.get("host", "")
+    if host.startswith("www."):
+        non_www_host = host.replace("www.", "", 1)
+        url = request.url.replace(scheme="https", netloc=non_www_host)
+        return HTMLResponse(
+            content="",
+            status_code=301,
+            headers={"Location": str(url)}
+        )
+    return await call_next(request)
+
 
 @app.on_event("startup")
 async def startup_event():
