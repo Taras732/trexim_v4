@@ -1,166 +1,128 @@
 """
-Analytics database models using SQLite
+Analytics database operations using SQLAlchemy
 """
-import sqlite3
-from pathlib import Path
 from datetime import datetime
+from typing import Optional
 
-# Database path
-DB_PATH = Path(__file__).parent.parent / "data" / "analytics.db"
-
-
-def get_connection():
-    """Get database connection"""
-    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
-    conn = sqlite3.connect(str(DB_PATH))
-    conn.row_factory = sqlite3.Row
-    return conn
-
-
-def init_db():
-    """Initialize database tables"""
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    # Page views table (server-side, no cookies needed)
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS page_views (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            timestamp TEXT NOT NULL,
-            path TEXT NOT NULL,
-            ip_hash TEXT NOT NULL,
-            user_agent TEXT,
-            referrer TEXT,
-            browser TEXT,
-            device TEXT,
-            os TEXT,
-            country TEXT
-        )
-    """)
-
-    # Sessions table (for extended tracking with consent)
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS sessions (
-            id TEXT PRIMARY KEY,
-            started_at TEXT NOT NULL,
-            ended_at TEXT,
-            ip_hash TEXT NOT NULL,
-            pages_visited INTEGER DEFAULT 1,
-            consent_given INTEGER DEFAULT 0,
-            user_agent TEXT
-        )
-    """)
-
-    # Events table (clicks, scroll, etc. - only with consent)
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS events (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            timestamp TEXT NOT NULL,
-            session_id TEXT,
-            event_type TEXT NOT NULL,
-            event_data TEXT,
-            path TEXT,
-            FOREIGN KEY (session_id) REFERENCES sessions(id)
-        )
-    """)
-
-    # Contact form submissions
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS form_submissions (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            timestamp TEXT NOT NULL,
-            form_type TEXT NOT NULL,
-            company TEXT,
-            email TEXT,
-            request_type TEXT,
-            ip_hash TEXT
-        )
-    """)
-
-    # Create indexes for faster queries
-    cursor.execute("CREATE INDEX IF NOT EXISTS idx_page_views_timestamp ON page_views(timestamp)")
-    cursor.execute("CREATE INDEX IF NOT EXISTS idx_page_views_path ON page_views(path)")
-    cursor.execute("CREATE INDEX IF NOT EXISTS idx_page_views_ip_hash ON page_views(ip_hash)")
-    cursor.execute("CREATE INDEX IF NOT EXISTS idx_events_timestamp ON events(timestamp)")
-    cursor.execute("CREATE INDEX IF NOT EXISTS idx_events_type ON events(event_type)")
-
-    conn.commit()
-    conn.close()
+from sqlalchemy import select
+from ..database.connection import db_session
+from ..database.models import PageView, FormSubmission, AnalyticsSession, AnalyticsEvent
 
 
 def log_page_view(path: str, ip_hash: str, user_agent: str = None,
                   referrer: str = None, browser: str = None,
                   device: str = None, os: str = None, country: str = None):
     """Log a page view"""
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("""
-        INSERT INTO page_views (timestamp, path, ip_hash, user_agent, referrer, browser, device, os, country)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """, (datetime.utcnow().isoformat(), path, ip_hash, user_agent, referrer, browser, device, os, country))
-    conn.commit()
-    conn.close()
+    try:
+        with db_session() as session:
+            page_view = PageView(
+                timestamp=datetime.utcnow(),
+                path=path,
+                ip_hash=ip_hash,
+                user_agent=user_agent,
+                referrer=referrer,
+                browser=browser,
+                device=device,
+                os=os,
+                country=country
+            )
+            session.add(page_view)
+    except Exception as e:
+        print(f"Error logging page view: {e}")
 
 
 def create_session(session_id: str, ip_hash: str, user_agent: str = None, consent: bool = False):
-    """Create a new session"""
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("""
-        INSERT OR REPLACE INTO sessions (id, started_at, ip_hash, user_agent, consent_given)
-        VALUES (?, ?, ?, ?, ?)
-    """, (session_id, datetime.utcnow().isoformat(), ip_hash, user_agent, 1 if consent else 0))
-    conn.commit()
-    conn.close()
+    """Create a new analytics session"""
+    try:
+        with db_session() as session:
+            # Check if session exists
+            existing = session.execute(
+                select(AnalyticsSession).where(AnalyticsSession.id == session_id)
+            ).scalar_one_or_none()
+
+            if existing:
+                # Update existing session
+                existing.ip_hash = ip_hash
+                existing.user_agent = user_agent
+                existing.consent_given = consent
+            else:
+                # Create new session
+                analytics_session = AnalyticsSession(
+                    id=session_id,
+                    started_at=datetime.utcnow(),
+                    ip_hash=ip_hash,
+                    user_agent=user_agent,
+                    consent_given=consent
+                )
+                session.add(analytics_session)
+    except Exception as e:
+        print(f"Error creating session: {e}")
 
 
-def update_session(session_id: str, pages_visited: int = None, ended_at: str = None):
+def update_session(session_id: str, pages_visited: int = None, ended_at: datetime = None):
     """Update session data"""
-    conn = get_connection()
-    cursor = conn.cursor()
+    try:
+        with db_session() as session:
+            analytics_session = session.execute(
+                select(AnalyticsSession).where(AnalyticsSession.id == session_id)
+            ).scalar_one_or_none()
 
-    updates = []
-    values = []
-
-    if pages_visited is not None:
-        updates.append("pages_visited = ?")
-        values.append(pages_visited)
-    if ended_at is not None:
-        updates.append("ended_at = ?")
-        values.append(ended_at)
-
-    if updates:
-        values.append(session_id)
-        cursor.execute(f"UPDATE sessions SET {', '.join(updates)} WHERE id = ?", values)
-        conn.commit()
-
-    conn.close()
+            if analytics_session:
+                if pages_visited is not None:
+                    analytics_session.pages_visited = pages_visited
+                if ended_at is not None:
+                    analytics_session.ended_at = ended_at
+    except Exception as e:
+        print(f"Error updating session: {e}")
 
 
 def log_event(event_type: str, event_data: str = None, session_id: str = None, path: str = None):
-    """Log an event (click, scroll, etc.)"""
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("""
-        INSERT INTO events (timestamp, session_id, event_type, event_data, path)
-        VALUES (?, ?, ?, ?, ?)
-    """, (datetime.utcnow().isoformat(), session_id, event_type, event_data, path))
-    conn.commit()
-    conn.close()
+    """Log an analytics event (click, scroll, etc.)"""
+    try:
+        with db_session() as session:
+            event = AnalyticsEvent(
+                timestamp=datetime.utcnow(),
+                session_id=session_id,
+                event_type=event_type,
+                event_data=event_data,
+                path=path
+            )
+            session.add(event)
+    except Exception as e:
+        print(f"Error logging event: {e}")
 
 
 def log_form_submission(form_type: str, company: str = None, email: str = None,
                         request_type: str = None, ip_hash: str = None):
     """Log a form submission"""
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("""
-        INSERT INTO form_submissions (timestamp, form_type, company, email, request_type, ip_hash)
-        VALUES (?, ?, ?, ?, ?, ?)
-    """, (datetime.utcnow().isoformat(), form_type, company, email, request_type, ip_hash))
-    conn.commit()
-    conn.close()
+    try:
+        with db_session() as session:
+            submission = FormSubmission(
+                timestamp=datetime.utcnow(),
+                form_type=form_type,
+                company=company,
+                email=email,
+                request_type=request_type,
+                ip_hash=ip_hash,
+                status='new'
+            )
+            session.add(submission)
+    except Exception as e:
+        print(f"Error logging form submission: {e}")
 
 
-# Initialize database on import
-init_db()
+def get_connection():
+    """
+    Deprecated: Use db_session() context manager instead.
+    Kept for backward compatibility during migration.
+    """
+    raise DeprecationWarning(
+        "get_connection() is deprecated. Use db_session() from database.connection instead."
+    )
+
+
+def init_db():
+    """
+    Deprecated: Database initialization is handled by Alembic migrations.
+    """
+    pass

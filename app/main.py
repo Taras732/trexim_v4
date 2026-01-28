@@ -16,19 +16,28 @@ try:
     from .api import router as api_router
     from .admin import router as admin_router
     from .analytics import AnalyticsMiddleware
+    from .logger import logger
 except ImportError:
     from config import settings
     from routes import pages, blog
     from api import router as api_router
     from admin import router as admin_router
     from analytics import AnalyticsMiddleware
+    from logger import logger
 
 # Initialize app
 app = FastAPI(title=settings.APP_NAME)
 
 # Middleware
-app.add_middleware(SessionMiddleware, secret_key="trexim-secret-key-2026")
+app.add_middleware(SessionMiddleware, secret_key=settings.SESSION_SECRET_KEY)
 app.add_middleware(AnalyticsMiddleware)
+
+
+@app.on_event("startup")
+async def startup_event():
+    """Log application startup"""
+    logger.info(f"Starting {settings.APP_NAME} (env: {settings.APP_ENV})")
+    logger.info(f"Debug mode: {settings.DEBUG}")
 
 # Paths
 base_dir = Path(__file__).parent
@@ -97,7 +106,12 @@ async def favicon():
 
 @app.exception_handler(StarletteHTTPException)
 async def custom_http_exception_handler(request: Request, exc: StarletteHTTPException):
-    """Custom 404 page"""
+    """Custom error pages with logging"""
+    if exc.status_code >= 500:
+        logger.error(f"HTTP {exc.status_code}: {request.method} {request.url.path} - {exc.detail}")
+    elif exc.status_code >= 400:
+        logger.warning(f"HTTP {exc.status_code}: {request.method} {request.url.path}")
+
     if exc.status_code == 404:
         lang = request.query_params.get("lang", "uk")
         return templates.TemplateResponse(

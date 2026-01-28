@@ -1,0 +1,143 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Логи - Trexim Admin{% endblock %}
+{% block page_title %}Системні логи{% endblock %}
+
+{% block content %}
+<div x-data="logsViewer()" x-init="loadLogs()">
+    <!-- Controls -->
+    <div class="mb-6 flex flex-wrap gap-4 items-center">
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Файл</label>
+            <select x-model="selectedFile" @change="loadLogs()"
+                    class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500">
+                {% for file in files %}
+                <option value="{{ file.name }}">{{ file.name }} ({{ (file.size / 1024)|round(1) }} KB)</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Рівень</label>
+            <select x-model="level" @change="loadLogs()"
+                    class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500">
+                <option value="">Всі</option>
+                <option value="DEBUG">DEBUG</option>
+                <option value="INFO">INFO</option>
+                <option value="WARNING">WARNING</option>
+                <option value="ERROR">ERROR</option>
+            </select>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Рядків</label>
+            <select x-model="lines" @change="loadLogs()"
+                    class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500">
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="200" selected>200</option>
+                <option value="500">500</option>
+            </select>
+        </div>
+
+        <div class="flex items-end">
+            <button @click="loadLogs()"
+                    class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition">
+                Оновити
+            </button>
+        </div>
+
+        <div class="flex items-end">
+            <label class="flex items-center">
+                <input type="checkbox" x-model="autoRefresh" @change="toggleAutoRefresh()"
+                       class="w-4 h-4 text-orange-500 border-gray-300 rounded focus:ring-orange-500">
+                <span class="ml-2 text-sm text-gray-700">Авто-оновлення (10с)</span>
+            </label>
+        </div>
+    </div>
+
+    <!-- Log viewer -->
+    <div class="bg-gray-900 rounded-lg shadow overflow-hidden">
+        <div class="p-4 bg-gray-800 border-b border-gray-700 flex justify-between items-center">
+            <span class="text-gray-300 text-sm" x-text="'Показано ' + logLines.length + ' записів'"></span>
+            <button @click="scrollToBottom()" class="text-gray-400 hover:text-white text-sm">
+                До кінця
+            </button>
+        </div>
+
+        <div id="log-container" class="p-4 h-[600px] overflow-auto font-mono text-sm">
+            <template x-if="loading">
+                <div class="text-gray-500">Завантаження...</div>
+            </template>
+
+            <template x-if="!loading && logLines.length === 0">
+                <div class="text-gray-500">Логи відсутні</div>
+            </template>
+
+            <template x-for="(line, index) in logLines" :key="index">
+                <div class="py-0.5 hover:bg-gray-800 whitespace-pre-wrap break-all"
+                     :class="{
+                         'text-red-400': line.includes('| ERROR'),
+                         'text-yellow-400': line.includes('| WARNING'),
+                         'text-blue-400': line.includes('| DEBUG'),
+                         'text-green-400': line.includes('| INFO') && !line.includes('| ERROR') && !line.includes('| WARNING'),
+                         'text-gray-300': !line.includes('| ERROR') && !line.includes('| WARNING') && !line.includes('| DEBUG') && !line.includes('| INFO')
+                     }"
+                     x-text="line"></div>
+            </template>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+function logsViewer() {
+    return {
+        selectedFile: '{{ files[0].name if files else "" }}',
+        level: '',
+        lines: '200',
+        logLines: [],
+        loading: false,
+        autoRefresh: false,
+        refreshInterval: null,
+
+        async loadLogs() {
+            this.loading = true;
+            try {
+                const params = new URLSearchParams({
+                    file: this.selectedFile,
+                    lines: this.lines
+                });
+                if (this.level) {
+                    params.append('level', this.level);
+                }
+
+                const response = await fetch(`/admin/api/logs?${params}`);
+                const data = await response.json();
+                this.logLines = data.lines || [];
+            } catch (error) {
+                console.error('Failed to load logs:', error);
+                this.logLines = ['Error loading logs'];
+            }
+            this.loading = false;
+        },
+
+        scrollToBottom() {
+            const container = document.getElementById('log-container');
+            container.scrollTop = container.scrollHeight;
+        },
+
+        toggleAutoRefresh() {
+            if (this.autoRefresh) {
+                this.refreshInterval = setInterval(() => this.loadLogs(), 10000);
+            } else {
+                clearInterval(this.refreshInterval);
+                this.refreshInterval = null;
+            }
+        }
+    }
+}
+</script>
+{% endblock %}

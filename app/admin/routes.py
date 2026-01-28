@@ -6,10 +6,11 @@ from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
 
-from .auth import check_auth
+from .auth import check_auth, login_user, logout_user, needs_setup
 
 try:
     from ..config import settings
+    from ..logger import log_admin_action, get_log_files, read_log_file
     from ..data import (
         get_all_posts_for_admin,
         get_post,
@@ -28,6 +29,7 @@ try:
     )
 except ImportError:
     from config import settings
+    from logger import log_admin_action, get_log_files, read_log_file
     from data import (
         get_all_posts_for_admin,
         get_post,
@@ -61,25 +63,32 @@ async def admin_login(request: Request):
     """Admin login page"""
     if request.session.get("authenticated"):
         return RedirectResponse(url="/admin/dashboard")
-    return templates.TemplateResponse("admin/login.html", {"request": request})
+    return templates.TemplateResponse(
+        "admin/login.html",
+        {"request": request, "needs_setup": needs_setup()}
+    )
 
 
 @router.post("/login")
-async def admin_login_post(request: Request, password: str = Form(...)):
+async def admin_login_post(
+    request: Request,
+    username: str = Form(...),
+    password: str = Form(...)
+):
     """Process admin login"""
-    if password == settings.ADMIN_PASSWORD:
-        request.session["authenticated"] = True
+    success, error = login_user(request, username, password)
+    if success:
         return RedirectResponse(url="/admin/dashboard", status_code=303)
     return templates.TemplateResponse(
         "admin/login.html",
-        {"request": request, "error": "Невірний пароль"}
+        {"request": request, "error": error, "needs_setup": needs_setup()}
     )
 
 
 @router.get("/logout")
 async def admin_logout(request: Request):
     """Admin logout"""
-    request.session.clear()
+    logout_user(request)
     return RedirectResponse(url="/admin")
 
 
@@ -199,6 +208,8 @@ async def admin_blog_create(
             {"request": request, "post": None, "slug": None, "action": "create", "error": "Стаття з таким slug вже існує"}
         )
 
+    username = request.session.get("username", "unknown")
+    log_admin_action("CREATE_POST", username, f"slug={slug}")
     return RedirectResponse(url="/admin/blog", status_code=303)
 
 
@@ -249,6 +260,8 @@ async def admin_blog_update_post(
     }
 
     update_post(slug, uk_data, en_data)
+    username = request.session.get("username", "unknown")
+    log_admin_action("UPDATE_POST", username, f"slug={slug}")
     return RedirectResponse(url="/admin/blog", status_code=303)
 
 
@@ -256,6 +269,8 @@ async def admin_blog_update_post(
 async def admin_blog_delete_post(request: Request, slug: str, _: bool = Depends(check_auth)):
     """Delete blog post (form submission)"""
     delete_post(slug)
+    username = request.session.get("username", "unknown")
+    log_admin_action("DELETE_POST", username, f"slug={slug}")
     return RedirectResponse(url="/admin/blog", status_code=303)
 
 
@@ -353,3 +368,31 @@ async def admin_reference_delete(
             }
         )
     return RedirectResponse(url=f"/admin/references/{reference_type}", status_code=303)
+
+
+# =============================================================================
+# LOGS ROUTES
+# =============================================================================
+
+@router.get("/logs", response_class=HTMLResponse)
+async def admin_logs(request: Request, _: bool = Depends(check_auth)):
+    """System logs viewer"""
+    files = get_log_files()
+    return templates.TemplateResponse(
+        "admin/logs.html",
+        {"request": request, "files": files}
+    )
+
+
+# API endpoint for logs (used by the logs viewer page)
+@router.get("/api/logs")
+async def admin_logs_api(
+    request: Request,
+    _: bool = Depends(check_auth),
+    file: str = "errors.log",
+    lines: int = 200,
+    level: str = None
+):
+    """Get log file contents"""
+    log_lines = read_log_file(file, lines, level)
+    return JSONResponse({"lines": log_lines})

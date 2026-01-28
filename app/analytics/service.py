@@ -1,36 +1,36 @@
 """
-Analytics service - query functions for dashboard
+Analytics service - query functions for dashboard using SQLAlchemy
 """
 from datetime import datetime, timedelta
 from typing import Optional
-from .models import get_connection
+
+from sqlalchemy import select, func, distinct, text, case, and_
+from sqlalchemy.sql import extract
+
+from ..database.connection import db_session
+from ..database.models import PageView, FormSubmission, AnalyticsSession, AnalyticsEvent
 
 
 def get_visitors_count(days: int = 7) -> dict:
     """Get unique visitors count and change percentage"""
-    conn = get_connection()
-    cursor = conn.cursor()
+    cutoff = datetime.utcnow() - timedelta(days=days)
+    prev_cutoff = datetime.utcnow() - timedelta(days=days * 2)
 
-    cutoff = (datetime.utcnow() - timedelta(days=days)).isoformat()
-    prev_cutoff = (datetime.utcnow() - timedelta(days=days * 2)).isoformat()
+    with db_session() as session:
+        # Current period
+        current = session.execute(
+            select(func.count(distinct(PageView.ip_hash)))
+            .where(PageView.timestamp >= cutoff)
+        ).scalar() or 0
 
-    # Current period
-    cursor.execute("""
-        SELECT COUNT(DISTINCT ip_hash) as count
-        FROM page_views
-        WHERE timestamp >= ?
-    """, (cutoff,))
-    current = cursor.fetchone()["count"]
-
-    # Previous period
-    cursor.execute("""
-        SELECT COUNT(DISTINCT ip_hash) as count
-        FROM page_views
-        WHERE timestamp >= ? AND timestamp < ?
-    """, (prev_cutoff, cutoff))
-    previous = cursor.fetchone()["count"]
-
-    conn.close()
+        # Previous period
+        previous = session.execute(
+            select(func.count(distinct(PageView.ip_hash)))
+            .where(and_(
+                PageView.timestamp >= prev_cutoff,
+                PageView.timestamp < cutoff
+            ))
+        ).scalar() or 0
 
     # Calculate change
     if previous > 0:
@@ -43,29 +43,26 @@ def get_visitors_count(days: int = 7) -> dict:
 
 def get_page_views(days: int = 7) -> dict:
     """Get total page views and change percentage"""
-    conn = get_connection()
-    cursor = conn.cursor()
+    cutoff = datetime.utcnow() - timedelta(days=days)
+    prev_cutoff = datetime.utcnow() - timedelta(days=days * 2)
 
-    cutoff = (datetime.utcnow() - timedelta(days=days)).isoformat()
-    prev_cutoff = (datetime.utcnow() - timedelta(days=days * 2)).isoformat()
+    with db_session() as session:
+        # Current period
+        current = session.execute(
+            select(func.count())
+            .select_from(PageView)
+            .where(PageView.timestamp >= cutoff)
+        ).scalar() or 0
 
-    # Current period
-    cursor.execute("""
-        SELECT COUNT(*) as count
-        FROM page_views
-        WHERE timestamp >= ?
-    """, (cutoff,))
-    current = cursor.fetchone()["count"]
-
-    # Previous period
-    cursor.execute("""
-        SELECT COUNT(*) as count
-        FROM page_views
-        WHERE timestamp >= ? AND timestamp < ?
-    """, (prev_cutoff, cutoff))
-    previous = cursor.fetchone()["count"]
-
-    conn.close()
+        # Previous period
+        previous = session.execute(
+            select(func.count())
+            .select_from(PageView)
+            .where(and_(
+                PageView.timestamp >= prev_cutoff,
+                PageView.timestamp < cutoff
+            ))
+        ).scalar() or 0
 
     # Calculate change
     if previous > 0:
@@ -78,28 +75,36 @@ def get_page_views(days: int = 7) -> dict:
 
 def get_avg_session_time(days: int = 7) -> dict:
     """Get average session time (from events if available)"""
-    conn = get_connection()
-    cursor = conn.cursor()
+    cutoff = datetime.utcnow() - timedelta(days=days)
 
-    cutoff = (datetime.utcnow() - timedelta(days=days)).isoformat()
-
-    # Get sessions with heartbeat events - use subquery for proper aggregation
-    cursor.execute("""
-        SELECT AVG(duration_minutes) as avg_minutes
-        FROM (
-            SELECT
-                session_id,
-                (julianday(MAX(timestamp)) - julianday(MIN(timestamp))) * 24 * 60 as duration_minutes
-            FROM events
-            WHERE timestamp >= ? AND session_id IS NOT NULL
-            GROUP BY session_id
-            HAVING COUNT(*) > 1
+    with db_session() as session:
+        # Get sessions with multiple events to calculate duration
+        # Using subquery to get min/max timestamps per session
+        subquery = (
+            select(
+                AnalyticsEvent.session_id,
+                func.min(AnalyticsEvent.timestamp).label('min_ts'),
+                func.max(AnalyticsEvent.timestamp).label('max_ts'),
+                func.count().label('event_count')
+            )
+            .where(and_(
+                AnalyticsEvent.timestamp >= cutoff,
+                AnalyticsEvent.session_id.isnot(None)
+            ))
+            .group_by(AnalyticsEvent.session_id)
+            .having(func.count() > 1)
+            .subquery()
         )
-    """, (cutoff,))
 
-    result = cursor.fetchone()
-    avg_minutes = result["avg_minutes"] if result and result["avg_minutes"] else 0
-    conn.close()
+        # Calculate average duration in minutes
+        # Duration = (max_ts - min_ts) in minutes
+        result = session.execute(
+            select(func.avg(
+                extract('epoch', subquery.c.max_ts - subquery.c.min_ts) / 60
+            ))
+        ).scalar()
+
+        avg_minutes = result if result else 0
 
     # Format as MM:SS
     minutes = int(avg_minutes)
@@ -108,35 +113,36 @@ def get_avg_session_time(days: int = 7) -> dict:
     return {
         "formatted": f"{minutes}:{seconds:02d}",
         "minutes": avg_minutes,
-        "change": 0  # Would need historical data to calculate
+        "change": 0
     }
 
 
 def get_cta_clicks(days: int = 7) -> dict:
     """Get CTA button clicks"""
-    conn = get_connection()
-    cursor = conn.cursor()
+    cutoff = datetime.utcnow() - timedelta(days=days)
+    prev_cutoff = datetime.utcnow() - timedelta(days=days * 2)
 
-    cutoff = (datetime.utcnow() - timedelta(days=days)).isoformat()
-    prev_cutoff = (datetime.utcnow() - timedelta(days=days * 2)).isoformat()
+    with db_session() as session:
+        # Current period
+        current = session.execute(
+            select(func.count())
+            .select_from(AnalyticsEvent)
+            .where(and_(
+                AnalyticsEvent.timestamp >= cutoff,
+                AnalyticsEvent.event_type == 'cta_click'
+            ))
+        ).scalar() or 0
 
-    # Current period
-    cursor.execute("""
-        SELECT COUNT(*) as count
-        FROM events
-        WHERE timestamp >= ? AND event_type = 'cta_click'
-    """, (cutoff,))
-    current = cursor.fetchone()["count"]
-
-    # Previous period
-    cursor.execute("""
-        SELECT COUNT(*) as count
-        FROM events
-        WHERE timestamp >= ? AND timestamp < ? AND event_type = 'cta_click'
-    """, (prev_cutoff, cutoff))
-    previous = cursor.fetchone()["count"]
-
-    conn.close()
+        # Previous period
+        previous = session.execute(
+            select(func.count())
+            .select_from(AnalyticsEvent)
+            .where(and_(
+                AnalyticsEvent.timestamp >= prev_cutoff,
+                AnalyticsEvent.timestamp < cutoff,
+                AnalyticsEvent.event_type == 'cta_click'
+            ))
+        ).scalar() or 0
 
     # Calculate change
     if previous > 0:
@@ -149,49 +155,44 @@ def get_cta_clicks(days: int = 7) -> dict:
 
 def get_traffic_by_day(days: int = 7) -> dict:
     """Get traffic data grouped by day for charts"""
-    conn = get_connection()
-    cursor = conn.cursor()
+    cutoff = datetime.utcnow() - timedelta(days=days)
 
-    cutoff = (datetime.utcnow() - timedelta(days=days)).isoformat()
+    with db_session() as session:
+        # Group by date (using func.date for cross-db compatibility)
+        results = session.execute(
+            select(
+                func.date(PageView.timestamp).label('date'),
+                func.count().label('views'),
+                func.count(distinct(PageView.ip_hash)).label('visitors')
+            )
+            .where(PageView.timestamp >= cutoff)
+            .group_by(func.date(PageView.timestamp))
+            .order_by(func.date(PageView.timestamp))
+        ).all()
 
-    # Page views by day
-    cursor.execute("""
-        SELECT
-            DATE(timestamp) as date,
-            COUNT(*) as views,
-            COUNT(DISTINCT ip_hash) as visitors
-        FROM page_views
-        WHERE timestamp >= ?
-        GROUP BY DATE(timestamp)
-        ORDER BY date
-    """, (cutoff,))
+    # Build daily data map
+    data_map = {str(row.date): {"views": row.views, "visitors": row.visitors} for row in results}
 
-    rows = cursor.fetchall()
-    conn.close()
-
-    # Build daily data
+    # Fill in all days
     labels = []
     visitors_data = []
     views_data = []
 
-    # Create a map for existing data
-    data_map = {row["date"]: {"views": row["views"], "visitors": row["visitors"]} for row in rows}
+    day_names_uk = {
+        "Mon": "Пн", "Tue": "Вт", "Wed": "Ср",
+        "Thu": "Чт", "Fri": "Пт", "Sat": "Сб", "Sun": "Нд"
+    }
 
-    # Fill in all days
     for i in range(days):
-        date = (datetime.utcnow() - timedelta(days=days - 1 - i)).strftime("%Y-%m-%d")
-        day_name = (datetime.utcnow() - timedelta(days=days - 1 - i)).strftime("%a")
+        date = datetime.utcnow() - timedelta(days=days - 1 - i)
+        date_str = date.strftime("%Y-%m-%d")
+        day_name = date.strftime("%a")
 
-        # Ukrainian day names
-        day_names_uk = {
-            "Mon": "Пн", "Tue": "Вт", "Wed": "Ср",
-            "Thu": "Чт", "Fri": "Пт", "Sat": "Сб", "Sun": "Нд"
-        }
         labels.append(day_names_uk.get(day_name, day_name))
 
-        if date in data_map:
-            visitors_data.append(data_map[date]["visitors"])
-            views_data.append(data_map[date]["views"])
+        if date_str in data_map:
+            visitors_data.append(data_map[date_str]["visitors"])
+            views_data.append(data_map[date_str]["views"])
         else:
             visitors_data.append(0)
             views_data.append(0)
@@ -205,32 +206,27 @@ def get_traffic_by_day(days: int = 7) -> dict:
 
 def get_traffic_sources(days: int = 7) -> list:
     """Get traffic sources breakdown"""
-    conn = get_connection()
-    cursor = conn.cursor()
+    cutoff = datetime.utcnow() - timedelta(days=days)
 
-    cutoff = (datetime.utcnow() - timedelta(days=days)).isoformat()
+    with db_session() as session:
+        results = session.execute(
+            select(
+                PageView.referrer,
+                func.count().label('count')
+            )
+            .where(PageView.timestamp >= cutoff)
+            .group_by(PageView.referrer)
+            .order_by(func.count().desc())
+        ).all()
 
-    cursor.execute("""
-        SELECT
-            referrer,
-            COUNT(*) as count
-        FROM page_views
-        WHERE timestamp >= ?
-        GROUP BY referrer
-        ORDER BY count DESC
-    """, (cutoff,))
-
-    rows = cursor.fetchall()
-    total = sum(row["count"] for row in rows) if rows else 1
-
-    conn.close()
+    total = sum(row.count for row in results) if results else 1
 
     sources = []
-    for row in rows:
+    for row in results:
         sources.append({
-            "name": row["referrer"] or "Direct",
-            "count": row["count"],
-            "percentage": round((row["count"] / total) * 100, 1)
+            "name": row.referrer or "Direct",
+            "count": row.count,
+            "percentage": round((row.count / total) * 100, 1)
         })
 
     return sources
@@ -238,25 +234,20 @@ def get_traffic_sources(days: int = 7) -> list:
 
 def get_popular_pages(limit: int = 10, days: int = 7) -> list:
     """Get most popular pages"""
-    conn = get_connection()
-    cursor = conn.cursor()
+    cutoff = datetime.utcnow() - timedelta(days=days)
 
-    cutoff = (datetime.utcnow() - timedelta(days=days)).isoformat()
-
-    cursor.execute("""
-        SELECT
-            path,
-            COUNT(*) as views,
-            COUNT(DISTINCT ip_hash) as visitors
-        FROM page_views
-        WHERE timestamp >= ?
-        GROUP BY path
-        ORDER BY views DESC
-        LIMIT ?
-    """, (cutoff, limit))
-
-    rows = cursor.fetchall()
-    conn.close()
+    with db_session() as session:
+        results = session.execute(
+            select(
+                PageView.path,
+                func.count().label('views'),
+                func.count(distinct(PageView.ip_hash)).label('visitors')
+            )
+            .where(PageView.timestamp >= cutoff)
+            .group_by(PageView.path)
+            .order_by(func.count().desc())
+            .limit(limit)
+        ).all()
 
     # Page name mapping
     page_names = {
@@ -271,8 +262,8 @@ def get_popular_pages(limit: int = 10, days: int = 7) -> list:
     }
 
     pages = []
-    for row in rows:
-        path = row["path"]
+    for row in results:
+        path = row.path
         name = page_names.get(path)
         if not name:
             if path.startswith("/blog/"):
@@ -283,8 +274,8 @@ def get_popular_pages(limit: int = 10, days: int = 7) -> list:
         pages.append({
             "path": path,
             "name": name,
-            "views": row["views"],
-            "visitors": row["visitors"]
+            "views": row.views,
+            "visitors": row.visitors
         })
 
     return pages
@@ -292,32 +283,27 @@ def get_popular_pages(limit: int = 10, days: int = 7) -> list:
 
 def get_device_stats(days: int = 7) -> list:
     """Get device breakdown"""
-    conn = get_connection()
-    cursor = conn.cursor()
+    cutoff = datetime.utcnow() - timedelta(days=days)
 
-    cutoff = (datetime.utcnow() - timedelta(days=days)).isoformat()
+    with db_session() as session:
+        results = session.execute(
+            select(
+                PageView.device,
+                func.count().label('count')
+            )
+            .where(PageView.timestamp >= cutoff)
+            .group_by(PageView.device)
+            .order_by(func.count().desc())
+        ).all()
 
-    cursor.execute("""
-        SELECT
-            device,
-            COUNT(*) as count
-        FROM page_views
-        WHERE timestamp >= ?
-        GROUP BY device
-        ORDER BY count DESC
-    """, (cutoff,))
-
-    rows = cursor.fetchall()
-    total = sum(row["count"] for row in rows) if rows else 1
-
-    conn.close()
+    total = sum(row.count for row in results) if results else 1
 
     devices = []
-    for row in rows:
+    for row in results:
         devices.append({
-            "name": row["device"] or "Unknown",
-            "count": row["count"],
-            "percentage": round((row["count"] / total) * 100, 1)
+            "name": row.device or "Unknown",
+            "count": row.count,
+            "percentage": round((row.count / total) * 100, 1)
         })
 
     return devices
@@ -325,32 +311,27 @@ def get_device_stats(days: int = 7) -> list:
 
 def get_browser_stats(days: int = 7) -> list:
     """Get browser breakdown"""
-    conn = get_connection()
-    cursor = conn.cursor()
+    cutoff = datetime.utcnow() - timedelta(days=days)
 
-    cutoff = (datetime.utcnow() - timedelta(days=days)).isoformat()
+    with db_session() as session:
+        results = session.execute(
+            select(
+                PageView.browser,
+                func.count().label('count')
+            )
+            .where(PageView.timestamp >= cutoff)
+            .group_by(PageView.browser)
+            .order_by(func.count().desc())
+        ).all()
 
-    cursor.execute("""
-        SELECT
-            browser,
-            COUNT(*) as count
-        FROM page_views
-        WHERE timestamp >= ?
-        GROUP BY browser
-        ORDER BY count DESC
-    """, (cutoff,))
-
-    rows = cursor.fetchall()
-    total = sum(row["count"] for row in rows) if rows else 1
-
-    conn.close()
+    total = sum(row.count for row in results) if results else 1
 
     browsers = []
-    for row in rows:
+    for row in results:
         browsers.append({
-            "name": row["browser"] or "Unknown",
-            "count": row["count"],
-            "percentage": round((row["count"] / total) * 100, 1)
+            "name": row.browser or "Unknown",
+            "count": row.count,
+            "percentage": round((row.count / total) * 100, 1)
         })
 
     return browsers
@@ -358,30 +339,20 @@ def get_browser_stats(days: int = 7) -> list:
 
 def get_recent_events(limit: int = 10) -> list:
     """Get recent events for activity feed"""
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT
-            timestamp,
-            event_type,
-            event_data,
-            path
-        FROM events
-        ORDER BY timestamp DESC
-        LIMIT ?
-    """, (limit,))
-
-    rows = cursor.fetchall()
-    conn.close()
+    with db_session() as session:
+        results = session.execute(
+            select(AnalyticsEvent)
+            .order_by(AnalyticsEvent.timestamp.desc())
+            .limit(limit)
+        ).scalars().all()
 
     events = []
-    for row in rows:
+    for event in results:
         events.append({
-            "timestamp": row["timestamp"],
-            "type": row["event_type"],
-            "data": row["event_data"],
-            "path": row["path"]
+            "timestamp": event.timestamp.isoformat() if event.timestamp else None,
+            "type": event.event_type,
+            "data": event.event_data,
+            "path": event.path
         })
 
     return events
@@ -389,29 +360,23 @@ def get_recent_events(limit: int = 10) -> list:
 
 def get_form_submissions(days: int = 30, limit: int = 10) -> list:
     """Get recent form submissions"""
-    conn = get_connection()
-    cursor = conn.cursor()
+    cutoff = datetime.utcnow() - timedelta(days=days)
 
-    cutoff = (datetime.utcnow() - timedelta(days=days)).isoformat()
-
-    cursor.execute("""
-        SELECT *
-        FROM form_submissions
-        WHERE timestamp >= ?
-        ORDER BY timestamp DESC
-        LIMIT ?
-    """, (cutoff, limit))
-
-    rows = cursor.fetchall()
-    conn.close()
+    with db_session() as session:
+        results = session.execute(
+            select(FormSubmission)
+            .where(FormSubmission.timestamp >= cutoff)
+            .order_by(FormSubmission.timestamp.desc())
+            .limit(limit)
+        ).scalars().all()
 
     submissions = []
-    for row in rows:
+    for sub in results:
         submissions.append({
-            "timestamp": row["timestamp"],
-            "form_type": row["form_type"],
-            "company": row["company"],
-            "request_type": row["request_type"]
+            "timestamp": sub.timestamp.isoformat() if sub.timestamp else None,
+            "form_type": sub.form_type,
+            "company": sub.company,
+            "request_type": sub.request_type
         })
 
     return submissions
