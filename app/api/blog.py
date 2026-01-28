@@ -33,11 +33,9 @@ async def get_blog_posts(lang: str = "uk"):
     - date, read_time, emoji, color
     """
     posts = get_all_posts(lang)
-        lang_key = "uk" if lang == "uk" else "en"
 
     result = []
-        for post in posts:
-        
+    for post in posts:
         result.append({
             "slug": post.get("slug", ""),
             "title": post.get("title", ""),
