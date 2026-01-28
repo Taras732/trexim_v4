@@ -36,10 +36,10 @@ async def get_blog_posts(lang: str = "uk"):
     lang_key = "uk" if lang == "uk" else "en"
 
     result = []
-    for slug, post_data in posts.items():
-        post = post_data.get(lang_key, post_data.get("en", {}))
+        for post in posts:
+        
         result.append({
-            "slug": slug,
+            "slug": post.get("slug", ""),
             "title": post.get("title", ""),
             "excerpt": post.get("excerpt", ""),
             "category": post.get("category", ""),
