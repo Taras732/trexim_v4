@@ -10,12 +10,12 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.sessions import SessionMiddleware
 from pathlib import Path
 
-    from .config import settings
-    from .routes import pages, blog
-    from .api import router as api_router
-    from .admin import router as admin_router
-    from .analytics import AnalyticsMiddleware
-    from .logger import logger
+from .config import settings
+from .routes import pages, blog
+from .api import router as api_router
+from .admin import router as admin_router
+from .analytics import AnalyticsMiddleware
+from .logger import logger
 
 # Initialize app
 app = FastAPI(title=settings.APP_NAME)
