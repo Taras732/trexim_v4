@@ -4,7 +4,7 @@ Blog API - JSON endpoints for blog functionality
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 
-from ..data import load_posts
+from ..data import get_all_posts
 
 router = APIRouter(prefix="/blog", tags=["blog"])
 
@@ -32,7 +32,7 @@ async def get_blog_posts(lang: str = "uk"):
     - slug, title, excerpt, category, category_key
     - date, read_time, emoji, color
     """
-    posts = load_posts()
+    posts = get_all_posts()
     lang_key = "uk" if lang == "uk" else "en"
 
     result = []
