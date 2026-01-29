@@ -9,28 +9,30 @@ from fastapi import UploadFile
 import cloudinary
 import cloudinary.uploader
 
-# Configure Cloudinary from CLOUDINARY_URL environment variable
-cloudinary_url = os.environ.get("CLOUDINARY_URL")
+# Configure Cloudinary - support both individual vars and CLOUDINARY_URL
+cloud_name = os.environ.get("CLOUDINARY_CLOUD_NAME")
+api_key = os.environ.get("CLOUDINARY_API_KEY")
+api_secret = os.environ.get("CLOUDINARY_API_SECRET_KEY") or os.environ.get("CLOUDINARY_API_SECRET")
 
-if cloudinary_url:
-    # Parse cloudinary://API_KEY:API_SECRET@CLOUD_NAME
-    parsed = urlparse(cloudinary_url)
+# Fallback to CLOUDINARY_URL if individual vars not set
+if not all([cloud_name, api_key, api_secret]):
+    cloudinary_url = os.environ.get("CLOUDINARY_URL")
+    if cloudinary_url:
+        parsed = urlparse(cloudinary_url)
+        cloud_name = parsed.hostname
+        api_key = parsed.username
+        api_secret = parsed.password
 
-    cloud_name = parsed.hostname
-    api_key = parsed.username
-    api_secret = parsed.password
-
-    # Explicitly configure Cloudinary SDK
+if all([cloud_name, api_key, api_secret]):
     cloudinary.config(
         cloud_name=cloud_name,
         api_key=api_key,
         api_secret=api_secret,
         secure=True
     )
-
-    print(f"Cloudinary SDK configured: cloud={cloud_name}, api_key={api_key[:4] if api_key else 'None'}***, api_secret={'set' if api_secret else 'NOT SET'}")
+    print(f"Cloudinary configured: cloud={cloud_name}, api_key={api_key[:4]}***, api_secret=set")
 else:
-    print("WARNING: CLOUDINARY_URL not set!")
+    print(f"WARNING: Cloudinary not configured! cloud={cloud_name}, api_key={api_key}, api_secret={'set' if api_secret else 'NOT SET'}")
 
 # Configuration
 ALLOWED_TYPES = {"image/png", "image/jpeg", "image/jpg", "image/gif", "image/webp"}
