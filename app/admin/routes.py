@@ -1,16 +1,18 @@
 """
 Admin routes - all admin panel endpoints
 """
-from fastapi import APIRouter, Request, Form, Depends
+from fastapi import APIRouter, Request, Form, Depends, UploadFile, File
 from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
+from typing import Optional
 
 from .auth import check_auth, login_user, logout_user, needs_setup
 
 try:
     from ..config import settings
     from ..logger import log_admin_action, get_log_files, read_log_file
+    from ..media import upload_image
     from ..data import (
         get_all_posts_for_admin,
         get_post,
@@ -30,6 +32,7 @@ try:
 except ImportError:
     from config import settings
     from logger import log_admin_action, get_log_files, read_log_file
+    from media import upload_image
     from data import (
         get_all_posts_for_admin,
         get_post,
@@ -166,16 +169,26 @@ async def admin_blog_create(
     date_uk: str = Form(...),
     date_en: str = Form(...),
     read_time: str = Form(...),
-    emoji: str = Form(...),
+    emoji: str = Form(""),
     color: str = Form("orange"),
     tags_uk: str = Form(""),
     tags_en: str = Form(""),
     content_uk: str = Form(...),
-    content_en: str = Form(...)
+    content_en: str = Form(...),
+    cover_image: Optional[UploadFile] = File(None)
 ):
     """Create new blog post"""
     if not slug:
         slug = generate_slug(title_uk)
+
+    # Handle image upload
+    image_url = None
+    if cover_image and cover_image.filename:
+        try:
+            result = await upload_image(cover_image, "blog")
+            image_url = result.get("optimized") or result.get("original")
+        except Exception as e:
+            print(f"Image upload error: {e}")
 
     uk_data = {
         "title": title_uk,
@@ -186,7 +199,8 @@ async def admin_blog_create(
         "emoji": emoji,
         "color": color,
         "tags": [t.strip() for t in tags_uk.split(",") if t.strip()],
-        "content": content_uk
+        "content": content_uk,
+        "image_url": image_url
     }
 
     en_data = {
@@ -198,14 +212,17 @@ async def admin_blog_create(
         "emoji": emoji,
         "color": color,
         "tags": [t.strip() for t in tags_en.split(",") if t.strip()],
-        "content": content_en
+        "content": content_en,
+        "image_url": image_url
     }
 
     success = create_post(slug, uk_data, en_data)
     if not success:
+        categories = get_active_categories()
+        tags = get_active_tags()
         return templates.TemplateResponse(
             "admin/blog_form.html",
-            {"request": request, "post": None, "slug": None, "action": "create", "error": "Стаття з таким slug вже існує"}
+            {"request": request, "post": None, "slug": None, "action": "create", "error": "Стаття з таким slug вже існує", "categories": categories, "tags": tags}
         )
 
     username = request.session.get("username", "unknown")
@@ -227,14 +244,24 @@ async def admin_blog_update_post(
     date_uk: str = Form(...),
     date_en: str = Form(...),
     read_time: str = Form(...),
-    emoji: str = Form(...),
+    emoji: str = Form(""),
     color: str = Form("orange"),
     tags_uk: str = Form(""),
     tags_en: str = Form(""),
     content_uk: str = Form(...),
-    content_en: str = Form(...)
+    content_en: str = Form(...),
+    cover_image: Optional[UploadFile] = File(None)
 ):
     """Update blog post"""
+    # Handle image upload
+    image_url = None
+    if cover_image and cover_image.filename:
+        try:
+            result = await upload_image(cover_image, "blog")
+            image_url = result.get("optimized") or result.get("original")
+        except Exception as e:
+            print(f"Image upload error: {e}")
+
     uk_data = {
         "title": title_uk,
         "excerpt": excerpt_uk,
@@ -258,6 +285,11 @@ async def admin_blog_update_post(
         "tags": [t.strip() for t in tags_en.split(",") if t.strip()],
         "content": content_en
     }
+
+    # Only update image if new one was uploaded
+    if image_url:
+        uk_data["image_url"] = image_url
+        en_data["image_url"] = image_url
 
     update_post(slug, uk_data, en_data)
     username = request.session.get("username", "unknown")

@@ -41,7 +41,8 @@ def get_post(slug: str) -> Optional[Dict]:
                 "read_time": str(post.read_time) if post.read_time else "5",
                 "emoji": post.emoji,
                 "color": post.color,
-                "tags": tags_uk
+                "tags": tags_uk,
+                "image": post.image_url
             },
             "en": {
                 "title": post.title_en,
@@ -52,7 +53,8 @@ def get_post(slug: str) -> Optional[Dict]:
                 "read_time": str(post.read_time) if post.read_time else "5",
                 "emoji": post.emoji,
                 "color": post.color,
-                "tags": tags_en
+                "tags": tags_en,
+                "image": post.image_url
             }
         }
 
@@ -93,6 +95,7 @@ def create_post(slug: str, uk_data: Dict, en_data: Dict) -> bool:
                 emoji=uk_data.get("emoji", ""),
                 color=uk_data.get("color", "orange"),
                 read_time=int(uk_data.get("read_time", 5)),
+                image_url=uk_data.get("image_url"),
                 status="published",
                 published_at=datetime.utcnow(),
                 created_at=datetime.utcnow(),
@@ -147,6 +150,8 @@ def update_post(slug: str, uk_data: Dict, en_data: Dict) -> bool:
             post.emoji = uk_data.get("emoji", post.emoji)
             post.color = uk_data.get("color", post.color)
             post.read_time = int(uk_data.get("read_time", post.read_time or 5))
+            if uk_data.get("image_url"):
+                post.image_url = uk_data.get("image_url")
             post.updated_at = datetime.utcnow()
 
             # Update tags
@@ -264,7 +269,8 @@ def get_post_for_view(slug: str, lang: str = "uk") -> Optional[Dict]:
                 "read_time": post.read_time,
                 "emoji": post.emoji,
                 "color": post.color,
-                "tags": [tag.name_uk for tag in post.tags]
+                "tags": [tag.name_uk for tag in post.tags],
+                "image": post.image_url
             }
         else:
             return {
@@ -277,7 +283,8 @@ def get_post_for_view(slug: str, lang: str = "uk") -> Optional[Dict]:
                 "read_time": post.read_time,
                 "emoji": post.emoji,
                 "color": post.color,
-                "tags": [tag.name_en for tag in post.tags]
+                "tags": [tag.name_en for tag in post.tags],
+                "image": post.image_url
             }
 
 

@@ -46,8 +46,8 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
 
-    <!-- Tailwind CSS - загружається першим для уникнення FOUC -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CSS with Typography plugin - загружається першим для уникнення FOUC -->
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -56,7 +56,32 @@
                         'brand-black': '#000000',
                         'brand-gray': '#f5f5f5',
                         'brand-blue': '#0066cc',
-                    }
+                    },
+                    typography: {
+                        DEFAULT: {
+                            css: {
+                                maxWidth: 'none',
+                                color: '#334155',
+                                a: {
+                                    color: '#f97316',
+                                    '&:hover': {
+                                        color: '#ea580c',
+                                    },
+                                },
+                                h2: {
+                                    color: '#0f172a',
+                                    fontWeight: '700',
+                                },
+                                h3: {
+                                    color: '#1e293b',
+                                    fontWeight: '600',
+                                },
+                                strong: {
+                                    color: '#0f172a',
+                                },
+                            },
+                        },
+                    },
                 }
             }
         }
