@@ -39,15 +39,9 @@
 <!-- Article Image -->
 <section class="relative -mt-8 px-6">
     <div class="max-w-4xl mx-auto">
-        {% if post.image %}
-        <div class="h-64 md:h-96 rounded-3xl overflow-hidden shadow-2xl">
-            <img src="{{ post.image }}" alt="{{ post.title }}" class="w-full h-full object-cover">
-        </div>
-        {% else %}
         <div class="h-64 md:h-96 bg-gradient-to-br from-{{ post.color }}-500 to-{{ post.color }}-600 rounded-3xl flex items-center justify-center shadow-2xl">
             <div class="text-9xl">{{ post.emoji }}</div>
         </div>
-        {% endif %}
     </div>
 </section>
 
