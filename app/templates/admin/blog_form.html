@@ -188,11 +188,11 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Контент (HTML)</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Контент (Markdown)</label>
                     <textarea name="content_uk" rows="15" required
                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 font-mono text-sm">{{ post.uk.content if post else '' }}</textarea>
                     <p class="text-xs text-gray-500 mt-1">
-                        HTML теги: &lt;p&gt;, &lt;h2&gt;, &lt;h3&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;strong&gt;, &lt;a href=""&gt;
+                        Markdown: # Заголовок, ## Підзаголовок, **жирний**, *курсив*, [посилання](url), - список
                     </p>
                 </div>
             </div>
@@ -224,9 +224,12 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Content (HTML)</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Content (Markdown)</label>
                     <textarea name="content_en" x-model="contentEn" rows="15" required
                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 font-mono text-sm">{{ post.en.content if post else '' }}</textarea>
+                    <p class="text-xs text-gray-500 mt-1">
+                        Markdown: # Heading, ## Subheading, **bold**, *italic*, [link](url), - list
+                    </p>
                 </div>
             </div>
         </div>

@@ -5,6 +5,7 @@ from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
+import markdown
 
 try:
     from ..data import get_post, get_related_posts
@@ -14,6 +15,18 @@ except ImportError:
 router = APIRouter()
 templates_dir = Path(__file__).parent.parent / "templates"
 templates = Jinja2Templates(directory=str(templates_dir))
+
+# Add markdown filter to Jinja2
+def markdown_filter(text):
+    """Convert Markdown to HTML"""
+    if not text:
+        return ""
+    return markdown.markdown(
+        text,
+        extensions=['extra', 'nl2br', 'sane_lists']
+    )
+
+templates.env.filters['markdown'] = markdown_filter
 
 
 @router.get("/blog", response_class=HTMLResponse)
