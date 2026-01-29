@@ -7,6 +7,7 @@ from .blog_service import (
     get_all_posts,
     get_post_for_view,
     get_related_posts,
+    get_homepage_posts,
     generate_slug
 )
 
@@ -32,6 +33,7 @@ __all__ = [
     'get_all_posts',
     'get_post_for_view',
     'get_related_posts',
+    'get_homepage_posts',
     'generate_slug',
     'get_all_reference_types',
     'get_reference_items',

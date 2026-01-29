@@ -165,6 +165,16 @@
                     <input type="hidden" name="date_uk" :value="getFormattedDate('uk')">
                     <input type="hidden" name="date_en" :value="getFormattedDate('en')">
                 </div>
+
+                <!-- Show on Homepage -->
+                <div class="md:col-span-3">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <input type="checkbox" name="show_on_homepage" value="true" x-model="showOnHomepage"
+                               class="w-5 h-5 text-orange-500 border-gray-300 rounded focus:ring-orange-500">
+                        <span class="text-sm font-medium text-gray-700">Показувати на головній сторінці</span>
+                    </label>
+                    <p class="text-xs text-gray-500 mt-1 ml-8">Стаття буде відображатись у секції блогу на головній</p>
+                </div>
             </div>
         </div>
 
@@ -304,6 +314,7 @@ function blogForm() {
         publishType: 'now',
         publishDate: new Date().toISOString().split('T')[0],
         publishTime: '09:00',
+        showOnHomepage: {{ 'true' if post and post.show_on_homepage else 'false' }},
 
         titleEn: {{ (post.en.title | tojson) if post and post.en.title else '""' }},
         excerptEn: {{ (post.en.excerpt | tojson) if post and post.en.excerpt else '""' }},

@@ -175,6 +175,7 @@ async def admin_blog_create(
     tags_en: str = Form(""),
     content_uk: str = Form(...),
     content_en: str = Form(...),
+    show_on_homepage: str = Form(None),
     cover_image: Optional[UploadFile] = File(None)
 ):
     """Create new blog post"""
@@ -192,6 +193,9 @@ async def admin_blog_create(
         except Exception as e:
             print(f"Upload error: {e}")
 
+    # Parse show_on_homepage checkbox
+    is_show_on_homepage = show_on_homepage == "true" or show_on_homepage == "on"
+
     uk_data = {
         "title": title_uk,
         "excerpt": excerpt_uk,
@@ -202,7 +206,8 @@ async def admin_blog_create(
         "color": color,
         "tags": [t.strip() for t in tags_uk.split(",") if t.strip()],
         "content": content_uk,
-        "image_url": image_url
+        "image_url": image_url,
+        "show_on_homepage": is_show_on_homepage
     }
 
     en_data = {
@@ -252,6 +257,7 @@ async def admin_blog_update_post(
     tags_en: str = Form(""),
     content_uk: str = Form(...),
     content_en: str = Form(...),
+    show_on_homepage: str = Form(None),
     cover_image: Optional[UploadFile] = File(None)
 ):
     """Update blog post"""
@@ -266,6 +272,9 @@ async def admin_blog_update_post(
         except Exception as e:
             print(f"Upload error: {e}")
 
+    # Parse show_on_homepage checkbox
+    is_show_on_homepage = show_on_homepage == "true" or show_on_homepage == "on"
+
     uk_data = {
         "title": title_uk,
         "excerpt": excerpt_uk,
@@ -275,7 +284,8 @@ async def admin_blog_update_post(
         "emoji": emoji,
         "color": color,
         "tags": [t.strip() for t in tags_uk.split(",") if t.strip()],
-        "content": content_uk
+        "content": content_uk,
+        "show_on_homepage": is_show_on_homepage
     }
 
     en_data = {

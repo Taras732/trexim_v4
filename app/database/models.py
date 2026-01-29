@@ -104,6 +104,7 @@ class BlogPost(Base):
     status = Column(String(20), default='draft')  # draft, scheduled, published
     published_at = Column(DateTime, nullable=True)
     scheduled_at = Column(DateTime, nullable=True)
+    show_on_homepage = Column(Boolean, default=False)  # Show in homepage blog section
 
     # Metadata
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)

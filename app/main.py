@@ -16,6 +16,7 @@ from .api import router as api_router
 from .admin import router as admin_router
 from .analytics import AnalyticsMiddleware
 from .logger import logger
+from .data import get_homepage_posts
 
 # Initialize app
 app = FastAPI(title=settings.APP_NAME)
@@ -82,9 +83,10 @@ app.include_router(admin_router)
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request, lang: str = "uk"):
     """Home page"""
+    blog_posts = get_homepage_posts(lang, limit=6)
     return templates.TemplateResponse(
         "pages/home.html",
-        {"request": request, "language": lang}
+        {"request": request, "language": lang, "blog_posts": blog_posts}
     )
 
 

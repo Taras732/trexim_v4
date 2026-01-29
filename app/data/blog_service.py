@@ -32,6 +32,7 @@ def get_post(slug: str) -> Optional[Dict]:
         tags_en = [tag.name_en for tag in post.tags]
 
         return {
+            "show_on_homepage": post.show_on_homepage or False,
             "uk": {
                 "title": post.title_uk,
                 "excerpt": post.excerpt_uk,
@@ -96,6 +97,7 @@ def create_post(slug: str, uk_data: Dict, en_data: Dict) -> bool:
                 color=uk_data.get("color", "orange"),
                 read_time=int(uk_data.get("read_time", 5)),
                 image_url=uk_data.get("image_url"),
+                show_on_homepage=uk_data.get("show_on_homepage", False),
                 status="published",
                 published_at=datetime.utcnow(),
                 created_at=datetime.utcnow(),
@@ -152,6 +154,7 @@ def update_post(slug: str, uk_data: Dict, en_data: Dict) -> bool:
             post.read_time = int(uk_data.get("read_time", post.read_time or 5))
             if uk_data.get("image_url"):
                 post.image_url = uk_data.get("image_url")
+            post.show_on_homepage = uk_data.get("show_on_homepage", post.show_on_homepage or False)
             post.updated_at = datetime.utcnow()
 
             # Update tags
@@ -319,6 +322,45 @@ def get_related_posts(current_slug: str, lang: str, limit: int = 3) -> List[Dict
                     "date": post.date_en,
                     "emoji": post.emoji,
                     "color": post.color
+                })
+        return result
+
+
+def get_homepage_posts(lang: str = "uk", limit: int = 6) -> List[Dict]:
+    """Get posts marked for homepage display"""
+    with db_session() as session:
+        posts = session.execute(
+            select(BlogPost)
+            .where(BlogPost.status == "published", BlogPost.show_on_homepage == True)
+            .order_by(BlogPost.published_at.desc())
+            .limit(limit)
+        ).scalars().all()
+
+        result = []
+        for post in posts:
+            if lang == "uk":
+                result.append({
+                    "slug": post.slug,
+                    "title": post.title_uk,
+                    "excerpt": post.excerpt_uk,
+                    "category": post.category.name_uk if post.category else "",
+                    "date": post.date_uk,
+                    "read_time": post.read_time,
+                    "emoji": post.emoji,
+                    "color": post.color,
+                    "image": post.image_url
+                })
+            else:
+                result.append({
+                    "slug": post.slug,
+                    "title": post.title_en,
+                    "excerpt": post.excerpt_en,
+                    "category": post.category.name_en if post.category else "",
+                    "date": post.date_en,
+                    "read_time": post.read_time,
+                    "emoji": post.emoji,
+                    "color": post.color,
+                    "image": post.image_url
                 })
         return result
 
