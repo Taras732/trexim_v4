@@ -4,9 +4,9 @@
 {% block page_title %}{% if action == 'create' %}Нова стаття{% else %}Редагування статті{% endif %}{% endblock %}
 
 {% block content %}
-<div x-data="blogForm()" @submit="isSubmitting = true" class="max-w-5xl">
+<div class="max-w-5xl">
     <div class="mb-6 flex items-center space-x-4">
-        <a href="/admin/blog" class="text-gray-600 hover:text-orange-500">&larr; Назад</a>
+        <a href="/admin/blog" class="text-gray-600 hover:text-orange-500">&larr; Назад до списку</a>
     </div>
 
     {% if error %}
@@ -15,7 +15,8 @@
     </div>
     {% endif %}
 
-    <form method="POST" action="{% if action == 'create' %}/admin/blog{% else %}/admin/blog/{{ slug }}/update{% endif %}"
+    <form id="blogForm" method="POST"
+          action="{% if action == 'create' %}/admin/blog{% else %}/admin/blog/{{ slug }}/update{% endif %}"
           enctype="multipart/form-data" class="space-y-6">
 
         <!-- Basic Info Card -->
@@ -35,9 +36,9 @@
                 <!-- Emoji -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Emoji</label>
-                    <input type="text" name="emoji" value="{{ post.uk.emoji if post else '📋' }}"
+                    <input type="text" name="emoji" value="{{ post.uk.emoji if post else '' }}"
                            class="w-20 px-4 py-2 border border-gray-300 rounded-lg text-2xl text-center focus:ring-2 focus:ring-orange-500">
-                    <p class="text-xs text-gray-500 mt-1">Якщо немає фото</p>
+                    <p class="text-xs text-gray-500 mt-1">Використовується якщо немає фото</p>
                 </div>
 
                 <!-- Cover Image -->
@@ -47,7 +48,7 @@
                            class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100 cursor-pointer">
                     {% if post and post.uk.image %}
                     <div class="mt-2">
-                        <p class="text-xs text-gray-500">Поточне:</p>
+                        <p class="text-xs text-gray-500">Поточне зображення:</p>
                         <img src="{{ post.uk.image }}" class="max-w-xs max-h-24 rounded-lg border mt-1">
                     </div>
                     {% endif %}
@@ -69,8 +70,7 @@
                 <!-- Category -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Категорія</label>
-                    <select name="category_code" x-model="categoryCode" required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500">
+                    <select id="categorySelect" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500" required>
                         <option value="">Оберіть категорію...</option>
                         {% for cat in categories %}
                         <option value="{{ cat.code }}"
@@ -81,9 +81,9 @@
                         </option>
                         {% endfor %}
                     </select>
-                    <!-- Hidden fields for category names -->
-                    <input type="hidden" name="category_uk" :value="getCategoryName('uk')">
-                    <input type="hidden" name="category_en" :value="getCategoryName('en')">
+                    <!-- Hidden fields for actual form submission -->
+                    <input type="hidden" name="category_uk" id="category_uk" value="{{ post.uk.category if post else '' }}">
+                    <input type="hidden" name="category_en" id="category_en" value="{{ post.en.category if post else '' }}">
                 </div>
 
                 <!-- Read Time -->
@@ -93,53 +93,40 @@
                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500">
                 </div>
 
-                <!-- Tags Multi-select -->
+                <!-- Tags -->
                 <div class="md:col-span-3">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Теги</label>
-                    <div class="flex flex-wrap gap-2 p-3 border border-gray-300 rounded-lg min-h-[44px] bg-white">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Теги</label>
+                    <div class="flex flex-wrap gap-2 p-3 border border-gray-300 rounded-lg bg-white">
                         {% for tag in tags %}
-                        <label class="inline-flex items-center px-3 py-1 rounded-full text-sm cursor-pointer transition"
-                               :class="selectedTags.includes('{{ tag.code }}') ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'">
-                            <input type="checkbox" name="tag_codes" value="{{ tag.code }}"
-                                   x-model="selectedTags" class="sr-only">
+                        <label class="tag-label inline-flex items-center px-3 py-1 rounded-full text-sm cursor-pointer transition bg-gray-100 text-gray-700 hover:bg-gray-200">
+                            <input type="checkbox" class="tag-checkbox sr-only"
+                                   data-uk="{{ tag.name_uk }}"
+                                   data-en="{{ tag.name_en }}"
+                                   {% if post and tag.name_uk in post.uk.tags %}checked{% endif %}>
                             <span>{{ tag.name_uk }}</span>
                         </label>
                         {% endfor %}
                     </div>
-                    <!-- Hidden fields for tag names -->
-                    <input type="hidden" name="tags_uk" :value="getTagNames('uk')">
-                    <input type="hidden" name="tags_en" :value="getTagNames('en')">
+                    <input type="hidden" name="tags_uk" id="tags_uk" value="{{ post.uk.tags | join(', ') if post and post.uk.tags else '' }}">
+                    <input type="hidden" name="tags_en" id="tags_en" value="{{ post.en.tags | join(', ') if post and post.en.tags else '' }}">
                 </div>
 
-                <!-- Publication Date/Time -->
-                <div class="md:col-span-3">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Дата публікації</label>
-                    <div class="flex flex-wrap items-center gap-4">
-                        <label class="flex items-center">
-                            <input type="radio" name="publish_type" value="now" x-model="publishType" class="mr-2">
-                            <span class="text-sm">Опублікувати зараз</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="radio" name="publish_type" value="schedule" x-model="publishType" class="mr-2">
-                            <span class="text-sm">Запланувати</span>
-                        </label>
-
-                        <div x-show="publishType === 'schedule'" class="flex gap-2">
-                            <input type="date" name="publish_date" x-model="publishDate"
-                                   class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500">
-                            <input type="time" name="publish_time" x-model="publishTime"
-                                   class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500">
-                        </div>
-                    </div>
-                    <!-- Hidden formatted date fields -->
-                    <input type="hidden" name="date_uk" :value="getFormattedDate('uk')">
-                    <input type="hidden" name="date_en" :value="getFormattedDate('en')">
+                <!-- Publication Date -->
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Дата публікації</label>
+                    <input type="date" id="publishDate"
+                           value="{{ post.uk.date if post else '' }}"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500">
+                    <p class="text-xs text-gray-500 mt-1">Залиште порожнім для поточної дати</p>
+                    <input type="hidden" name="date_uk" id="date_uk" value="{{ post.uk.date if post else '' }}">
+                    <input type="hidden" name="date_en" id="date_en" value="{{ post.en.date if post else '' }}">
                 </div>
 
                 <!-- Show on Homepage -->
                 <div class="md:col-span-3">
                     <label class="flex items-center gap-3 cursor-pointer">
-                        <input type="checkbox" name="show_on_homepage" value="true" x-model="showOnHomepage"
+                        <input type="checkbox" name="show_on_homepage" value="true"
+                               {% if post and post.show_on_homepage %}checked{% endif %}
                                class="w-5 h-5 text-orange-500 border-gray-300 rounded focus:ring-orange-500">
                         <span class="text-sm font-medium text-gray-700">Показувати на головній сторінці</span>
                     </label>
@@ -151,24 +138,24 @@
         <!-- Ukrainian Content -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
             <h2 class="text-lg font-semibold mb-4 pb-2 border-b flex items-center gap-2">
-                <span class="text-xl">🇺🇦</span> Українська версія
+                <span class="text-xl">&#127482;&#127462;</span> Українська версія
             </h2>
 
             <div class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Заголовок</label>
-                    <input type="text" name="title_uk" value="{{ post.uk.title if post else '' }}" required
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Заголовок *</label>
+                    <input type="text" name="title_uk" id="title_uk" value="{{ post.uk.title if post else '' }}" required
                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500">
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Короткий опис</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Короткий опис *</label>
                     <textarea name="excerpt_uk" rows="2" required
                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500">{{ post.uk.excerpt if post else '' }}</textarea>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Контент (Markdown)</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Контент (Markdown) *</label>
                     <textarea name="content_uk" rows="15" required
                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 font-mono text-sm">{{ post.uk.content if post else '' }}</textarea>
                     <p class="text-xs text-gray-500 mt-1">
@@ -180,32 +167,26 @@
 
         <!-- English Content -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-            <div class="flex items-center justify-between mb-4 pb-2 border-b">
-                <h2 class="text-lg font-semibold flex items-center gap-2">
-                    <span class="text-xl">🇬🇧</span> English version
-                </h2>
-                <button type="button" @click="autoTranslate()"
-                        class="text-sm text-orange-600 hover:text-orange-700 font-medium">
-                    Автопереклад з UK
-                </button>
-            </div>
+            <h2 class="text-lg font-semibold mb-4 pb-2 border-b flex items-center gap-2">
+                <span class="text-xl">&#127468;&#127463;</span> English version
+            </h2>
 
             <div class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
-                    <input type="text" name="title_en" x-model="titleEn" value="{{ post.en.title if post else '' }}" required
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Title *</label>
+                    <input type="text" name="title_en" value="{{ post.en.title if post else '' }}" required
                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500">
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Excerpt</label>
-                    <textarea name="excerpt_en" x-model="excerptEn" rows="2" required
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Excerpt *</label>
+                    <textarea name="excerpt_en" rows="2" required
                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500">{{ post.en.excerpt if post else '' }}</textarea>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Content (Markdown)</label>
-                    <textarea name="content_en" x-model="contentEn" rows="15" required
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Content (Markdown) *</label>
+                    <textarea name="content_en" rows="15" required
                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 font-mono text-sm">{{ post.en.content if post else '' }}</textarea>
                     <p class="text-xs text-gray-500 mt-1">
                         Markdown: # Heading, ## Subheading, **bold**, *italic*, [link](url), - list
@@ -219,17 +200,10 @@
             <a href="/admin/blog" class="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-medium">
                 Скасувати
             </a>
-            <div class="flex gap-3">
-                <button type="submit" name="status" value="draft" :disabled="isSubmitting"
-                        class="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition font-medium disabled:opacity-50">
-                    Зберегти як чернетку
-                </button>
-                <button type="submit" name="status" value="published" :disabled="isSubmitting"
-                        class="px-8 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition font-medium disabled:opacity-50 flex items-center gap-2">
-                    <span x-show="isSubmitting" class="animate-spin">⏳</span>
-                    <span x-text="isSubmitting ? 'Збереження...' : '{% if action == 'create' %}Опублікувати{% else %}Зберегти{% endif %}'"></span>
-                </button>
-            </div>
+            <button type="submit" id="submitBtn"
+                    class="px-8 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition font-medium">
+                {% if action == 'create' %}Створити статтю{% else %}Зберегти зміни{% endif %}
+            </button>
         </div>
     </form>
 </div>
@@ -237,80 +211,99 @@
 
 {% block scripts %}
 <script>
-function blogForm() {
-    // Tag data from server
-    const tagData = {
-        {% for tag in tags %}
-        '{{ tag.code }}': { uk: '{{ tag.name_uk }}', en: '{{ tag.name_en }}' },
-        {% endfor %}
-    };
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('blogForm');
+    const categorySelect = document.getElementById('categorySelect');
+    const tagCheckboxes = document.querySelectorAll('.tag-checkbox');
+    const tagLabels = document.querySelectorAll('.tag-label');
 
-    // Category data from server
-    const categoryData = {
-        {% for cat in categories %}
-        '{{ cat.code }}': { uk: '{{ cat.name_uk }}', en: '{{ cat.name_en }}' },
-        {% endfor %}
-    };
-
-    return {
-        isSubmitting: false,
-
-        categoryCode: '{% for cat in categories %}{% if post and post.uk.category == cat.name_uk %}{{ cat.code }}{% endif %}{% endfor %}',
-
-        selectedTags: [{% if post and post.uk.tags %}{% for tag in tags %}{% if tag.name_uk in post.uk.tags %}'{{ tag.code }}',{% endif %}{% endfor %}{% endif %}],
-
-        publishType: 'now',
-        publishDate: new Date().toISOString().split('T')[0],
-        publishTime: '09:00',
-        showOnHomepage: {{ 'true' if post and post.show_on_homepage else 'false' }},
-
-        titleEn: {{ (post.en.title | tojson) if post and post.en.title else '""' }},
-        excerptEn: {{ (post.en.excerpt | tojson) if post and post.en.excerpt else '""' }},
-        contentEn: {{ (post.en.content | tojson) if post and post.en.content else '""' }},
-
-        getCategoryName(lang) {
-            if (!this.categoryCode) return '';
-            return categoryData[this.categoryCode]?.[lang] || '';
-        },
-
-        getTagNames(lang) {
-            return this.selectedTags
-                .map(code => tagData[code]?.[lang] || code)
-                .join(', ');
-        },
-
-        getFormattedDate(lang) {
-            const date = this.publishType === 'now' ? new Date() : new Date(this.publishDate + 'T' + this.publishTime);
-
-            if (lang === 'uk') {
-                const months = ['січня', 'лютого', 'березня', 'квітня', 'травня', 'червня',
-                               'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'];
-                return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+    // Update tag visual state
+    function updateTagStyles() {
+        tagCheckboxes.forEach((checkbox, index) => {
+            const label = tagLabels[index];
+            if (checkbox.checked) {
+                label.classList.remove('bg-gray-100', 'text-gray-700');
+                label.classList.add('bg-orange-500', 'text-white');
             } else {
-                const months = ['January', 'February', 'March', 'April', 'May', 'June',
-                               'July', 'August', 'September', 'October', 'November', 'December'];
-                return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+                label.classList.remove('bg-orange-500', 'text-white');
+                label.classList.add('bg-gray-100', 'text-gray-700');
             }
-        },
+        });
+    }
 
-        async autoTranslate() {
-            const titleUk = document.querySelector('[name="title_uk"]').value;
-            const excerptUk = document.querySelector('[name="excerpt_uk"]').value;
-            const contentUk = document.querySelector('[name="content_uk"]').value;
+    // Initialize tag styles
+    updateTagStyles();
 
-            if (!titleUk) {
-                alert('Спочатку заповніть українську версію');
-                return;
-            }
+    // Toggle tag on click
+    tagCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateTagStyles);
+    });
 
-            // Simple placeholder - in real app would call translation API
-            this.titleEn = titleUk + ' [EN]';
-            this.excerptEn = excerptUk + ' [EN]';
-            this.contentEn = contentUk;
+    // Update category hidden fields when selection changes
+    categorySelect.addEventListener('change', function() {
+        const selected = this.options[this.selectedIndex];
+        document.getElementById('category_uk').value = selected.dataset.uk || '';
+        document.getElementById('category_en').value = selected.dataset.en || '';
+    });
 
-            alert('Автопереклад потребує інтеграції з API перекладу (Google Translate, DeepL тощо). Поки що скопійовано український текст.');
+    // Initialize category fields if a value is already selected
+    if (categorySelect.value) {
+        const selected = categorySelect.options[categorySelect.selectedIndex];
+        document.getElementById('category_uk').value = selected.dataset.uk || '';
+        document.getElementById('category_en').value = selected.dataset.en || '';
+    }
+
+    // Format date helper
+    function formatDate(dateStr, lang) {
+        if (!dateStr) {
+            const now = new Date();
+            dateStr = now.toISOString().split('T')[0];
+        }
+
+        const date = new Date(dateStr + 'T12:00:00');
+
+        if (lang === 'uk') {
+            const months = ['січня', 'лютого', 'березня', 'квітня', 'травня', 'червня',
+                           'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'];
+            return date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear();
+        } else {
+            const months = ['January', 'February', 'March', 'April', 'May', 'June',
+                           'July', 'August', 'September', 'October', 'November', 'December'];
+            return months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
         }
     }
-}
+
+    // Handle form submission
+    form.addEventListener('submit', function(e) {
+        // Collect selected tags
+        const tagsUk = [];
+        const tagsEn = [];
+        tagCheckboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                tagsUk.push(checkbox.dataset.uk);
+                tagsEn.push(checkbox.dataset.en);
+            }
+        });
+        document.getElementById('tags_uk').value = tagsUk.join(', ');
+        document.getElementById('tags_en').value = tagsEn.join(', ');
+
+        // Format dates
+        const dateInput = document.getElementById('publishDate').value;
+        document.getElementById('date_uk').value = formatDate(dateInput, 'uk');
+        document.getElementById('date_en').value = formatDate(dateInput, 'en');
+
+        // Validate category
+        if (!document.getElementById('category_uk').value) {
+            e.preventDefault();
+            alert('Будь ласка, оберіть категорію');
+            categorySelect.focus();
+            return false;
+        }
+
+        // Disable submit button to prevent double submission
+        document.getElementById('submitBtn').disabled = true;
+        document.getElementById('submitBtn').textContent = 'Збереження...';
+    });
+});
 </script>
 {% endblock %}
