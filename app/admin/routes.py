@@ -183,12 +183,17 @@ async def admin_blog_create(
 
     # Handle image upload
     image_url = None
+    print(f"DEBUG CREATE: cover_image={cover_image}, filename={cover_image.filename if cover_image else 'None'}")
     if cover_image and cover_image.filename:
         try:
+            print(f"DEBUG CREATE: Uploading {cover_image.filename}, type={cover_image.content_type}")
             result = await upload_image(cover_image, "blog")
             image_url = result.get("optimized") or result.get("original")
+            print(f"DEBUG CREATE: Success! image_url={image_url}")
         except Exception as e:
-            print(f"Image upload error: {e}")
+            print(f"ERROR CREATE: Upload failed: {e}")
+            import traceback
+            traceback.print_exc()
 
     uk_data = {
         "title": title_uk,
@@ -255,12 +260,17 @@ async def admin_blog_update_post(
     """Update blog post"""
     # Handle image upload
     image_url = None
+    print(f"DEBUG UPDATE: cover_image={cover_image}, filename={cover_image.filename if cover_image else 'None'}")
     if cover_image and cover_image.filename:
         try:
+            print(f"DEBUG UPDATE: Uploading {cover_image.filename}, type={cover_image.content_type}")
             result = await upload_image(cover_image, "blog")
             image_url = result.get("optimized") or result.get("original")
+            print(f"DEBUG UPDATE: Success! image_url={image_url}")
         except Exception as e:
-            print(f"Image upload error: {e}")
+            print(f"ERROR UPDATE: Upload failed: {e}")
+            import traceback
+            traceback.print_exc()
 
     uk_data = {
         "title": title_uk,
