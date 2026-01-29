@@ -4,7 +4,7 @@
 {% block page_title %}{% if action == 'create' %}Нова стаття{% else %}Редагування статті{% endif %}{% endblock %}
 
 {% block content %}
-<div x-data="blogForm()" class="max-w-5xl">
+<div x-data="blogForm()" @submit="isSubmitting = true" class="max-w-5xl">
     <div class="mb-6 flex items-center space-x-4">
         <a href="/admin/blog" class="text-gray-600 hover:text-orange-500">&larr; Назад</a>
     </div>
@@ -237,13 +237,14 @@
                 Скасувати
             </a>
             <div class="flex gap-3">
-                <button type="submit" name="status" value="draft"
-                        class="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition font-medium">
+                <button type="submit" name="status" value="draft" :disabled="isSubmitting"
+                        class="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition font-medium disabled:opacity-50">
                     Зберегти як чернетку
                 </button>
-                <button type="submit" name="status" value="published"
-                        class="px-8 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition font-medium">
-                    {% if action == 'create' %}Опублікувати{% else %}Зберегти{% endif %}
+                <button type="submit" name="status" value="published" :disabled="isSubmitting"
+                        class="px-8 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition font-medium disabled:opacity-50 flex items-center gap-2">
+                    <span x-show="isSubmitting" class="animate-spin">⏳</span>
+                    <span x-text="isSubmitting ? 'Збереження...' : '{% if action == 'create' %}Опублікувати{% else %}Зберегти{% endif %}'"></span>
                 </button>
             </div>
         </div>
@@ -269,6 +270,7 @@ function blogForm() {
     };
 
     return {
+        isSubmitting: false,
         visualType: '{{ "image" if post and post.uk.image else "emoji" }}',
         emoji: '{{ post.uk.emoji if post else "📋" }}',
         popularEmojis: ['📋', '🚚', '📦', '🤖', '📊', '🔧', '💡', '🌍', '📈', '🛣️', '⚡', '🎯'],
@@ -277,6 +279,13 @@ function blogForm() {
         previewImage(event) {
             const file = event.target.files[0];
             if (file) {
+                // Check file size (max 10MB)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('Файл занадто великий. Максимум 10MB.');
+                    event.target.value = '';
+                    this.imagePreview = null;
+                    return;
+                }
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     this.imagePreview = e.target.result;
