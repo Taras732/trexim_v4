@@ -302,9 +302,9 @@ function blogForm() {
         publishDate: new Date().toISOString().split('T')[0],
         publishTime: '09:00',
 
-        titleEn: '{{ post.en.title if post else "" }}',
-        excerptEn: '{{ post.en.excerpt if post else "" }}',
-        contentEn: `{{ post.en.content | replace('\n', '\\n') | replace("'", "\\'") if post else "" }}`,
+        titleEn: {{ (post.en.title | tojson) if post and post.en.title else '""' }},
+        excerptEn: {{ (post.en.excerpt | tojson) if post and post.en.excerpt else '""' }},
+        contentEn: {{ (post.en.content | tojson) if post and post.en.content else '""' }},
 
         getCategoryName(lang) {
             if (!this.categoryCode) return '';
