@@ -9,23 +9,21 @@ from fastapi import UploadFile
 import cloudinary
 import cloudinary.uploader
 
-# Configure Cloudinary from CLOUDINARY_URL environment variable
+# Configure Cloudinary by setting environment variables that SDK will read
 cloudinary_url = os.environ.get("CLOUDINARY_URL")
 
 if cloudinary_url:
     # Parse cloudinary://API_KEY:API_SECRET@CLOUD_NAME
     parsed = urlparse(cloudinary_url)
-    cloudinary.config(
-        cloud_name=parsed.hostname,
-        api_key=parsed.username,
-        api_secret=parsed.password,
-        secure=True
-    )
-    print(f"Cloudinary configured for cloud: {parsed.hostname}, api_key: {parsed.username[:8]}...")
+    
+    # Set environment variables that Cloudinary SDK expects
+    os.environ["CLOUDINARY_CLOUD_NAME"] = parsed.hostname or ""
+    os.environ["CLOUDINARY_API_KEY"] = parsed.username or ""
+    os.environ["CLOUDINARY_API_SECRET"] = parsed.password or ""
+    
+    print(f"Cloudinary configured: cloud={parsed.hostname}, api_key={parsed.username[:3] if parsed.username else 'None'}***")
 else:
-    print("WARNING: CLOUDINARY_URL not set!")
-
-# Configuration
+    print("WARNING: CLOUDINARY_URL not set!")# Configuration
 ALLOWED_TYPES = {"image/png", "image/jpeg", "image/jpg", "image/gif", "image/webp"}
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
 
