@@ -4,14 +4,25 @@ Media service - handles image upload to Cloudinary with optimization
 import os
 import uuid
 from typing import Optional
+from urllib.parse import urlparse
 from fastapi import UploadFile
 import cloudinary
 import cloudinary.uploader
 
-# Configure Cloudinary from environment variable
-cloudinary.config(
-    secure=True
-)
+# Configure Cloudinary from CLOUDINARY_URL environment variable
+cloudinary_url = os.environ.get("CLOUDINARY_URL")
+if cloudinary_url:
+    # Parse cloudinary://API_KEY:API_SECRET@CLOUD_NAME
+    parsed = urlparse(cloudinary_url)
+    cloudinary.config(
+        cloud_name=parsed.hostname,
+        api_key=parsed.username,
+        api_secret=parsed.password,
+        secure=True
+    )
+    print(f"Cloudinary configured for cloud: {parsed.hostname}")
+else:
+    print("WARNING: CLOUDINARY_URL not set!")
 
 # Configuration
 ALLOWED_TYPES = {"image/png", "image/jpeg", "image/jpg", "image/gif", "image/webp"}
