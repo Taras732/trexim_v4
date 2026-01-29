@@ -9,19 +9,19 @@ from fastapi import UploadFile
 import cloudinary
 import cloudinary.uploader
 
-# Parse Cloudinary credentials from CLOUDINARY_URL environment variable
+# Configure Cloudinary from CLOUDINARY_URL environment variable
 cloudinary_url = os.environ.get("CLOUDINARY_URL")
-CLOUDINARY_CONFIG = {}
 
 if cloudinary_url:
     # Parse cloudinary://API_KEY:API_SECRET@CLOUD_NAME
     parsed = urlparse(cloudinary_url)
-    CLOUDINARY_CONFIG = {
-        "cloud_name": parsed.hostname,
-        "api_key": parsed.username,
-        "api_secret": parsed.password
-    }
-    print(f"Cloudinary configured for cloud: {parsed.hostname}")
+    cloudinary.config(
+        cloud_name=parsed.hostname,
+        api_key=parsed.username,
+        api_secret=parsed.password,
+        secure=True
+    )
+    print(f"Cloudinary configured for cloud: {parsed.hostname}, api_key: {parsed.username[:8]}...")
 else:
     print("WARNING: CLOUDINARY_URL not set!")
 
@@ -62,7 +62,7 @@ async def upload_image(
     public_id = f"{category}/{file_id}"
     
     try:
-        # Upload to Cloudinary with transformations and explicit credentials
+        # Upload to Cloudinary with transformations
         upload_result = cloudinary.uploader.upload(
             content,
             public_id=public_id,
@@ -75,8 +75,7 @@ async def upload_image(
             eager=[
                 {"width": 400, "height": 400, "crop": "fill", "quality": 80, "format": "webp"},  # Thumbnail
             ],
-            eager_async=False,  # Generate transformations immediately
-            **CLOUDINARY_CONFIG  # Pass credentials explicitly
+            eager_async=False  # Generate transformations immediately
         )
         
         # Get URLs from Cloudinary
@@ -108,7 +107,7 @@ def delete_image(public_id: str) -> bool:
         True if deleted, False if not found
     """
     try:
-        result = cloudinary.uploader.destroy(public_id, **CLOUDINARY_CONFIG)
+        result = cloudinary.uploader.destroy(public_id)
         return result.get('result') == 'ok'
     except Exception:
         return False
@@ -143,7 +142,5 @@ def get_image_url(
         transformations["width"] = width
     if height:
         transformations["height"] = height
-    
-    # Build URL with credentials
-    cloudinary.config(**CLOUDINARY_CONFIG)
+
     return cloudinary.CloudinaryImage(public_id).build_url(**transformations)
