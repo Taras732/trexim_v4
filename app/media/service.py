@@ -9,17 +9,18 @@ from fastapi import UploadFile
 import cloudinary
 import cloudinary.uploader
 
-# Configure Cloudinary from CLOUDINARY_URL environment variable
+# Parse Cloudinary credentials from CLOUDINARY_URL environment variable
 cloudinary_url = os.environ.get("CLOUDINARY_URL")
+CLOUDINARY_CONFIG = {}
+
 if cloudinary_url:
     # Parse cloudinary://API_KEY:API_SECRET@CLOUD_NAME
     parsed = urlparse(cloudinary_url)
-    cloudinary.config(
-        cloud_name=parsed.hostname,
-        api_key=parsed.username,
-        api_secret=parsed.password,
-        secure=True
-    )
+    CLOUDINARY_CONFIG = {
+        "cloud_name": parsed.hostname,
+        "api_key": parsed.username,
+        "api_secret": parsed.password
+    }
     print(f"Cloudinary configured for cloud: {parsed.hostname}")
 else:
     print("WARNING: CLOUDINARY_URL not set!")
@@ -61,7 +62,7 @@ async def upload_image(
     public_id = f"{category}/{file_id}"
     
     try:
-        # Upload to Cloudinary with transformations
+        # Upload to Cloudinary with transformations and explicit credentials
         upload_result = cloudinary.uploader.upload(
             content,
             public_id=public_id,
@@ -75,6 +76,7 @@ async def upload_image(
                 {"width": 400, "height": 400, "crop": "fill", "quality": 80, "format": "webp"},  # Thumbnail
             ],
             eager_async=False,  # Generate transformations immediately
+            **CLOUDINARY_CONFIG  # Pass credentials explicitly
         )
         
         # Get URLs from Cloudinary
@@ -106,7 +108,7 @@ def delete_image(public_id: str) -> bool:
         True if deleted, False if not found
     """
     try:
-        result = cloudinary.uploader.destroy(public_id)
+        result = cloudinary.uploader.destroy(public_id, **CLOUDINARY_CONFIG)
         return result.get('result') == 'ok'
     except Exception:
         return False
@@ -142,4 +144,6 @@ def get_image_url(
     if height:
         transformations["height"] = height
     
+    # Build URL with credentials
+    cloudinary.config(**CLOUDINARY_CONFIG)
     return cloudinary.CloudinaryImage(public_id).build_url(**transformations)
