@@ -7,10 +7,7 @@ from fastapi.templating import Jinja2Templates
 from pathlib import Path
 import markdown
 
-try:
-    from ..data import get_post, get_related_posts
-except ImportError:
-    from data import get_post, get_related_posts
+from app.data import get_post, get_related_posts
 
 router = APIRouter()
 templates_dir = Path(__file__).parent.parent / "templates"

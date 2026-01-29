@@ -10,22 +10,22 @@ Contact - Trexim
 
 {% block content %}
 <!-- Contact Form Section -->
-<section id="form" class="py-20 px-6 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900">
+<section id="form" class="py-20 px-6 bg-black">
     <div class="max-w-7xl mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <!-- Form -->
             <div>
                 <div class="mb-8">
-                    <h2 class="text-4xl sm:text-5xl font-bold mb-6">
+                    <h2 class="text-4xl sm:text-5xl font-bold mb-6 tracking-tight">
                         {% if language == 'uk' %}
                         <span class="text-white">Зв'яжіться з </span>
-                        <span class="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">Trexim</span>
+                        <span class="text-brand-gold">Trexim</span>
                         {% else %}
                         <span class="text-white">Get in Touch with </span>
-                        <span class="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">Trexim</span>
+                        <span class="text-brand-gold">Trexim</span>
                         {% endif %}
                     </h2>
-                    <p class="text-xl text-slate-400">
+                    <p class="text-xl text-neutral-400 font-light">
                         {% if language == 'uk' %}
                         Розкажіть про ваші потреби в логістиці — ми відповімо протягом 24 годин з наступними кроками.
                         {% else %}
@@ -34,31 +34,33 @@ Contact - Trexim
                     </p>
                 </div>
 
-                <form class="space-y-6" x-data="{ requestType: 'pilot', submitted: false }" @submit.prevent="submitted = true; setTimeout(() => alert('{% if language == 'uk' %}Дякуємо! Ми зв\'яжемося з вами найближчим часом.{% else %}Thank you! We\'ll contact you soon.{% endif %}'), 300)">
+                <form class="space-y-6" x-data="{ requestType: 'pilot', submitted: false }"
+                    @submit.prevent="submitted = true; setTimeout(() => alert('{% if language == 'uk' %}Дякуємо! Ми зв\'яжемося з вами найближчим часом.{% else %}Thank you! We\'ll contact you soon.{% endif %}'), 300)">
                     <!-- Request Type -->
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-3">
+                        <label class="block text-sm font-medium text-neutral-400 mb-3">
                             {% if language == 'uk' %}Тип запиту{% else %}Request Type{% endif %}
                         </label>
                         <div class="grid grid-cols-2 gap-4">
                             <button type="button" @click="requestType = 'pilot'"
-                                    :class="requestType === 'pilot' ? 'bg-gradient-to-r from-orange-500 to-orange-600 border-orange-500' : 'bg-slate-800 border-slate-700'"
-                                    class="p-4 rounded-xl border-2 text-white font-semibold transition-all duration-300 hover:border-orange-500/50">
-                                {% if language == 'uk' %}Пілотна програма (2026){% else %}Pilot Program (2026){% endif %}
+                                :class="requestType === 'pilot' ? 'border-brand-gold text-brand-gold bg-brand-gold/10' : 'bg-neutral-900 border-neutral-800 text-neutral-400 hover:border-neutral-700'"
+                                class="p-4 rounded-none border transition-all duration-300 font-medium">
+                                {% if language == 'uk' %}Пілотна програма (2026){% else %}Pilot Program (2026){% endif
+                                %}
                             </button>
                             <button type="button" @click="requestType = 'partnership'"
-                                    :class="requestType === 'partnership' ? 'bg-gradient-to-r from-orange-500 to-orange-600 border-orange-500' : 'bg-slate-800 border-slate-700'"
-                                    class="p-4 rounded-xl border-2 text-white font-semibold transition-all duration-300 hover:border-orange-500/50">
+                                :class="requestType === 'partnership' ? 'border-brand-gold text-brand-gold bg-brand-gold/10' : 'bg-neutral-900 border-neutral-800 text-neutral-400 hover:border-neutral-700'"
+                                class="p-4 rounded-none border transition-all duration-300 font-medium">
                                 {% if language == 'uk' %}Партнерство{% else %}Partnership Opportunity{% endif %}
                             </button>
                             <button type="button" @click="requestType = 'demo'"
-                                    :class="requestType === 'demo' ? 'bg-gradient-to-r from-orange-500 to-orange-600 border-orange-500' : 'bg-slate-800 border-slate-700'"
-                                    class="p-4 rounded-xl border-2 text-white font-semibold transition-all duration-300 hover:border-orange-500/50">
+                                :class="requestType === 'demo' ? 'border-brand-gold text-brand-gold bg-brand-gold/10' : 'bg-neutral-900 border-neutral-800 text-neutral-400 hover:border-neutral-700'"
+                                class="p-4 rounded-none border transition-all duration-300 font-medium">
                                 {% if language == 'uk' %}Демо продукту{% else %}Product Demo{% endif %}
                             </button>
                             <button type="button" @click="requestType = 'other'"
-                                    :class="requestType === 'other' ? 'bg-gradient-to-r from-orange-500 to-orange-600 border-orange-500' : 'bg-slate-800 border-slate-700'"
-                                    class="p-4 rounded-xl border-2 text-white font-semibold transition-all duration-300 hover:border-orange-500/50">
+                                :class="requestType === 'other' ? 'border-brand-gold text-brand-gold bg-brand-gold/10' : 'bg-neutral-900 border-neutral-800 text-neutral-400 hover:border-neutral-700'"
+                                class="p-4 rounded-none border transition-all duration-300 font-medium">
                                 {% if language == 'uk' %}Інший запит{% else %}Other Inquiry{% endif %}
                             </button>
                         </div>
@@ -66,56 +68,55 @@ Contact - Trexim
 
                     <!-- Company Name -->
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">
+                        <label class="block text-sm font-medium text-neutral-400 mb-2">
                             {% if language == 'uk' %}Назва компанії{% else %}Company Name{% endif %}
                         </label>
-                        <input type="text" required
-                               placeholder="{% if language == 'uk' %}ТОВ \"Транспорт Логістик\"{% else %}Transport Logistics LLC{% endif %}"
-                               class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 transition">
+                        <input type="text" required placeholder="{% if language == 'uk' %}ТОВ \" Транспорт Логістик\"{%
+                            else %}Transport Logistics LLC{% endif %}"
+                            class="w-full px-4 py-3 bg-neutral-900 border border-neutral-800 rounded-none text-white placeholder-neutral-600 focus:outline-none focus:border-brand-gold transition-colors">
                     </div>
 
                     <!-- Name -->
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">
+                        <label class="block text-sm font-medium text-neutral-400 mb-2">
                             {% if language == 'uk' %}Ваше ім'я{% else %}Your Name{% endif %}
                         </label>
                         <input type="text" required
-                               placeholder="{% if language == 'uk' %}Іван Петренко{% else %}John Smith{% endif %}"
-                               class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 transition">
+                            placeholder="{% if language == 'uk' %}Іван Петренко{% else %}John Smith{% endif %}"
+                            class="w-full px-4 py-3 bg-neutral-900 border border-neutral-800 rounded-none text-white placeholder-neutral-600 focus:outline-none focus:border-brand-gold transition-colors">
                     </div>
 
                     <!-- Email -->
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">Email</label>
-                        <input type="email" required
-                               placeholder="name@company.com"
-                               class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 transition">
+                        <label class="block text-sm font-medium text-neutral-400 mb-2">Email</label>
+                        <input type="email" required placeholder="name@company.com"
+                            class="w-full px-4 py-3 bg-neutral-900 border border-neutral-800 rounded-none text-white placeholder-neutral-600 focus:outline-none focus:border-brand-gold transition-colors">
                     </div>
 
                     <!-- Phone -->
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">
+                        <label class="block text-sm font-medium text-neutral-400 mb-2">
                             {% if language == 'uk' %}Телефон{% else %}Phone{% endif %}
                         </label>
-                        <input type="tel"
-                               placeholder="+380 99 123 45 67"
-                               class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 transition">
+                        <input type="tel" placeholder="+380 99 123 45 67"
+                            class="w-full px-4 py-3 bg-neutral-900 border border-neutral-800 rounded-none text-white placeholder-neutral-600 focus:outline-none focus:border-brand-gold transition-colors">
                     </div>
 
                     <!-- Message -->
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">
+                        <label class="block text-sm font-medium text-neutral-400 mb-2">
                             {% if language == 'uk' %}Повідомлення{% else %}Message{% endif %}
                         </label>
                         <textarea rows="4" required
-                                  placeholder="{% if language == 'uk' %}Опишіть вашу логістику, виклики або цілі...{% else %}Briefly describe your logistics setup, challenges or goals...{% endif %}"
-                                  class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 transition"></textarea>
+                            placeholder="{% if language == 'uk' %}Опишіть вашу логістику, виклики або цілі...{% else %}Briefly describe your logistics setup, challenges or goals...{% endif %}"
+                            class="w-full px-4 py-3 bg-neutral-900 border border-neutral-800 rounded-none text-white placeholder-neutral-600 focus:outline-none focus:border-brand-gold transition-colors"></textarea>
                     </div>
 
                     <!-- Privacy Checkbox -->
                     <div>
-                        <label class="flex items-start space-x-3 text-slate-300 cursor-pointer">
-                            <input type="checkbox" required class="w-5 h-5 mt-1 rounded border-slate-700 bg-slate-900 text-orange-500 focus:ring-orange-500">
+                        <label class="flex items-start space-x-3 text-neutral-400 cursor-pointer">
+                            <input type="checkbox" required
+                                class="w-5 h-5 mt-1 rounded-none border-neutral-800 bg-neutral-900 text-brand-gold focus:ring-brand-gold">
                             <span class="text-sm">
                                 {% if language == 'uk' %}
                                 Я погоджуюся з Політикою конфіденційності та обробкою даних
@@ -126,13 +127,17 @@ Contact - Trexim
                         </label>
                     </div>
 
-                    <!-- Submit Button - Dynamic based on request type -->
+                    <!-- Submit Button -->
                     <button type="submit"
-                            class="w-full px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-orange-500/50 transition-all duration-300 transform hover:scale-105">
-                        <span x-show="requestType === 'pilot'">{% if language == 'uk' %}Подати заявку на пілот{% else %}Apply for Pilot{% endif %}</span>
-                        <span x-show="requestType === 'demo'">{% if language == 'uk' %}Запросити демо{% else %}Request a Demo{% endif %}</span>
-                        <span x-show="requestType === 'partnership'">{% if language == 'uk' %}Обговорити партнерство{% else %}Discuss Partnership{% endif %}</span>
-                        <span x-show="requestType === 'other'">{% if language == 'uk' %}Надіслати запит{% else %}Send Request{% endif %}</span>
+                        class="w-full px-8 py-4 bg-brand-gold text-black font-bold rounded-none hover:bg-brand-gold-light transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.2)] hover:shadow-[0_0_30px_rgba(212,175,55,0.4)]">
+                        <span x-show="requestType === 'pilot'">{% if language == 'uk' %}Подати заявку на пілот{% else
+                            %}Apply for Pilot{% endif %}</span>
+                        <span x-show="requestType === 'demo'">{% if language == 'uk' %}Запросити демо{% else %}Request a
+                            Demo{% endif %}</span>
+                        <span x-show="requestType === 'partnership'">{% if language == 'uk' %}Обговорити партнерство{%
+                            else %}Discuss Partnership{% endif %}</span>
+                        <span x-show="requestType === 'other'">{% if language == 'uk' %}Надіслати запит{% else %}Send
+                            Request{% endif %}</span>
                     </button>
                 </form>
             </div>
@@ -146,14 +151,16 @@ Contact - Trexim
                 </div>
 
                 <!-- Step 1 -->
-                <div class="bg-slate-800/50 backdrop-blur-sm p-6 rounded-3xl border border-slate-700">
+                <div
+                    class="bg-neutral-900 p-8 rounded-none border border-neutral-800 hover:border-brand-gold/50 transition-colors duration-300">
                     <div class="flex items-start space-x-4">
-                        <div class="flex-shrink-0 text-3xl">🆓</div>
+                        <div class="flex-shrink-0 text-3xl grayscale">🆓</div>
                         <div>
                             <h4 class="text-xl font-bold text-white mb-2">
-                                {% if language == 'uk' %}Без фінансових зобов'язань{% else %}No Financial Commitment{% endif %}
+                                {% if language == 'uk' %}Без фінансових зобов'язань{% else %}No Financial Commitment{%
+                                endif %}
                             </h4>
-                            <p class="text-slate-400">
+                            <p class="text-neutral-400 font-light">
                                 {% if language == 'uk' %}
                                 Участь у пілотній програмі повністю безкоштовна — без підписок та прихованих платежів.
                                 {% else %}
@@ -165,14 +172,15 @@ Contact - Trexim
                 </div>
 
                 <!-- Step 2 -->
-                <div class="bg-slate-800/50 backdrop-blur-sm p-6 rounded-3xl border border-slate-700">
+                <div
+                    class="bg-neutral-900 p-8 rounded-none border border-neutral-800 hover:border-brand-gold/50 transition-colors duration-300">
                     <div class="flex items-start space-x-4">
-                        <div class="flex-shrink-0 text-3xl">⚡</div>
+                        <div class="flex-shrink-0 text-3xl grayscale">⚡</div>
                         <div>
                             <h4 class="text-xl font-bold text-white mb-2">
                                 {% if language == 'uk' %}Швидка відповідь{% else %}Quick Response{% endif %}
                             </h4>
-                            <p class="text-slate-400">
+                            <p class="text-neutral-400 font-light">
                                 {% if language == 'uk' %}
                                 Ми розглянемо ваш запит і зв'яжемося протягом 24 годин.
                                 {% else %}
@@ -184,14 +192,15 @@ Contact - Trexim
                 </div>
 
                 <!-- Step 3 -->
-                <div class="bg-slate-800/50 backdrop-blur-sm p-6 rounded-3xl border border-slate-700">
+                <div
+                    class="bg-neutral-900 p-8 rounded-none border border-neutral-800 hover:border-brand-gold/50 transition-colors duration-300">
                     <div class="flex items-start space-x-4">
-                        <div class="flex-shrink-0 text-3xl">🤝</div>
+                        <div class="flex-shrink-0 text-3xl grayscale">🤝</div>
                         <div>
                             <h4 class="text-xl font-bold text-white mb-2">
                                 {% if language == 'uk' %}Індивідуальний підхід{% else %}Tailored Approach{% endif %}
                             </h4>
-                            <p class="text-slate-400">
+                            <p class="text-neutral-400 font-light">
                                 {% if language == 'uk' %}
                                 Ми адаптуємо Trexim під специфіку вашого бізнесу, а не навпаки.
                                 {% else %}
@@ -203,14 +212,15 @@ Contact - Trexim
                 </div>
 
                 <!-- Step 4 -->
-                <div class="bg-slate-800/50 backdrop-blur-sm p-6 rounded-3xl border border-slate-700">
+                <div
+                    class="bg-neutral-900 p-8 rounded-none border border-neutral-800 hover:border-brand-gold/50 transition-colors duration-300">
                     <div class="flex items-start space-x-4">
-                        <div class="flex-shrink-0 text-3xl">📊</div>
+                        <div class="flex-shrink-0 text-3xl grayscale">📊</div>
                         <div>
                             <h4 class="text-xl font-bold text-white mb-2">
                                 {% if language == 'uk' %}Повна підтримка{% else %}Full Support{% endif %}
                             </h4>
-                            <p class="text-slate-400">
+                            <p class="text-neutral-400 font-light">
                                 {% if language == 'uk' %}
                                 Технічна підтримка та онбординг на кожному етапі співпраці.
                                 {% else %}
@@ -226,19 +236,19 @@ Contact - Trexim
 </section>
 
 <!-- Direct Contact Section -->
-<section id="contacts" class="py-20 px-6 bg-gradient-to-b from-slate-900 to-black">
+<section id="contacts" class="py-20 px-6 bg-neutral-900 border-t border-neutral-800">
     <div class="max-w-7xl mx-auto">
         <div class="text-center mb-12">
-            <h2 class="text-4xl sm:text-5xl font-bold mb-4">
+            <h2 class="text-4xl sm:text-5xl font-bold mb-4 tracking-tight">
                 {% if language == 'uk' %}
                 <span class="text-white">Прямий </span>
-                <span class="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">контакт</span>
+                <span class="text-brand-gold">контакт</span>
                 {% else %}
                 <span class="text-white">Direct </span>
-                <span class="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">Contact</span>
+                <span class="text-brand-gold">Contact</span>
                 {% endif %}
             </h2>
-            <p class="text-slate-400 text-lg">
+            <p class="text-neutral-400 text-lg font-light">
                 {% if language == 'uk' %}
                 Бажаєте зв'язатися напряму? Ми завжди раді поспілкуватися.
                 {% else %}
@@ -249,32 +259,36 @@ Contact - Trexim
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             <!-- Phone -->
-            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-slate-700 text-center hover:border-orange-500/50 transition-all duration-300">
-                <div class="text-4xl mb-4">📞</div>
+            <div
+                class="bg-black p-8 rounded-none border border-neutral-800 text-center hover:border-brand-gold/50 transition-all duration-300">
+                <div class="text-4xl mb-4 grayscale">📞</div>
                 <h3 class="text-lg font-bold text-white mb-2">
                     {% if language == 'uk' %}Телефон{% else %}Phone{% endif %}
                 </h3>
-                <a href="tel:+380990091802" class="text-orange-400 hover:text-orange-300 transition text-lg">
+                <a href="tel:+380990091802" class="text-brand-gold hover:text-white transition text-lg font-medium">
                     +380 99 009 18 02
                 </a>
             </div>
 
             <!-- Email -->
-            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-slate-700 text-center hover:border-orange-500/50 transition-all duration-300">
-                <div class="text-4xl mb-4">📧</div>
+            <div
+                class="bg-black p-8 rounded-none border border-neutral-800 text-center hover:border-brand-gold/50 transition-all duration-300">
+                <div class="text-4xl mb-4 grayscale">📧</div>
                 <h3 class="text-lg font-bold text-white mb-2">Email</h3>
-                <a href="mailto:trexim.logistics@gmail.com" class="text-orange-400 hover:text-orange-300 transition">
+                <a href="mailto:trexim.logistics@gmail.com"
+                    class="text-brand-gold hover:text-white transition font-medium">
                     trexim.logistics@gmail.com
                 </a>
             </div>
 
             <!-- Location -->
-            <div class="bg-slate-800/50 backdrop-blur-sm p-8 rounded-3xl border border-slate-700 text-center hover:border-orange-500/50 transition-all duration-300">
-                <div class="text-4xl mb-4">📍</div>
+            <div
+                class="bg-black p-8 rounded-none border border-neutral-800 text-center hover:border-brand-gold/50 transition-all duration-300">
+                <div class="text-4xl mb-4 grayscale">📍</div>
                 <h3 class="text-lg font-bold text-white mb-2">
                     {% if language == 'uk' %}Локація{% else %}Location{% endif %}
                 </h3>
-                <p class="text-orange-400">
+                <p class="text-brand-gold font-medium">
                     {% if language == 'uk' %}Україна (remote-first){% else %}Ukraine (remote-first){% endif %}
                 </p>
             </div>
@@ -282,7 +296,7 @@ Contact - Trexim
 
         <!-- Social Links -->
         <div class="mt-16 text-center">
-            <p class="text-slate-400 mb-6">
+            <p class="text-neutral-400 mb-6 font-light">
                 {% if language == 'uk' %}
                 Слідкуйте за Trexim для інсайтів про логістику та оновлень продукту.
                 {% else %}
@@ -291,27 +305,35 @@ Contact - Trexim
             </p>
             <div class="flex justify-center space-x-6">
                 <!-- LinkedIn -->
-                <a href="https://linkedin.com" target="_blank" rel="noopener" class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-slate-400 hover:bg-orange-500 hover:text-white transition-all duration-300">
+                <a href="https://linkedin.com" target="_blank" rel="noopener"
+                    class="w-12 h-12 bg-black border border-neutral-800 rounded-full flex items-center justify-center text-neutral-400 hover:bg-brand-gold hover:text-black hover:border-brand-gold transition-all duration-300">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                        <path
+                            d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                     </svg>
                 </a>
                 <!-- Instagram -->
-                <a href="https://instagram.com" target="_blank" rel="noopener" class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-slate-400 hover:bg-orange-500 hover:text-white transition-all duration-300">
+                <a href="https://instagram.com" target="_blank" rel="noopener"
+                    class="w-12 h-12 bg-black border border-neutral-800 rounded-full flex items-center justify-center text-neutral-400 hover:bg-brand-gold hover:text-black hover:border-brand-gold transition-all duration-300">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        <path
+                            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
                     </svg>
                 </a>
                 <!-- Telegram -->
-                <a href="https://t.me/trexim" target="_blank" rel="noopener" class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-slate-400 hover:bg-orange-500 hover:text-white transition-all duration-300">
+                <a href="https://t.me/trexim" target="_blank" rel="noopener"
+                    class="w-12 h-12 bg-black border border-neutral-800 rounded-full flex items-center justify-center text-neutral-400 hover:bg-brand-gold hover:text-black hover:border-brand-gold transition-all duration-300">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                        <path
+                            d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
                     </svg>
                 </a>
                 <!-- Facebook -->
-                <a href="https://facebook.com" target="_blank" rel="noopener" class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-slate-400 hover:bg-orange-500 hover:text-white transition-all duration-300">
+                <a href="https://facebook.com" target="_blank" rel="noopener"
+                    class="w-12 h-12 bg-black border border-neutral-800 rounded-full flex items-center justify-center text-neutral-400 hover:bg-brand-gold hover:text-black hover:border-brand-gold transition-all duration-300">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        <path
+                            d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                     </svg>
                 </a>
             </div>
