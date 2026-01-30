@@ -58,52 +58,51 @@
             theme: {
                 extend: {
                     colors: {
-                        // Enterprise SaaS Design System
-                        'surface': '#F8FAFC',
-                        'surface-dark': '#0F172A',
-                        'surface-card': '#FFFFFF',
-                        'accent': '#2563EB',
-                        'accent-light': '#3B82F6',
-                        'accent-dark': '#1D4ED8',
-                        'text-primary': '#0F172A',
-                        'text-secondary': '#334155',
-                        'text-muted': '#64748B',
-                        'border-light': '#E2E8F0',
-                        'border-dark': '#1E293B',
-                        // Legacy aliases
-                        'brand-black': '#0F172A',
-                        'brand-gray': '#F8FAFC',
-                        'brand-blue': '#2563EB',
+                        // Uklon-inspired Design System
+                        'surface': '#0A0A0A',
+                        'surface-secondary': '#141414',
+                        'surface-card': '#1A1A1A',
+                        'surface-light': '#FFFFFF',
+                        'accent': '#22C55E',
+                        'accent-light': '#4ADE80',
+                        'accent-dark': '#16A34A',
+                        'text-primary': '#FFFFFF',
+                        'text-secondary': '#A1A1AA',
+                        'text-muted': '#71717A',
+                        'text-dark': '#0A0A0A',
+                        'border-light': '#27272A',
+                        'border-dark': '#18181B',
                     },
                     fontFamily: {
                         sans: ['Inter', 'system-ui', 'sans-serif'],
                     },
                     boxShadow: {
-                        'card': '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
-                        'card-hover': '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
-                        'button': '0 4px 14px 0 rgb(37 99 235 / 0.39)',
+                        'card': '0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3)',
+                        'card-hover': '0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.4)',
+                        'glow': '0 0 40px -10px rgb(34 197 94 / 0.5)',
+                        'button': '0 0 20px 0 rgb(34 197 94 / 0.4)',
                     },
                     typography: {
                         DEFAULT: {
                             css: {
                                 maxWidth: 'none',
-                                color: '#334155',
+                                color: '#A1A1AA',
                                 a: {
-                                    color: '#2563EB',
+                                    color: '#22C55E',
                                     '&:hover': {
-                                        color: '#1D4ED8',
+                                        color: '#4ADE80',
                                     },
                                 },
                                 h2: {
-                                    color: '#0F172A',
+                                    color: '#FFFFFF',
                                     fontWeight: '700',
                                 },
                                 h3: {
-                                    color: '#0F172A',
+                                    color: '#FFFFFF',
                                     fontWeight: '600',
                                 },
                                 strong: {
-                                    color: '#0F172A',
+                                    color: '#FFFFFF',
                                 },
                             },
                         },
@@ -141,32 +140,32 @@
 </head>
 <body class="antialiased bg-surface text-text-primary font-sans">
     <!-- Header -->
-    <header class="bg-white/80 backdrop-blur-md border-b border-border-light sticky top-0 z-50">
+    <header class="bg-surface/95 backdrop-blur-md border-b border-border-light sticky top-0 z-50">
         <nav class="max-w-7xl mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
                 <!-- Logo -->
                 <a href="/?lang={{ language }}" class="text-xl font-bold text-text-primary tracking-tight">
-                    TREXIM
+                    <span class="text-accent">TREXIM</span>
                 </a>
 
                 <!-- Desktop Navigation -->
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="/about?lang={{ language }}" class="text-sm text-text-secondary hover:text-accent transition-colors">
+                    <a href="/about?lang={{ language }}" class="text-sm text-text-secondary hover:text-text-primary transition-colors">
                         {{ 'Про нас' if language == 'uk' else 'About' }}
                     </a>
-                    <a href="/services?lang={{ language }}" class="text-sm text-text-secondary hover:text-accent transition-colors">
+                    <a href="/services?lang={{ language }}" class="text-sm text-text-secondary hover:text-text-primary transition-colors">
                         {{ 'Послуги' if language == 'uk' else 'Services' }}
                     </a>
-                    <a href="/partners?lang={{ language }}" class="text-sm text-text-secondary hover:text-accent transition-colors">
+                    <a href="/partners?lang={{ language }}" class="text-sm text-text-secondary hover:text-text-primary transition-colors">
                         {{ 'Партнерам' if language == 'uk' else 'Partners' }}
                     </a>
-                    <a href="/pricing?lang={{ language }}" class="text-sm text-text-secondary hover:text-accent transition-colors">
+                    <a href="/pricing?lang={{ language }}" class="text-sm text-text-secondary hover:text-text-primary transition-colors">
                         {{ 'Тарифи' if language == 'uk' else 'Pricing' }}
                     </a>
-                    <a href="/blog?lang={{ language }}" class="text-sm text-text-secondary hover:text-accent transition-colors">
+                    <a href="/blog?lang={{ language }}" class="text-sm text-text-secondary hover:text-text-primary transition-colors">
                         {{ 'Блог' if language == 'uk' else 'Blog' }}
                     </a>
-                    <a href="/contact?lang={{ language }}" class="text-sm text-text-secondary hover:text-accent transition-colors">
+                    <a href="/contact?lang={{ language }}" class="text-sm text-text-secondary hover:text-text-primary transition-colors">
                         {{ 'Контакти' if language == 'uk' else 'Contact' }}
                     </a>
                 </div>
@@ -175,12 +174,13 @@
                 <div class="flex items-center space-x-4">
                     <!-- Language Switcher -->
                     <div class="flex items-center space-x-1 text-sm">
-                        <a href="?lang=uk" class="px-2 py-1 rounded {% if language == 'uk' %}bg-surface text-text-primary font-medium{% else %}text-text-muted hover:text-text-secondary{% endif %} transition-colors">UA</a>
-                        <a href="?lang=en" class="px-2 py-1 rounded {% if language == 'en' %}bg-surface text-text-primary font-medium{% else %}text-text-muted hover:text-text-secondary{% endif %} transition-colors">EN</a>
+                        <a href="?lang=uk" class="px-2 py-1 rounded {% if language == 'uk' %}text-accent font-medium{% else %}text-text-muted hover:text-text-primary{% endif %} transition-colors">UA</a>
+                        <span class="text-border-light">|</span>
+                        <a href="?lang=en" class="px-2 py-1 rounded {% if language == 'en' %}text-accent font-medium{% else %}text-text-muted hover:text-text-primary{% endif %} transition-colors">EN</a>
                     </div>
 
                     <!-- CTA Button -->
-                    <a href="/contact?lang={{ language }}" class="hidden sm:inline-flex px-5 py-2.5 bg-accent hover:bg-accent-dark text-white text-sm font-semibold rounded-lg shadow-button hover:shadow-lg transition-all duration-200 active:scale-[0.98]">
+                    <a href="/contact?lang={{ language }}" class="hidden sm:inline-flex px-6 py-2.5 bg-accent hover:bg-accent-light text-text-dark text-sm font-bold rounded-full shadow-button hover:shadow-glow transition-all duration-300">
                         {{ 'Почати' if language == 'uk' else 'Get Started' }}
                     </a>
 
@@ -198,25 +198,25 @@
 
             <!-- Mobile Navigation -->
             <div id="mobile-menu" class="hidden md:hidden mt-4 pt-4 border-t border-border-light space-y-1">
-                <a href="/about?lang={{ language }}" class="block px-3 py-2 text-text-secondary hover:text-accent hover:bg-surface rounded-lg transition-colors">
+                <a href="/about?lang={{ language }}" class="block px-3 py-3 text-text-secondary hover:text-accent rounded-lg transition-colors">
                     {{ 'Про нас' if language == 'uk' else 'About' }}
                 </a>
-                <a href="/services?lang={{ language }}" class="block px-3 py-2 text-text-secondary hover:text-accent hover:bg-surface rounded-lg transition-colors">
+                <a href="/services?lang={{ language }}" class="block px-3 py-3 text-text-secondary hover:text-accent rounded-lg transition-colors">
                     {{ 'Послуги' if language == 'uk' else 'Services' }}
                 </a>
-                <a href="/partners?lang={{ language }}" class="block px-3 py-2 text-text-secondary hover:text-accent hover:bg-surface rounded-lg transition-colors">
+                <a href="/partners?lang={{ language }}" class="block px-3 py-3 text-text-secondary hover:text-accent rounded-lg transition-colors">
                     {{ 'Партнерам' if language == 'uk' else 'Partners' }}
                 </a>
-                <a href="/pricing?lang={{ language }}" class="block px-3 py-2 text-text-secondary hover:text-accent hover:bg-surface rounded-lg transition-colors">
+                <a href="/pricing?lang={{ language }}" class="block px-3 py-3 text-text-secondary hover:text-accent rounded-lg transition-colors">
                     {{ 'Тарифи' if language == 'uk' else 'Pricing' }}
                 </a>
-                <a href="/blog?lang={{ language }}" class="block px-3 py-2 text-text-secondary hover:text-accent hover:bg-surface rounded-lg transition-colors">
+                <a href="/blog?lang={{ language }}" class="block px-3 py-3 text-text-secondary hover:text-accent rounded-lg transition-colors">
                     {{ 'Блог' if language == 'uk' else 'Blog' }}
                 </a>
-                <a href="/contact?lang={{ language }}" class="block px-3 py-2 text-text-secondary hover:text-accent hover:bg-surface rounded-lg transition-colors">
+                <a href="/contact?lang={{ language }}" class="block px-3 py-3 text-text-secondary hover:text-accent rounded-lg transition-colors">
                     {{ 'Контакти' if language == 'uk' else 'Contact' }}
                 </a>
-                <a href="/contact?lang={{ language }}" class="block mt-4 px-4 py-3 bg-accent text-white text-center font-semibold rounded-lg">
+                <a href="/contact?lang={{ language }}" class="block mt-4 px-4 py-3 bg-accent text-text-dark text-center font-bold rounded-full">
                     {{ 'Почати' if language == 'uk' else 'Get Started' }}
                 </a>
             </div>
@@ -229,13 +229,13 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-surface-dark text-white py-16">
+    <footer class="bg-surface-secondary text-text-primary py-16 border-t border-border-light">
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
                 <!-- About Trexim -->
                 <div>
-                    <h3 class="text-lg font-bold mb-4 tracking-tight">Trexim</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed">
+                    <h3 class="text-xl font-bold mb-4 text-accent">Trexim</h3>
+                    <p class="text-text-secondary text-sm leading-relaxed">
                         {% if language == 'uk' %}
                         AI-платформа для автоматизації автологістики, документів та управлінських рішень на основі даних.
                         {% else %}
@@ -246,54 +246,54 @@
 
                 <!-- Navigation -->
                 <div>
-                    <h4 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4">{{ 'Навігація' if language == 'uk' else 'Navigation' }}</h4>
+                    <h4 class="text-sm font-semibold text-text-primary mb-4">{{ 'Навігація' if language == 'uk' else 'Navigation' }}</h4>
                     <ul class="space-y-3 text-sm">
-                        <li><a href="/about?lang={{ language }}" class="text-slate-400 hover:text-white transition-colors">{{ 'Про нас' if language == 'uk' else 'About' }}</a></li>
-                        <li><a href="/services?lang={{ language }}" class="text-slate-400 hover:text-white transition-colors">{{ 'Послуги' if language == 'uk' else 'Services' }}</a></li>
-                        <li><a href="/partners?lang={{ language }}" class="text-slate-400 hover:text-white transition-colors">{{ 'Партнерам' if language == 'uk' else 'Partners' }}</a></li>
-                        <li><a href="/pricing?lang={{ language }}" class="text-slate-400 hover:text-white transition-colors">{{ 'Тарифи' if language == 'uk' else 'Pricing' }}</a></li>
+                        <li><a href="/about?lang={{ language }}" class="text-text-secondary hover:text-accent transition-colors">{{ 'Про нас' if language == 'uk' else 'About' }}</a></li>
+                        <li><a href="/services?lang={{ language }}" class="text-text-secondary hover:text-accent transition-colors">{{ 'Послуги' if language == 'uk' else 'Services' }}</a></li>
+                        <li><a href="/partners?lang={{ language }}" class="text-text-secondary hover:text-accent transition-colors">{{ 'Партнерам' if language == 'uk' else 'Partners' }}</a></li>
+                        <li><a href="/pricing?lang={{ language }}" class="text-text-secondary hover:text-accent transition-colors">{{ 'Тарифи' if language == 'uk' else 'Pricing' }}</a></li>
                     </ul>
                 </div>
 
                 <!-- Resources -->
                 <div>
-                    <h4 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4">{{ 'Ресурси' if language == 'uk' else 'Resources' }}</h4>
+                    <h4 class="text-sm font-semibold text-text-primary mb-4">{{ 'Ресурси' if language == 'uk' else 'Resources' }}</h4>
                     <ul class="space-y-3 text-sm">
-                        <li><a href="/blog?lang={{ language }}" class="text-slate-400 hover:text-white transition-colors">{{ 'Блог' if language == 'uk' else 'Blog' }}</a></li>
-                        <li><a href="/contact?lang={{ language }}" class="text-slate-400 hover:text-white transition-colors">{{ 'Контакти' if language == 'uk' else 'Contact' }}</a></li>
+                        <li><a href="/blog?lang={{ language }}" class="text-text-secondary hover:text-accent transition-colors">{{ 'Блог' if language == 'uk' else 'Blog' }}</a></li>
+                        <li><a href="/contact?lang={{ language }}" class="text-text-secondary hover:text-accent transition-colors">{{ 'Контакти' if language == 'uk' else 'Contact' }}</a></li>
                     </ul>
                 </div>
 
                 <!-- Contact + CTA -->
                 <div>
-                    <h4 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4">{{ "Зв'язок" if language == 'uk' else 'Contact' }}</h4>
+                    <h4 class="text-sm font-semibold text-text-primary mb-4">{{ "Зв'язок" if language == 'uk' else 'Contact' }}</h4>
                     <ul class="space-y-3 text-sm mb-6">
                         <li>
-                            <a href="mailto:trexim.logistics@gmail.com" class="text-slate-400 hover:text-white transition-colors">trexim.logistics@gmail.com</a>
+                            <a href="mailto:trexim.logistics@gmail.com" class="text-text-secondary hover:text-accent transition-colors">trexim.logistics@gmail.com</a>
                         </li>
-                        <li class="text-slate-500">
+                        <li class="text-text-muted">
                             {{ 'Відповідаємо протягом 24 годин' if language == 'uk' else 'We respond within 24 hours' }}
                         </li>
                     </ul>
                     <a href="/contact?lang={{ language }}&type=demo"
-                       class="inline-flex items-center px-5 py-2.5 bg-accent hover:bg-accent-light text-white text-sm font-semibold rounded-lg transition-all duration-200">
+                       class="inline-flex items-center px-6 py-2.5 bg-accent hover:bg-accent-light text-text-dark text-sm font-bold rounded-full transition-all duration-300 shadow-button hover:shadow-glow">
                         {{ 'Замовити демо' if language == 'uk' else 'Request Demo' }}
                     </a>
                 </div>
             </div>
 
             <!-- Bottom bar -->
-            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p class="text-slate-500 text-sm">
+            <div class="border-t border-border-light pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-text-muted text-sm">
                     &copy; 2026 Trexim. {{ 'Всі права захищені.' if language == 'uk' else 'All rights reserved.' }}
                 </p>
                 <div class="flex items-center gap-6 text-sm">
-                    <a href="/privacy?lang={{ language }}" class="text-slate-500 hover:text-white transition-colors">Privacy</a>
-                    <a href="/terms?lang={{ language }}" class="text-slate-500 hover:text-white transition-colors">Terms</a>
-                    <div class="flex items-center gap-2 text-slate-500">
-                        <a href="?lang=uk" class="{% if language == 'uk' %}text-white{% else %}hover:text-white{% endif %} transition-colors">UA</a>
-                        <span class="text-slate-700">|</span>
-                        <a href="?lang=en" class="{% if language == 'en' %}text-white{% else %}hover:text-white{% endif %} transition-colors">EN</a>
+                    <a href="/privacy?lang={{ language }}" class="text-text-muted hover:text-accent transition-colors">Privacy</a>
+                    <a href="/terms?lang={{ language }}" class="text-text-muted hover:text-accent transition-colors">Terms</a>
+                    <div class="flex items-center gap-2 text-text-muted">
+                        <a href="?lang=uk" class="{% if language == 'uk' %}text-accent{% else %}hover:text-accent{% endif %} transition-colors">UA</a>
+                        <span class="text-border-light">|</span>
+                        <a href="?lang=en" class="{% if language == 'en' %}text-accent{% else %}hover:text-accent{% endif %} transition-colors">EN</a>
                     </div>
                 </div>
             </div>
