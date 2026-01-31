@@ -2,6 +2,15 @@
 <html lang="{{ 'uk' if language == 'uk' else 'en' }}">
 <head>
     <meta charset="UTF-8">
+    <!-- Prevent FOUC: Apply theme before page renders -->
+    <script>
+        (function() {
+            var theme = localStorage.getItem('theme') || 'light';
+            if (theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Trexim - {{ 'Операційна система для автоперевезень' if language == 'uk' else 'Operating System for Auto Transportation' }}{% endblock %}</title>
 
@@ -48,45 +57,80 @@
 
     <!-- Tailwind CSS with Typography plugin - загружається першим для уникнення FOUC -->
     <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Theme CSS Variables -->
+    <style>
+        /* Light theme (default) */
+        :root {
+            --color-surface: #FFFFFF;
+            --color-surface-secondary: #F5F5F5;
+            --color-surface-card: #FFFFFF;
+            --color-accent: #D4AF37;
+            --color-accent-light: #E4C455;
+            --color-accent-dark: #B5902B;
+            --color-text-primary: #0A0A0A;
+            --color-text-secondary: #525252;
+            --color-text-muted: #737373;
+            --color-text-on-accent: #FFFFFF;
+            --color-border: #E5E5E5;
+            --color-border-dark: #D4D4D4;
+            --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-card-hover: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-glow: 0 0 40px -10px rgb(212 175 55 / 0.4);
+            --shadow-button: 0 0 20px 0 rgb(212 175 55 / 0.3);
+        }
+
+        /* Dark theme */
+        [data-theme="dark"] {
+            --color-surface: #0A0A0A;
+            --color-surface-secondary: #141414;
+            --color-surface-card: #1A1A1A;
+            --color-accent: #22C55E;
+            --color-accent-light: #4ADE80;
+            --color-accent-dark: #16A34A;
+            --color-text-primary: #FFFFFF;
+            --color-text-secondary: #A1A1AA;
+            --color-text-muted: #71717A;
+            --color-text-on-accent: #0A0A0A;
+            --color-border: #27272A;
+            --color-border-dark: #18181B;
+            --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+            --shadow-card-hover: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.4);
+            --shadow-glow: 0 0 40px -10px rgb(34 197 94 / 0.5);
+            --shadow-button: 0 0 20px 0 rgb(34 197 94 / 0.4);
+        }
+    </style>
+
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        'brand-black': '#000000',
-                        'brand-gray': '#F5F5F5',
-                        'brand-gold': '#D4AF37', // Metallic Gold
-                        'brand-gold-light': '#F4Cf57',
-                        'brand-gold-dark': '#B5902B',
-                        'brand-blue': '#D4AF37', // Alias for backward compatibility if needed, though we should replace usages
+                        'surface': 'var(--color-surface)',
+                        'surface-secondary': 'var(--color-surface-secondary)',
+                        'surface-card': 'var(--color-surface-card)',
+                        'accent': 'var(--color-accent)',
+                        'accent-light': 'var(--color-accent-light)',
+                        'accent-dark': 'var(--color-accent-dark)',
+                        'text-primary': 'var(--color-text-primary)',
+                        'text-secondary': 'var(--color-text-secondary)',
+                        'text-muted': 'var(--color-text-muted)',
+                        'text-on-accent': 'var(--color-text-on-accent)',
+                        'border-light': 'var(--color-border)',
+                        'border-dark': 'var(--color-border-dark)',
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'], // Assuming Inter is available or fallback
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
                     },
-                    typography: {
-                        DEFAULT: {
-                            css: {
-                                maxWidth: 'none',
-                                color: '#171717',
-                                a: {
-                                    color: '#D4AF37',
-                                    '&:hover': {
-                                        color: '#B5902B',
-                                    },
-                                },
-                                h2: {
-                                    color: '#000000',
-                                    fontWeight: '700',
-                                },
-                                h3: {
-                                    color: '#171717',
-                                    fontWeight: '600',
-                                },
-                                strong: {
-                                    color: '#000000',
-                                },
-                            },
-                        },
+                    boxShadow: {
+                        'card': 'var(--shadow-card)',
+                        'card-hover': 'var(--shadow-card-hover)',
+                        'glow': 'var(--shadow-glow)',
+                        'button': 'var(--shadow-button)',
                     },
                 }
             }
@@ -119,62 +163,70 @@
 
     {% block head %}{% endblock %}
 </head>
-<body class="antialiased bg-white text-brand-black">
+<body class="antialiased bg-surface text-text-primary font-sans">
     <!-- Header -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <nav class="container mx-auto px-4 py-4">
+    <header class="bg-surface/95 backdrop-blur-md border-b border-border-light sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
                 <!-- Logo -->
-                <a href="/?lang={{ language }}" class="text-2xl font-bold">
-                    TREXIM
+                <a href="/?lang={{ language }}" class="text-xl font-bold text-text-primary tracking-tight">
+                    <span class="text-accent">TREXIM</span>
                 </a>
 
                 <!-- Desktop Navigation -->
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="/about?lang={{ language }}" class="hover:text-brand-blue transition">
+                    <a href="/about?lang={{ language }}" class="text-sm text-text-secondary hover:text-text-primary transition-colors">
                         {{ 'Про нас' if language == 'uk' else 'About' }}
                     </a>
-                    <a href="/services?lang={{ language }}" class="hover:text-brand-blue transition">
+                    <a href="/services?lang={{ language }}" class="text-sm text-text-secondary hover:text-text-primary transition-colors">
                         {{ 'Послуги' if language == 'uk' else 'Services' }}
                     </a>
-                    <a href="/partners?lang={{ language }}" class="hover:text-brand-blue transition">
+                    <a href="/partners?lang={{ language }}" class="text-sm text-text-secondary hover:text-text-primary transition-colors">
                         {{ 'Партнерам' if language == 'uk' else 'Partners' }}
                     </a>
-                    <a href="/pricing?lang={{ language }}" class="hover:text-brand-blue transition">
+                    <a href="/pricing?lang={{ language }}" class="text-sm text-text-secondary hover:text-text-primary transition-colors">
                         {{ 'Тарифи' if language == 'uk' else 'Pricing' }}
                     </a>
-                    <!-- <a href="/tools?lang={{ language }}" class="hover:text-brand-blue transition">
-                        {{ 'Інструменти' if language == 'uk' else 'Tools' }} -->
-                    </a>
-                    <a href="/blog?lang={{ language }}" class="hover:text-brand-blue transition">
+                    <a href="/blog?lang={{ language }}" class="text-sm text-text-secondary hover:text-text-primary transition-colors">
                         {{ 'Блог' if language == 'uk' else 'Blog' }}
                     </a>
-                    <a href="/contact?lang={{ language }}" class="hover:text-brand-blue transition">
+                    <a href="/contact?lang={{ language }}" class="text-sm text-text-secondary hover:text-text-primary transition-colors">
                         {{ 'Контакти' if language == 'uk' else 'Contact' }}
                     </a>
                 </div>
 
                 <!-- Right side actions -->
-                <div class="flex items-center space-x-6">
+                <div class="flex items-center space-x-4">
                     <!-- Language Switcher -->
-                    <div class="flex items-center space-x-2">
-                        <a href="?lang=uk" class="text-sm {% if language == 'uk' %}font-bold text-black{% else %}text-gray-500{% endif %}">UK</a>
-                        <span class="text-gray-400">/</span>
-                        <a href="?lang=en" class="text-sm {% if language == 'en' %}font-bold text-black{% else %}text-gray-500{% endif %}">EN</a>
+                    <div class="flex items-center space-x-1 text-sm">
+                        <a href="?lang=uk" class="px-2 py-1 rounded {% if language == 'uk' %}text-accent font-medium{% else %}text-text-muted hover:text-text-primary{% endif %} transition-colors">UA</a>
+                        <span class="text-border-light">|</span>
+                        <a href="?lang=en" class="px-2 py-1 rounded {% if language == 'en' %}text-accent font-medium{% else %}text-text-muted hover:text-text-primary{% endif %} transition-colors">EN</a>
                     </div>
 
-                    <!-- Hidden admin link - visible only on hover -->
-                    <a href="/admin" class="text-sm text-transparent hover:text-gray-400 transition select-none" title="Admin">
-                        •
-                    </a>
-                    <!-- Hidden Get Started button - visible only on hover -->
-                    <a href="/contact?lang={{ language }}" class="bg-transparent hover:bg-orange-500 text-transparent hover:text-white px-6 py-2 rounded-lg text-sm font-semibold transition select-none">
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="p-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-surface-secondary transition-all" title="Toggle theme">
+                        <!-- Sun icon (shown in dark mode) -->
+                        <svg id="theme-icon-sun" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                        <!-- Moon icon (shown in light mode) -->
+                        <svg id="theme-icon-moon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                    </button>
+
+                    <!-- CTA Button -->
+                    <a href="/contact?lang={{ language }}" class="hidden sm:inline-flex px-6 py-2.5 bg-accent hover:bg-accent-light text-text-on-accent text-sm font-bold rounded-full shadow-button hover:shadow-glow transition-all duration-300">
                         {{ 'Почати' if language == 'uk' else 'Get Started' }}
                     </a>
+
+                    <!-- Hidden admin link -->
+                    <a href="/admin" class="text-transparent hover:text-text-muted transition select-none" title="Admin">•</a>
                 </div>
 
                 <!-- Mobile menu button -->
-                <button class="md:hidden" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                <button class="md:hidden p-2 -mr-2 text-text-secondary hover:text-text-primary" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
@@ -182,27 +234,37 @@
             </div>
 
             <!-- Mobile Navigation -->
-            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-4">
-                <a href="/about?lang={{ language }}" class="block hover:text-brand-blue transition">
+            <div id="mobile-menu" class="hidden md:hidden mt-4 pt-4 border-t border-border-light space-y-1">
+                <a href="/about?lang={{ language }}" class="block px-3 py-3 text-text-secondary hover:text-accent rounded-lg transition-colors">
                     {{ 'Про нас' if language == 'uk' else 'About' }}
                 </a>
-                <a href="/services?lang={{ language }}" class="block hover:text-brand-blue transition">
+                <a href="/services?lang={{ language }}" class="block px-3 py-3 text-text-secondary hover:text-accent rounded-lg transition-colors">
                     {{ 'Послуги' if language == 'uk' else 'Services' }}
                 </a>
-                <a href="/partners?lang={{ language }}" class="block hover:text-brand-blue transition">
+                <a href="/partners?lang={{ language }}" class="block px-3 py-3 text-text-secondary hover:text-accent rounded-lg transition-colors">
                     {{ 'Партнерам' if language == 'uk' else 'Partners' }}
                 </a>
-                <a href="/pricing?lang={{ language }}" class="block hover:text-brand-blue transition">
+                <a href="/pricing?lang={{ language }}" class="block px-3 py-3 text-text-secondary hover:text-accent rounded-lg transition-colors">
                     {{ 'Тарифи' if language == 'uk' else 'Pricing' }}
                 </a>
-                <a href="/tools?lang={{ language }}" class="block hover:text-brand-blue transition">
-                    {{ 'Інструменти' if language == 'uk' else 'Tools' }}
-                </a>
-                <a href="/blog?lang={{ language }}" class="block hover:text-brand-blue transition">
+                <a href="/blog?lang={{ language }}" class="block px-3 py-3 text-text-secondary hover:text-accent rounded-lg transition-colors">
                     {{ 'Блог' if language == 'uk' else 'Blog' }}
                 </a>
-                <a href="/contact?lang={{ language }}" class="block hover:text-brand-blue transition">
+                <a href="/contact?lang={{ language }}" class="block px-3 py-3 text-text-secondary hover:text-accent rounded-lg transition-colors">
                     {{ 'Контакти' if language == 'uk' else 'Contact' }}
+                </a>
+                <!-- Mobile Theme Toggle -->
+                <button id="theme-toggle-mobile" class="flex items-center gap-3 w-full px-3 py-3 text-text-secondary hover:text-accent rounded-lg transition-colors">
+                    <svg id="theme-icon-sun-mobile" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                    <svg id="theme-icon-moon-mobile" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                    </svg>
+                    <span id="theme-text-mobile">{{ 'Темна тема' if language == 'uk' else 'Dark mode' }}</span>
+                </button>
+                <a href="/contact?lang={{ language }}" class="block mt-4 px-4 py-3 bg-accent text-text-on-accent text-center font-bold rounded-full">
+                    {{ 'Почати' if language == 'uk' else 'Get Started' }}
                 </a>
             </div>
         </nav>
@@ -214,13 +276,13 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-brand-black text-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+    <footer class="bg-surface-secondary text-text-primary py-16 border-t border-border-light">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
                 <!-- About Trexim -->
                 <div>
-                    <h3 class="text-xl font-bold mb-4">Trexim.ai</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">
+                    <h3 class="text-xl font-bold mb-4 text-accent">Trexim</h3>
+                    <p class="text-text-secondary text-sm leading-relaxed">
                         {% if language == 'uk' %}
                         AI-платформа для автоматизації автологістики, документів та управлінських рішень на основі даних.
                         {% else %}
@@ -231,57 +293,54 @@
 
                 <!-- Navigation -->
                 <div>
-                    <h4 class="font-semibold mb-4">{{ 'Навігація' if language == 'uk' else 'Navigation' }}</h4>
-                    <ul class="space-y-2 text-gray-400 text-sm">
-                        <li><a href="/about?lang={{ language }}" class="hover:text-white transition">{{ 'Про нас' if language == 'uk' else 'About' }}</a></li>
-                        <li><a href="/services?lang={{ language }}" class="hover:text-white transition">{{ 'Послуги' if language == 'uk' else 'Services' }}</a></li>
-                        <li><a href="/partners?lang={{ language }}" class="hover:text-white transition">{{ 'Партнерам' if language == 'uk' else 'Partners' }}</a></li>
-                        <li><a href="/pricing?lang={{ language }}" class="hover:text-white transition">{{ 'Тарифи' if language == 'uk' else 'Pricing' }}</a></li>
+                    <h4 class="text-sm font-semibold text-text-primary mb-4">{{ 'Навігація' if language == 'uk' else 'Navigation' }}</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="/about?lang={{ language }}" class="text-text-secondary hover:text-accent transition-colors">{{ 'Про нас' if language == 'uk' else 'About' }}</a></li>
+                        <li><a href="/services?lang={{ language }}" class="text-text-secondary hover:text-accent transition-colors">{{ 'Послуги' if language == 'uk' else 'Services' }}</a></li>
+                        <li><a href="/partners?lang={{ language }}" class="text-text-secondary hover:text-accent transition-colors">{{ 'Партнерам' if language == 'uk' else 'Partners' }}</a></li>
+                        <li><a href="/pricing?lang={{ language }}" class="text-text-secondary hover:text-accent transition-colors">{{ 'Тарифи' if language == 'uk' else 'Pricing' }}</a></li>
                     </ul>
                 </div>
 
                 <!-- Resources -->
                 <div>
-                    <h4 class="font-semibold mb-4">{{ 'Ресурси' if language == 'uk' else 'Resources' }}</h4>
-                    <ul class="space-y-2 text-gray-400 text-sm">
-                        <li><a href="/tools?lang={{ language }}" class="hover:text-white transition">{{ 'Інструменти' if language == 'uk' else 'Tools' }}</a></li>
-                        <li><a href="/blog?lang={{ language }}" class="hover:text-white transition">{{ 'Блог' if language == 'uk' else 'Blog' }}</a></li>
-                        <li><a href="/contact?lang={{ language }}" class="hover:text-white transition">{{ 'Контакти' if language == 'uk' else 'Contact' }}</a></li>
+                    <h4 class="text-sm font-semibold text-text-primary mb-4">{{ 'Ресурси' if language == 'uk' else 'Resources' }}</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="/blog?lang={{ language }}" class="text-text-secondary hover:text-accent transition-colors">{{ 'Блог' if language == 'uk' else 'Blog' }}</a></li>
+                        <li><a href="/contact?lang={{ language }}" class="text-text-secondary hover:text-accent transition-colors">{{ 'Контакти' if language == 'uk' else 'Contact' }}</a></li>
                     </ul>
                 </div>
 
                 <!-- Contact + CTA -->
                 <div>
-                    <h4 class="font-semibold mb-4">{{ "Зв'язатися з нами" if language == 'uk' else 'Contact Us' }}</h4>
-                    <ul class="space-y-3 text-gray-400 text-sm mb-6">
-                        <li class="flex items-center gap-2">
-                            <span>📧</span>
-                            <a href="mailto:trexim.logistics@gmail.com" class="hover:text-white transition">trexim.logistics@gmail.com</a>
+                    <h4 class="text-sm font-semibold text-text-primary mb-4">{{ "Зв'язок" if language == 'uk' else 'Contact' }}</h4>
+                    <ul class="space-y-3 text-sm mb-6">
+                        <li>
+                            <a href="mailto:trexim.logistics@gmail.com" class="text-text-secondary hover:text-accent transition-colors">trexim.logistics@gmail.com</a>
                         </li>
-                        <li class="flex items-center gap-2">
-                            <span>🕒</span>
-                            <span>{{ 'Відповідаємо протягом 24 годин' if language == 'uk' else 'We respond within 24 hours' }}</span>
+                        <li class="text-text-muted">
+                            {{ 'Відповідаємо протягом 24 годин' if language == 'uk' else 'We respond within 24 hours' }}
                         </li>
                     </ul>
                     <a href="/contact?lang={{ language }}&type=demo"
-                       class="inline-block px-6 py-2 bg-orange-500 text-white text-sm font-bold rounded-lg hover:bg-orange-600 transition-all duration-300">
-                        Request demo
+                       class="inline-flex items-center px-6 py-2.5 bg-accent hover:bg-accent-light text-text-on-accent text-sm font-bold rounded-full transition-all duration-300 shadow-button hover:shadow-glow">
+                        {{ 'Замовити демо' if language == 'uk' else 'Request Demo' }}
                     </a>
                 </div>
             </div>
 
             <!-- Bottom bar -->
-            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p class="text-gray-500 text-sm">
-                    &copy; 2026 Trexim.ai. {{ 'Всі права захищені.' if language == 'uk' else 'All rights reserved.' }}
+            <div class="border-t border-border-light pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-text-muted text-sm">
+                    &copy; 2026 Trexim. {{ 'Всі права захищені.' if language == 'uk' else 'All rights reserved.' }}
                 </p>
-                <div class="flex items-center gap-6 text-gray-500 text-sm">
-                    <a href="/privacy?lang={{ language }}" class="hover:text-white transition">Privacy Policy</a>
-                    <a href="/terms?lang={{ language }}" class="hover:text-white transition">Terms of Service</a>
-                    <div class="flex items-center gap-2">
-                        <a href="?lang=uk" class="{% if language == 'uk' %}text-white{% else %}hover:text-white{% endif %} transition">UA</a>
-                        <span class="text-gray-600">|</span>
-                        <a href="?lang=en" class="{% if language == 'en' %}text-white{% else %}hover:text-white{% endif %} transition">EN</a>
+                <div class="flex items-center gap-6 text-sm">
+                    <a href="/privacy?lang={{ language }}" class="text-text-muted hover:text-accent transition-colors">Privacy</a>
+                    <a href="/terms?lang={{ language }}" class="text-text-muted hover:text-accent transition-colors">Terms</a>
+                    <div class="flex items-center gap-2 text-text-muted">
+                        <a href="?lang=uk" class="{% if language == 'uk' %}text-accent{% else %}hover:text-accent{% endif %} transition-colors">UA</a>
+                        <span class="text-border-light">|</span>
+                        <a href="?lang=en" class="{% if language == 'en' %}text-accent{% else %}hover:text-accent{% endif %} transition-colors">EN</a>
                     </div>
                 </div>
             </div>
@@ -293,6 +352,55 @@
 
     <!-- Trexim Analytics (extended tracking) -->
     <script src="/static/js/analytics.js"></script>
+
+    <!-- Theme Toggle Script -->
+    <script>
+        (function() {
+            const toggle = document.getElementById('theme-toggle');
+            const toggleMobile = document.getElementById('theme-toggle-mobile');
+            const sunIcon = document.getElementById('theme-icon-sun');
+            const moonIcon = document.getElementById('theme-icon-moon');
+            const sunIconMobile = document.getElementById('theme-icon-sun-mobile');
+            const moonIconMobile = document.getElementById('theme-icon-moon-mobile');
+            const themeTextMobile = document.getElementById('theme-text-mobile');
+            const html = document.documentElement;
+
+            const lightText = '{{ "Темна тема" if language == "uk" else "Dark mode" }}';
+            const darkText = '{{ "Світла тема" if language == "uk" else "Light mode" }}';
+
+            function setTheme(theme) {
+                if (theme === 'dark') {
+                    html.setAttribute('data-theme', 'dark');
+                    sunIcon.classList.remove('hidden');
+                    moonIcon.classList.add('hidden');
+                    sunIconMobile.classList.remove('hidden');
+                    moonIconMobile.classList.add('hidden');
+                    themeTextMobile.textContent = darkText;
+                } else {
+                    html.removeAttribute('data-theme');
+                    sunIcon.classList.add('hidden');
+                    moonIcon.classList.remove('hidden');
+                    sunIconMobile.classList.add('hidden');
+                    moonIconMobile.classList.remove('hidden');
+                    themeTextMobile.textContent = lightText;
+                }
+                localStorage.setItem('theme', theme);
+            }
+
+            function toggleTheme() {
+                const currentTheme = html.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+                setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+            }
+
+            // Initialize theme from localStorage
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            setTheme(savedTheme);
+
+            // Toggle theme on click
+            toggle.addEventListener('click', toggleTheme);
+            toggleMobile.addEventListener('click', toggleTheme);
+        })();
+    </script>
 
     {% block scripts %}{% endblock %}
 </body>
