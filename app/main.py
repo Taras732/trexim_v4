@@ -83,9 +83,11 @@ app.include_router(admin_router)
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request, lang: str = "uk"):
     """Home page"""
-    blog_posts = get_homepage_posts(lang, limit=6)
-    return templates.TemplateResponse(
-        "pages/home.html",
+    try:
+        blog_posts = get_homepage_posts(lang, limit=6)
+    except Exception as e:
+        logger.error(f"Failed to load homepage posts: {e}")
+    return templates.TemplateResponse(        "pages/home.html",
         {"request": request, "language": lang, "blog_posts": blog_posts}
     )
 
