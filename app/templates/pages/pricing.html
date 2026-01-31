@@ -10,23 +10,23 @@ Pricing - Trexim
 
 {% block content %}
 <!-- Hero Section -->
-<section class="relative min-h-[90vh] flex items-center justify-center px-6 pt-32 pb-20 overflow-hidden bg-gradient-to-b from-slate-900 via-slate-950 to-black">
+<section class="relative min-h-[90vh] flex items-center justify-center px-6 pt-32 pb-20 overflow-hidden bg-gradient-to-b from-surface via-surface-secondary to-surface">
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
-        <div class="absolute top-20 right-10 w-72 h-72 bg-orange-500/5 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-20 left-10 w-96 h-96 bg-orange-500/3 rounded-full blur-3xl"></div>
+        <div class="absolute top-20 right-10 w-72 h-72 bg-accent/5 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-20 left-10 w-96 h-96 bg-accent/3 rounded-full blur-3xl"></div>
     </div>
 
     <div class="relative z-10 max-w-4xl mx-auto text-center">
         <h1 class="text-5xl sm:text-6xl md:text-7xl font-bold mb-6 leading-tight">
-            <span class="block text-white mb-2">
+            <span class="block text-text-primary mb-2">
                 {% if language == 'uk' %}Пілот — {% else %}Pilot — {% endif %}
             </span>
-            <span class="block bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
+            <span class="block text-accent">
                 {% if language == 'uk' %}Повністю безкоштовно{% else %}Completely Free{% endif %}
             </span>
         </h1>
 
-        <p class="text-lg md:text-xl text-slate-300 mb-10 max-w-3xl mx-auto leading-relaxed">
+        <p class="text-lg md:text-xl text-text-secondary mb-10 max-w-3xl mx-auto leading-relaxed">
             {% if language == 'uk' %}
             Отримайте повний доступ до AI операційної системи без жодних фінансових ризиків
             {% else %}
@@ -36,7 +36,7 @@ Pricing - Trexim
 
         <div class="flex justify-center">
             <a href="/contact?lang={{ language }}"
-               class="px-10 py-4 bg-orange-500 text-white text-base font-bold rounded-xl hover:bg-orange-600 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-orange-500/50">
+               class="px-10 py-4 bg-accent text-text-on-accent text-base font-bold rounded-full hover:bg-accent-light transition-all duration-300 hover:scale-105 shadow-button hover:shadow-glow">
                 {% if language == 'uk' %}Отримати безкоштовний доступ{% else %}Get Free Access{% endif %}
             </a>
         </div>
@@ -44,52 +44,52 @@ Pricing - Trexim
 </section>
 
 <!-- Pilot Program Section -->
-<section class="relative py-16 md:py-20 px-6 bg-gradient-to-b from-slate-50 to-white">
+<section class="relative py-16 md:py-20 px-6 bg-gradient-to-b from-surface-secondary to-surface">
     <div class="max-w-4xl mx-auto">
         <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary mb-4">
                 {% if language == 'uk' %}Pilot Program 2026{% else %}Pilot Program 2026{% endif %}
             </h2>
         </div>
 
-        <div class="bg-white p-10 rounded-3xl border-2 border-slate-200 shadow-xl">
+        <div class="bg-surface-card p-10 rounded-3xl border-2 border-border-light shadow-card">
             <ul class="space-y-5 mb-10">
                 <li class="flex items-center gap-4">
-                    <div class="flex-shrink-0 w-10 h-10 bg-orange-500/10 rounded-xl flex items-center justify-center">
-                        <span class="text-orange-500 text-xl">✓</span>
+                    <div class="flex-shrink-0 w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center">
+                        <span class="text-accent text-xl">✓</span>
                     </div>
-                    <span class="text-lg text-slate-900 font-medium">
+                    <span class="text-lg text-text-primary font-medium">
                         {% if language == 'uk' %}Без фінансових зобов'язань{% else %}No financial commitments{% endif %}
                     </span>
                 </li>
                 <li class="flex items-center gap-4">
-                    <div class="flex-shrink-0 w-10 h-10 bg-orange-500/10 rounded-xl flex items-center justify-center">
-                        <span class="text-orange-500 text-xl">✓</span>
+                    <div class="flex-shrink-0 w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center">
+                        <span class="text-accent text-xl">✓</span>
                     </div>
-                    <span class="text-lg text-slate-900 font-medium">
+                    <span class="text-lg text-text-primary font-medium">
                         {% if language == 'uk' %}Повна підтримка команди{% else %}Full team support{% endif %}
                     </span>
                 </li>
                 <li class="flex items-center gap-4">
-                    <div class="flex-shrink-0 w-10 h-10 bg-orange-500/10 rounded-xl flex items-center justify-center">
-                        <span class="text-orange-500 text-xl">✓</span>
+                    <div class="flex-shrink-0 w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center">
+                        <span class="text-accent text-xl">✓</span>
                     </div>
-                    <span class="text-lg text-slate-900 font-medium">
+                    <span class="text-lg text-text-primary font-medium">
                         {% if language == 'uk' %}KPI та вимірювані результати{% else %}KPIs and measurable results{% endif %}
                     </span>
                 </li>
                 <li class="flex items-center gap-4">
-                    <div class="flex-shrink-0 w-10 h-10 bg-orange-500/10 rounded-xl flex items-center justify-center">
-                        <span class="text-orange-500 text-xl">✓</span>
+                    <div class="flex-shrink-0 w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center">
+                        <span class="text-accent text-xl">✓</span>
                     </div>
-                    <span class="text-lg text-slate-900 font-medium">
+                    <span class="text-lg text-text-primary font-medium">
                         {% if language == 'uk' %}3 етапи: старт → реальний ринок → масштабування{% else %}3 stages: start → real market → scaling{% endif %}
                     </span>
                 </li>
             </ul>
 
             <div class="text-center">
-                <a href="/contact?lang={{ language }}&type=demo" class="inline-block px-10 py-4 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-orange-500/50">
+                <a href="/contact?lang={{ language }}&type=demo" class="inline-block px-10 py-4 bg-accent text-text-on-accent font-bold rounded-full hover:bg-accent-light transition-all duration-300 hover:scale-105 shadow-button hover:shadow-glow">
                     {% if language == 'uk' %}Request demo{% else %}Request demo{% endif %}
                 </a>
             </div>
@@ -98,13 +98,13 @@ Pricing - Trexim
 </section>
 
 <!-- Future Pricing Model Section -->
-<section class="relative py-16 md:py-20 px-6 bg-gradient-to-b from-white to-slate-50">
+<section class="relative py-16 md:py-20 px-6 bg-gradient-to-b from-surface to-surface-secondary">
     <div class="max-w-5xl mx-auto">
         <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-5">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary mb-5">
                 {% if language == 'uk' %}Майбутня модель ціноутворення{% else %}Future Pricing Model{% endif %}
             </h2>
-            <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+            <p class="text-lg text-text-secondary max-w-2xl mx-auto">
                 {% if language == 'uk' %}
                 Після пілоту перехід на комерційну модель на основі результатів
                 {% else %}
@@ -113,22 +113,22 @@ Pricing - Trexim
             </p>
         </div>
 
-        <div class="bg-white p-10 rounded-3xl border-2 border-slate-200 shadow-xl">
-            <h3 class="text-2xl font-bold text-slate-900 mb-6">
+        <div class="bg-surface-card p-10 rounded-3xl border-2 border-border-light shadow-card">
+            <h3 class="text-2xl font-bold text-text-primary mb-6">
                 {% if language == 'uk' %}Принципи майбутньої моделі:{% else %}Principles of Future Model:{% endif %}
             </h3>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Principle 1 -->
                 <div class="flex items-start gap-4">
-                    <div class="flex-shrink-0 w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center">
+                    <div class="flex-shrink-0 w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center">
                         <span class="text-2xl">💰</span>
                     </div>
                     <div>
-                        <h4 class="font-bold text-slate-900 mb-2">
+                        <h4 class="font-bold text-text-primary mb-2">
                             {% if language == 'uk' %}Прозорість та передбачувані витрати{% else %}Transparency and predictable costs{% endif %}
                         </h4>
-                        <p class="text-slate-600 text-sm leading-relaxed">
+                        <p class="text-text-secondary text-sm leading-relaxed">
                             {% if language == 'uk' %}
                             Ніяких прихованих платежів. Ви завжди знаєте скільки платите і за що.
                             {% else %}
@@ -140,14 +140,14 @@ Pricing - Trexim
 
                 <!-- Principle 2 -->
                 <div class="flex items-start gap-4">
-                    <div class="flex-shrink-0 w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center">
+                    <div class="flex-shrink-0 w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center">
                         <span class="text-2xl">📈</span>
                     </div>
                     <div>
-                        <h4 class="font-bold text-slate-900 mb-2">
+                        <h4 class="font-bold text-text-primary mb-2">
                             {% if language == 'uk' %}Оплата за реальну цінність та результати{% else %}Payment for real value and results{% endif %}
                         </h4>
-                        <p class="text-slate-600 text-sm leading-relaxed">
+                        <p class="text-text-secondary text-sm leading-relaxed">
                             {% if language == 'uk' %}
                             Платите тільки за те, що використовуєте та отримуєте від цього вигоду.
                             {% else %}
@@ -159,14 +159,14 @@ Pricing - Trexim
 
                 <!-- Principle 3 -->
                 <div class="flex items-start gap-4">
-                    <div class="flex-shrink-0 w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center">
+                    <div class="flex-shrink-0 w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center">
                         <span class="text-2xl">🎯</span>
                     </div>
                     <div>
-                        <h4 class="font-bold text-slate-900 mb-2">
+                        <h4 class="font-bold text-text-primary mb-2">
                             {% if language == 'uk' %}Гнучкі пакети для різних типів бізнесу{% else %}Flexible packages for different business types{% endif %}
                         </h4>
-                        <p class="text-slate-600 text-sm leading-relaxed">
+                        <p class="text-text-secondary text-sm leading-relaxed">
                             {% if language == 'uk' %}
                             Кожен бізнес унікальний. Модель адаптується під ваші потреби.
                             {% else %}
@@ -178,14 +178,14 @@ Pricing - Trexim
 
                 <!-- Principle 4 -->
                 <div class="flex items-start gap-4">
-                    <div class="flex-shrink-0 w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center">
+                    <div class="flex-shrink-0 w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center">
                         <span class="text-2xl">🚀</span>
                     </div>
                     <div>
-                        <h4 class="font-bold text-slate-900 mb-2">
+                        <h4 class="font-bold text-text-primary mb-2">
                             {% if language == 'uk' %}Масштабування разом з вашим зростанням{% else %}Scaling together with your growth{% endif %}
                         </h4>
-                        <p class="text-slate-600 text-sm leading-relaxed">
+                        <p class="text-text-secondary text-sm leading-relaxed">
                             {% if language == 'uk' %}
                             Чим більше ви ростете, тим більше економите на масштабі.
                             {% else %}
@@ -200,7 +200,7 @@ Pricing - Trexim
 </section>
 
 <!-- Current Offer Highlight -->
-<section class="relative py-16 md:py-20 px-6 bg-gradient-to-br from-orange-500 to-orange-600 text-white overflow-hidden">
+<section class="relative py-16 md:py-20 px-6 bg-accent text-text-on-accent overflow-hidden">
     <div class="absolute inset-0">
         <div class="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
         <div class="absolute bottom-0 left-0 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
@@ -229,7 +229,7 @@ Pricing - Trexim
 
         <div class="flex justify-center">
             <a href="/contact?lang={{ language }}&type=demo"
-               class="px-10 py-4 bg-white text-orange-600 text-base font-bold rounded-xl hover:bg-slate-50 transition-all duration-300 hover:scale-105 shadow-lg">
+               class="px-10 py-4 bg-surface text-text-primary text-base font-bold rounded-full hover:bg-surface-secondary transition-all duration-300 hover:scale-105 shadow-lg">
                 Request demo
             </a>
         </div>

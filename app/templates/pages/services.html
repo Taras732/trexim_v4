@@ -2,15 +2,14 @@
 
 {% block content %}
 <!-- Main Services -->
-<!-- Main Services -->
-<section class="relative py-16 md:py-20 px-6 bg-black">
+<section class="relative py-16 md:py-20 px-6 bg-surface">
     <div class="max-w-7xl mx-auto">
         <div class="text-center mb-16">
-            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 tracking-tight">
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary mb-4 tracking-tight">
                 {% if language == 'uk' %}Практичні рішення для автоматизації логістики{% else %}Practical Solutions for
                 Logistics Automation{% endif %}
             </h1>
-            <p class="text-lg text-neutral-400 max-w-2xl mx-auto font-light">
+            <p class="text-lg text-text-secondary max-w-2xl mx-auto font-light">
                 {% if language == 'uk' %}
                 Інструменти, які зменшують ручну роботу, підвищують контроль і допомагають приймати обґрунтовані
                 рішення.
@@ -23,19 +22,19 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <!-- Route Optimization -->
             <div
-                class="group bg-neutral-900 border border-neutral-800 hover:border-brand-gold rounded-none p-8 transition-all duration-300 hover:shadow-[0_0_20px_rgba(212,175,55,0.1)]">
+                class="group bg-surface-card border border-border-light hover:border-accent rounded-2xl p-8 transition-all duration-300 hover:shadow-glow">
                 <div
-                    class="w-16 h-16 bg-black border border-brand-gold/20 rounded-none flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <svg class="w-8 h-8 text-brand-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="w-16 h-16 bg-surface border border-accent/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <svg class="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7">
                         </path>
                     </svg>
                 </div>
-                <h3 class="text-2xl font-bold text-white mb-4">
+                <h3 class="text-2xl font-bold text-text-primary mb-4">
                     {% if language == 'uk' %}Оптимізація маршрутів{% else %}Route Optimization{% endif %}
                 </h3>
-                <p class="text-neutral-400 mb-6 font-light">
+                <p class="text-text-secondary mb-6 font-light">
                     {% if language == 'uk' %}
                     AI-алгоритми автоматично розраховують найефективніші маршрути, враховуючи трафік, вартість пального
                     та часові вікна
@@ -46,32 +45,32 @@
                 </p>
                 <ul class="space-y-3">
                     <li class="flex items-start gap-3">
-                        <svg class="w-5 h-5 text-brand-gold mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-5 h-5 text-accent mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd"
                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        <span class="text-neutral-300">
+                        <span class="text-text-secondary">
                             {% if language == 'uk' %}Економія до 30% палива{% else %}Save up to 30% fuel{% endif %}
                         </span>
                     </li>
                     <li class="flex items-start gap-3">
-                        <svg class="w-5 h-5 text-brand-gold mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-5 h-5 text-accent mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd"
                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        <span class="text-neutral-300">
+                        <span class="text-text-secondary">
                             {% if language == 'uk' %}Реал-тайм коригування{% else %}Real-time adjustments{% endif %}
                         </span>
                     </li>
                     <li class="flex items-start gap-3">
-                        <svg class="w-5 h-5 text-brand-gold mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-5 h-5 text-accent mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd"
                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        <span class="text-neutral-300">
+                        <span class="text-text-secondary">
                             {% if language == 'uk' %}Мультимодальна логістика{% else %}Multimodal logistics{% endif %}
                         </span>
                     </li>
@@ -80,19 +79,19 @@
 
             <!-- Document Automation -->
             <div
-                class="group bg-neutral-900 border border-neutral-800 hover:border-brand-gold rounded-none p-8 transition-all duration-300 hover:shadow-[0_0_20px_rgba(212,175,55,0.1)]">
+                class="group bg-surface-card border border-border-light hover:border-accent rounded-2xl p-8 transition-all duration-300 hover:shadow-glow">
                 <div
-                    class="w-16 h-16 bg-black border border-brand-gold/20 rounded-none flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <svg class="w-8 h-8 text-brand-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="w-16 h-16 bg-surface border border-accent/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <svg class="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                         </path>
                     </svg>
                 </div>
-                <h3 class="text-2xl font-bold text-white mb-4">
+                <h3 class="text-2xl font-bold text-text-primary mb-4">
                     {% if language == 'uk' %}Автоматизація документів{% else %}Document Automation{% endif %}
                 </h3>
-                <p class="text-neutral-400 mb-6 font-light">
+                <p class="text-text-secondary mb-6 font-light">
                     {% if language == 'uk' %}
                     Автоматичне створення, обробка та зберігання всіх логістичних документів з підтримкою Е-ТТН 2026
                     {% else %}
@@ -101,33 +100,33 @@
                 </p>
                 <ul class="space-y-3">
                     <li class="flex items-start gap-3">
-                        <svg class="w-5 h-5 text-brand-gold mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-5 h-5 text-accent mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd"
                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        <span class="text-neutral-300">
+                        <span class="text-text-secondary">
                             {% if language == 'uk' %}КЕП та е-документообіг{% else %}Digital signature and e-docs{%
                             endif %}
                         </span>
                     </li>
                     <li class="flex items-start gap-3">
-                        <svg class="w-5 h-5 text-brand-gold mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-5 h-5 text-accent mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd"
                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        <span class="text-neutral-300">
+                        <span class="text-text-secondary">
                             {% if language == 'uk' %}Шаблони для всіх типів{% else %}Templates for all types{% endif %}
                         </span>
                     </li>
                     <li class="flex items-start gap-3">
-                        <svg class="w-5 h-5 text-brand-gold mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-5 h-5 text-accent mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd"
                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        <span class="text-neutral-300">
+                        <span class="text-text-secondary">
                             {% if language == 'uk' %}Інтеграція з ДПС{% else %}Tax authority integration{% endif %}
                         </span>
                     </li>
@@ -136,19 +135,19 @@
 
             <!-- Financial Management -->
             <div
-                class="group bg-neutral-900 border border-neutral-800 hover:border-brand-gold rounded-none p-8 transition-all duration-300 hover:shadow-[0_0_20px_rgba(212,175,55,0.1)]">
+                class="group bg-surface-card border border-border-light hover:border-accent rounded-2xl p-8 transition-all duration-300 hover:shadow-glow">
                 <div
-                    class="w-16 h-16 bg-black border border-brand-gold/20 rounded-none flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <svg class="w-8 h-8 text-brand-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="w-16 h-16 bg-surface border border-accent/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <svg class="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
                         </path>
                     </svg>
                 </div>
-                <h3 class="text-2xl font-bold text-white mb-4">
+                <h3 class="text-2xl font-bold text-text-primary mb-4">
                     {% if language == 'uk' %}Фінансовий менеджмент{% else %}Financial Management{% endif %}
                 </h3>
-                <p class="text-neutral-400 mb-6 font-light">
+                <p class="text-text-secondary mb-6 font-light">
                     {% if language == 'uk' %}
                     Контроль витрат, управління виплатами та фінансова аналітика в реальному часі
                     {% else %}
@@ -157,33 +156,33 @@
                 </p>
                 <ul class="space-y-3">
                     <li class="flex items-start gap-3">
-                        <svg class="w-5 h-5 text-brand-gold mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-5 h-5 text-accent mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd"
                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        <span class="text-neutral-300">
+                        <span class="text-text-secondary">
                             {% if language == 'uk' %}Автоплатежі перевізникам{% else %}Auto-payments to carriers{% endif
                             %}
                         </span>
                     </li>
                     <li class="flex items-start gap-3">
-                        <svg class="w-5 h-5 text-brand-gold mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-5 h-5 text-accent mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd"
                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        <span class="text-neutral-300">
+                        <span class="text-text-secondary">
                             {% if language == 'uk' %}Бюджетування маршрутів{% else %}Route budgeting{% endif %}
                         </span>
                     </li>
                     <li class="flex items-start gap-3">
-                        <svg class="w-5 h-5 text-brand-gold mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-5 h-5 text-accent mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd"
                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        <span class="text-neutral-300">
+                        <span class="text-text-secondary">
                             {% if language == 'uk' %}Інтеграція з банками{% else %}Banking integration{% endif %}
                         </span>
                     </li>
@@ -192,18 +191,18 @@
 
             <!-- Fleet Management -->
             <div
-                class="group bg-neutral-900 border border-neutral-800 hover:border-brand-gold rounded-none p-8 transition-all duration-300 hover:shadow-[0_0_20px_rgba(212,175,55,0.1)]">
+                class="group bg-surface-card border border-border-light hover:border-accent rounded-2xl p-8 transition-all duration-300 hover:shadow-glow">
                 <div
-                    class="w-16 h-16 bg-black border border-brand-gold/20 rounded-none flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <svg class="w-8 h-8 text-brand-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="w-16 h-16 bg-surface border border-accent/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <svg class="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                     </svg>
                 </div>
-                <h3 class="text-2xl font-bold text-white mb-4">
+                <h3 class="text-2xl font-bold text-text-primary mb-4">
                     {% if language == 'uk' %}Управління автопарком{% else %}Fleet Management{% endif %}
                 </h3>
-                <p class="text-neutral-400 mb-6 font-light">
+                <p class="text-text-secondary mb-6 font-light">
                     {% if language == 'uk' %}
                     Моніторинг транспорту, планування ТО та контроль використання автопарку
                     {% else %}
@@ -212,32 +211,32 @@
                 </p>
                 <ul class="space-y-3">
                     <li class="flex items-start gap-3">
-                        <svg class="w-5 h-5 text-brand-gold mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-5 h-5 text-accent mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd"
                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        <span class="text-neutral-300">
+                        <span class="text-text-secondary">
                             {% if language == 'uk' %}GPS-трекінг реал-тайм{% else %}Real-time GPS tracking{% endif %}
                         </span>
                     </li>
                     <li class="flex items-start gap-3">
-                        <svg class="w-5 h-5 text-brand-gold mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-5 h-5 text-accent mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd"
                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        <span class="text-neutral-300">
+                        <span class="text-text-secondary">
                             {% if language == 'uk' %}Контроль палива{% else %}Fuel monitoring{% endif %}
                         </span>
                     </li>
                     <li class="flex items-start gap-3">
-                        <svg class="w-5 h-5 text-brand-gold mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-5 h-5 text-accent mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd"
                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        <span class="text-neutral-300">
+                        <span class="text-text-secondary">
                             {% if language == 'uk' %}Планування ремонтів{% else %}Maintenance scheduling{% endif %}
                         </span>
                     </li>
@@ -248,22 +247,22 @@
 </section>
 
 <!-- Additional Services -->
-<section class="relative py-16 md:py-20 px-6 bg-white border-t border-neutral-100">
+<section class="relative py-16 md:py-20 px-6 bg-surface-secondary border-t border-border-light">
     <div class="max-w-7xl mx-auto">
         <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-4 tracking-tight">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary mb-4 tracking-tight">
                 {% if language == 'uk' %}Додаткові можливості{% else %}Additional Features{% endif %}
             </h2>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div
-                class="bg-neutral-50 border border-neutral-200 rounded-xl p-6 hover:border-brand-gold hover:shadow-lg transition-all">
-                <div class="text-4xl mb-4 grayscale">📊</div>
-                <h3 class="text-xl font-bold text-black mb-2">
+                class="bg-surface-card border border-border-light rounded-xl p-6 hover:border-accent hover:shadow-card-hover transition-all">
+                <div class="text-4xl mb-4">📊</div>
+                <h3 class="text-xl font-bold text-text-primary mb-2">
                     {% if language == 'uk' %}Аналітика та звітність{% else %}Analytics & Reporting{% endif %}
                 </h3>
-                <p class="text-neutral-600 text-sm font-light">
+                <p class="text-text-secondary text-sm font-light">
                     {% if language == 'uk' %}
                     Детальні звіти про ефективність операцій
                     {% else %}
@@ -273,12 +272,12 @@
             </div>
 
             <div
-                class="bg-neutral-50 border border-neutral-200 rounded-xl p-6 hover:border-brand-gold hover:shadow-lg transition-all">
-                <div class="text-4xl mb-4 grayscale">🤝</div>
-                <h3 class="text-xl font-bold text-black mb-2">
+                class="bg-surface-card border border-border-light rounded-xl p-6 hover:border-accent hover:shadow-card-hover transition-all">
+                <div class="text-4xl mb-4">🤝</div>
+                <h3 class="text-xl font-bold text-text-primary mb-2">
                     {% if language == 'uk' %}Marketplace перевізників{% else %}Carrier Marketplace{% endif %}
                 </h3>
-                <p class="text-neutral-600 text-sm font-light">
+                <p class="text-text-secondary text-sm font-light">
                     {% if language == 'uk' %}
                     Пошук та порівняння перевізників
                     {% else %}
@@ -288,12 +287,12 @@
             </div>
 
             <div
-                class="bg-neutral-50 border border-neutral-200 rounded-xl p-6 hover:border-brand-gold hover:shadow-lg transition-all">
-                <div class="text-4xl mb-4 grayscale">🔔</div>
-                <h3 class="text-xl font-bold text-black mb-2">
+                class="bg-surface-card border border-border-light rounded-xl p-6 hover:border-accent hover:shadow-card-hover transition-all">
+                <div class="text-4xl mb-4">🔔</div>
+                <h3 class="text-xl font-bold text-text-primary mb-2">
                     {% if language == 'uk' %}Smart-сповіщення{% else %}Smart Notifications{% endif %}
                 </h3>
-                <p class="text-neutral-600 text-sm font-light">
+                <p class="text-text-secondary text-sm font-light">
                     {% if language == 'uk' %}
                     Автоматичні алерти про важливі події
                     {% else %}
@@ -303,12 +302,12 @@
             </div>
 
             <div
-                class="bg-neutral-50 border border-neutral-200 rounded-xl p-6 hover:border-brand-gold hover:shadow-lg transition-all">
-                <div class="text-4xl mb-4 grayscale">🔗</div>
-                <h3 class="text-xl font-bold text-black mb-2">
+                class="bg-surface-card border border-border-light rounded-xl p-6 hover:border-accent hover:shadow-card-hover transition-all">
+                <div class="text-4xl mb-4">🔗</div>
+                <h3 class="text-xl font-bold text-text-primary mb-2">
                     {% if language == 'uk' %}API інтеграції{% else %}API Integrations{% endif %}
                 </h3>
-                <p class="text-neutral-600 text-sm font-light">
+                <p class="text-text-secondary text-sm font-light">
                     {% if language == 'uk' %}
                     Підключення до існуючих систем
                     {% else %}
@@ -318,12 +317,12 @@
             </div>
 
             <div
-                class="bg-neutral-50 border border-neutral-200 rounded-xl p-6 hover:border-brand-gold hover:shadow-lg transition-all">
-                <div class="text-4xl mb-4 grayscale">📱</div>
-                <h3 class="text-xl font-bold text-black mb-2">
+                class="bg-surface-card border border-border-light rounded-xl p-6 hover:border-accent hover:shadow-card-hover transition-all">
+                <div class="text-4xl mb-4">📱</div>
+                <h3 class="text-xl font-bold text-text-primary mb-2">
                     {% if language == 'uk' %}Мобільний додаток{% else %}Mobile App{% endif %}
                 </h3>
-                <p class="text-neutral-600 text-sm font-light">
+                <p class="text-text-secondary text-sm font-light">
                     {% if language == 'uk' %}
                     Управління в дорозі для водіїв
                     {% else %}
@@ -333,12 +332,12 @@
             </div>
 
             <div
-                class="bg-neutral-50 border border-neutral-200 rounded-xl p-6 hover:border-brand-gold hover:shadow-lg transition-all">
-                <div class="text-4xl mb-4 grayscale">🎓</div>
-                <h3 class="text-xl font-bold text-black mb-2">
+                class="bg-surface-card border border-border-light rounded-xl p-6 hover:border-accent hover:shadow-card-hover transition-all">
+                <div class="text-4xl mb-4">🎓</div>
+                <h3 class="text-xl font-bold text-text-primary mb-2">
                     {% if language == 'uk' %}Навчання та підтримка{% else %}Training & Support{% endif %}
                 </h3>
-                <p class="text-neutral-600 text-sm font-light">
+                <p class="text-text-secondary text-sm font-light">
                     {% if language == 'uk' %}
                     24/7 підтримка та онбординг
                     {% else %}
@@ -351,16 +350,16 @@
 </section>
 
 <!-- CTA Section -->
-<section class="relative py-16 md:py-20 px-6 bg-brand-gold">
+<section class="relative py-16 md:py-20 px-6 bg-accent">
     <div class="max-w-4xl mx-auto text-center">
-        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-6 tracking-tight">
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-text-on-accent mb-6 tracking-tight">
             {% if language == 'uk' %}
             Готові дізнатися, як Trexim може допомогти вашому бізнесу?
             {% else %}
             Ready to see how Trexim can help your business?
             {% endif %}
         </h2>
-        <p class="text-lg md:text-xl text-black/80 mb-8 font-medium">
+        <p class="text-lg md:text-xl text-text-on-accent/80 mb-8 font-medium">
             {% if language == 'uk' %}
             Отримайте персоналізовану демонстрацію платформи та дізнайтеся про можливості для вашої компанії
             {% else %}
@@ -368,7 +367,7 @@
             {% endif %}
         </p>
         <a href="/contact?lang={{ language }}&type=expert"
-            class="inline-block px-10 py-4 bg-black hover:bg-neutral-800 text-white font-bold rounded-none transition-all transform hover:scale-105 shadow-xl hover:shadow-2xl">
+            class="inline-block px-10 py-4 bg-surface hover:bg-surface-secondary text-text-primary font-bold rounded-full transition-all transform hover:scale-105 shadow-xl hover:shadow-2xl">
             {% if language == 'uk' %}Зв'язатися з експертом{% else %}Talk to an Expert{% endif %}
         </a>
     </div>
