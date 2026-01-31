@@ -53,59 +53,75 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+    <!-- Theme CSS Variables -->
+    <style>
+        /* Light theme (default) */
+        :root {
+            --color-surface: #FFFFFF;
+            --color-surface-secondary: #F5F5F5;
+            --color-surface-card: #FFFFFF;
+            --color-accent: #D4AF37;
+            --color-accent-light: #E4C455;
+            --color-accent-dark: #B5902B;
+            --color-text-primary: #0A0A0A;
+            --color-text-secondary: #525252;
+            --color-text-muted: #737373;
+            --color-text-on-accent: #FFFFFF;
+            --color-border: #E5E5E5;
+            --color-border-dark: #D4D4D4;
+            --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-card-hover: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-glow: 0 0 40px -10px rgb(212 175 55 / 0.4);
+            --shadow-button: 0 0 20px 0 rgb(212 175 55 / 0.3);
+        }
+
+        /* Dark theme */
+        [data-theme="dark"] {
+            --color-surface: #0A0A0A;
+            --color-surface-secondary: #141414;
+            --color-surface-card: #1A1A1A;
+            --color-accent: #22C55E;
+            --color-accent-light: #4ADE80;
+            --color-accent-dark: #16A34A;
+            --color-text-primary: #FFFFFF;
+            --color-text-secondary: #A1A1AA;
+            --color-text-muted: #71717A;
+            --color-text-on-accent: #0A0A0A;
+            --color-border: #27272A;
+            --color-border-dark: #18181B;
+            --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+            --shadow-card-hover: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.4);
+            --shadow-glow: 0 0 40px -10px rgb(34 197 94 / 0.5);
+            --shadow-button: 0 0 20px 0 rgb(34 197 94 / 0.4);
+        }
+    </style>
+
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        // Uklon-inspired Design System
-                        'surface': '#0A0A0A',
-                        'surface-secondary': '#141414',
-                        'surface-card': '#1A1A1A',
-                        'surface-light': '#FFFFFF',
-                        'accent': '#22C55E',
-                        'accent-light': '#4ADE80',
-                        'accent-dark': '#16A34A',
-                        'text-primary': '#FFFFFF',
-                        'text-secondary': '#A1A1AA',
-                        'text-muted': '#71717A',
-                        'text-dark': '#0A0A0A',
-                        'border-light': '#27272A',
-                        'border-dark': '#18181B',
+                        'surface': 'var(--color-surface)',
+                        'surface-secondary': 'var(--color-surface-secondary)',
+                        'surface-card': 'var(--color-surface-card)',
+                        'accent': 'var(--color-accent)',
+                        'accent-light': 'var(--color-accent-light)',
+                        'accent-dark': 'var(--color-accent-dark)',
+                        'text-primary': 'var(--color-text-primary)',
+                        'text-secondary': 'var(--color-text-secondary)',
+                        'text-muted': 'var(--color-text-muted)',
+                        'text-on-accent': 'var(--color-text-on-accent)',
+                        'border-light': 'var(--color-border)',
+                        'border-dark': 'var(--color-border-dark)',
                     },
                     fontFamily: {
                         sans: ['Inter', 'system-ui', 'sans-serif'],
                     },
                     boxShadow: {
-                        'card': '0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3)',
-                        'card-hover': '0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.4)',
-                        'glow': '0 0 40px -10px rgb(34 197 94 / 0.5)',
-                        'button': '0 0 20px 0 rgb(34 197 94 / 0.4)',
-                    },
-                    typography: {
-                        DEFAULT: {
-                            css: {
-                                maxWidth: 'none',
-                                color: '#A1A1AA',
-                                a: {
-                                    color: '#22C55E',
-                                    '&:hover': {
-                                        color: '#4ADE80',
-                                    },
-                                },
-                                h2: {
-                                    color: '#FFFFFF',
-                                    fontWeight: '700',
-                                },
-                                h3: {
-                                    color: '#FFFFFF',
-                                    fontWeight: '600',
-                                },
-                                strong: {
-                                    color: '#FFFFFF',
-                                },
-                            },
-                        },
+                        'card': 'var(--shadow-card)',
+                        'card-hover': 'var(--shadow-card-hover)',
+                        'glow': 'var(--shadow-glow)',
+                        'button': 'var(--shadow-button)',
                     },
                 }
             }
@@ -180,7 +196,7 @@
                     </div>
 
                     <!-- CTA Button -->
-                    <a href="/contact?lang={{ language }}" class="hidden sm:inline-flex px-6 py-2.5 bg-accent hover:bg-accent-light text-text-dark text-sm font-bold rounded-full shadow-button hover:shadow-glow transition-all duration-300">
+                    <a href="/contact?lang={{ language }}" class="hidden sm:inline-flex px-6 py-2.5 bg-accent hover:bg-accent-light text-text-on-accent text-sm font-bold rounded-full shadow-button hover:shadow-glow transition-all duration-300">
                         {{ 'Почати' if language == 'uk' else 'Get Started' }}
                     </a>
 
@@ -216,7 +232,7 @@
                 <a href="/contact?lang={{ language }}" class="block px-3 py-3 text-text-secondary hover:text-accent rounded-lg transition-colors">
                     {{ 'Контакти' if language == 'uk' else 'Contact' }}
                 </a>
-                <a href="/contact?lang={{ language }}" class="block mt-4 px-4 py-3 bg-accent text-text-dark text-center font-bold rounded-full">
+                <a href="/contact?lang={{ language }}" class="block mt-4 px-4 py-3 bg-accent text-text-on-accent text-center font-bold rounded-full">
                     {{ 'Почати' if language == 'uk' else 'Get Started' }}
                 </a>
             </div>
@@ -276,7 +292,7 @@
                         </li>
                     </ul>
                     <a href="/contact?lang={{ language }}&type=demo"
-                       class="inline-flex items-center px-6 py-2.5 bg-accent hover:bg-accent-light text-text-dark text-sm font-bold rounded-full transition-all duration-300 shadow-button hover:shadow-glow">
+                       class="inline-flex items-center px-6 py-2.5 bg-accent hover:bg-accent-light text-text-on-accent text-sm font-bold rounded-full transition-all duration-300 shadow-button hover:shadow-glow">
                         {{ 'Замовити демо' if language == 'uk' else 'Request Demo' }}
                     </a>
                 </div>
