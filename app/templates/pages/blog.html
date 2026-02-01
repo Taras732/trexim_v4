@@ -10,12 +10,12 @@ Blog - Trexim
 
 {% block content %}
 <!-- Blog Hero -->
-<section class="relative py-16 md:py-20 px-6 bg-gradient-to-b from-slate-900 to-slate-800">
+<section class="relative py-16 md:py-20 px-6 bg-gradient-to-b from-surface to-surface-secondary">
     <div class="max-w-7xl mx-auto text-center">
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-text-primary mb-6">
             {% if language == 'uk' %}Блог Trexim{% else %}Trexim Blog{% endif %}
         </h1>
-        <p class="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto">
+        <p class="text-lg md:text-xl text-text-secondary max-w-3xl mx-auto">
             {% if language == 'uk' %}
             Новини, інсайти та корисні матеріали про логістику, AI та автоматизацію транспортних перевезень
             {% else %}
@@ -28,32 +28,32 @@ Blog - Trexim
 <!-- Blog Content with Alpine.js -->
 <div x-data="blogFilter()" x-init="fetchPosts()">
     <!-- Filters -->
-    <section class="py-8 px-6 bg-white border-b border-gray-200 sticky top-16 z-40">
+    <section class="py-8 px-6 bg-surface border-b border-border-light sticky top-16 z-40">
         <div class="max-w-7xl mx-auto">
             <div class="flex flex-wrap gap-3 justify-center">
                 <button @click="category = 'all'"
-                        :class="category === 'all' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-                        class="px-6 py-2 rounded-full font-semibold transition">
+                        :class="category === 'all' ? 'bg-accent text-text-on-accent' : 'bg-surface-secondary text-text-secondary hover:bg-surface-card hover:text-text-primary'"
+                        class="px-6 py-2 rounded-full font-semibold transition-all border border-border-light">
                     {% if language == 'uk' %}Всі{% else %}All{% endif %}
                 </button>
                 <button @click="category = 'news'"
-                        :class="category === 'news' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-                        class="px-6 py-2 rounded-full font-semibold transition">
+                        :class="category === 'news' ? 'bg-accent text-text-on-accent' : 'bg-surface-secondary text-text-secondary hover:bg-surface-card hover:text-text-primary'"
+                        class="px-6 py-2 rounded-full font-semibold transition-all border border-border-light">
                     {% if language == 'uk' %}Новини{% else %}News{% endif %}
                 </button>
                 <button @click="category = 'guides'"
-                        :class="category === 'guides' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-                        class="px-6 py-2 rounded-full font-semibold transition">
+                        :class="category === 'guides' ? 'bg-accent text-text-on-accent' : 'bg-surface-secondary text-text-secondary hover:bg-surface-card hover:text-text-primary'"
+                        class="px-6 py-2 rounded-full font-semibold transition-all border border-border-light">
                     {% if language == 'uk' %}Гіди{% else %}Guides{% endif %}
                 </button>
                 <button @click="category = 'tech'"
-                        :class="category === 'tech' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-                        class="px-6 py-2 rounded-full font-semibold transition">
+                        :class="category === 'tech' ? 'bg-accent text-text-on-accent' : 'bg-surface-secondary text-text-secondary hover:bg-surface-card hover:text-text-primary'"
+                        class="px-6 py-2 rounded-full font-semibold transition-all border border-border-light">
                     {% if language == 'uk' %}Технології{% else %}Technology{% endif %}
                 </button>
                 <button @click="category = 'updates'"
-                        :class="category === 'updates' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-                        class="px-6 py-2 rounded-full font-semibold transition">
+                        :class="category === 'updates' ? 'bg-accent text-text-on-accent' : 'bg-surface-secondary text-text-secondary hover:bg-surface-card hover:text-text-primary'"
+                        class="px-6 py-2 rounded-full font-semibold transition-all border border-border-light">
                     {% if language == 'uk' %}Оновлення{% else %}Updates{% endif %}
                 </button>
             </div>
@@ -61,34 +61,34 @@ Blog - Trexim
     </section>
 
     <!-- Loading State -->
-    <section x-show="loading" class="py-16 px-6 bg-slate-50">
+    <section x-show="loading" class="py-16 px-6 bg-surface-secondary">
         <div class="max-w-7xl mx-auto text-center">
             <div class="animate-pulse">
-                <div class="h-8 bg-gray-200 rounded w-48 mx-auto mb-4"></div>
-                <div class="h-4 bg-gray-200 rounded w-64 mx-auto"></div>
+                <div class="h-8 bg-surface-card rounded w-48 mx-auto mb-4"></div>
+                <div class="h-4 bg-surface-card rounded w-64 mx-auto"></div>
             </div>
         </div>
     </section>
 
     <!-- Featured Post -->
-    <section x-show="!loading && featuredPost" class="py-16 px-6 bg-gradient-to-b from-white to-slate-50">
+    <section x-show="!loading && featuredPost" class="py-16 px-6 bg-gradient-to-b from-surface to-surface-secondary">
         <div class="max-w-7xl mx-auto">
             <template x-if="featuredPost && (category === 'all' || featuredPost.category_key === category)">
-                <a :href="'/blog/' + featuredPost.slug + '?lang={{ language }}'" class="block bg-gradient-to-r from-slate-900 to-slate-800 rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-[1.01] border-2 border-transparent hover:border-orange-500">
+                <a :href="'/blog/' + featuredPost.slug + '?lang={{ language }}'" class="block bg-gradient-to-r from-surface-card to-surface-secondary rounded-3xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 hover:scale-[1.01] border-2 border-border-light hover:border-accent">
                     <div class="grid md:grid-cols-2 gap-0">
                         <div class="p-8 md:p-12 flex flex-col justify-center">
-                            <span class="inline-block px-4 py-2 bg-orange-500 text-white text-xs font-bold rounded-full w-fit mb-4">
+                            <span class="inline-block px-4 py-2 bg-accent text-text-on-accent text-xs font-bold rounded-full w-fit mb-4">
                                 {% if language == 'uk' %}ГОЛОВНА НОВИНА{% else %}FEATURED{% endif %}
                             </span>
-                            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4" x-text="featuredPost.title"></h2>
-                            <p class="text-slate-300 mb-6 text-lg" x-text="featuredPost.excerpt"></p>
+                            <h2 class="text-3xl md:text-4xl font-bold text-text-primary mb-4" x-text="featuredPost.title"></h2>
+                            <p class="text-text-secondary mb-6 text-lg" x-text="featuredPost.excerpt"></p>
                             <div class="flex items-center gap-4">
-                                <span class="text-slate-400 text-sm" x-text="featuredPost.date"></span>
-                                <span class="text-slate-600">&bull;</span>
-                                <span class="text-slate-400 text-sm" x-text="featuredPost.read_time + ' {% if language == 'uk' %}хв читання{% else %}min read{% endif %}'"></span>
+                                <span class="text-text-muted text-sm" x-text="featuredPost.date"></span>
+                                <span class="text-text-muted">&bull;</span>
+                                <span class="text-text-muted text-sm" x-text="featuredPost.read_time + ' {% if language == 'uk' %}хв читання{% else %}min read{% endif %}'"></span>
                             </div>
                         </div>
-                        <div class="relative min-h-[300px] md:min-h-0 bg-gradient-to-br from-orange-500/20 to-orange-600/10 flex items-center justify-center">
+                        <div class="relative min-h-[300px] md:min-h-0 bg-gradient-to-br from-accent/20 to-accent/5 flex items-center justify-center">
                             <div class="text-9xl" x-text="featuredPost.emoji"></div>
                         </div>
                     </div>
@@ -98,25 +98,23 @@ Blog - Trexim
     </section>
 
     <!-- Blog Posts Grid -->
-    <section x-show="!loading" class="py-16 px-6 bg-slate-50">
+    <section x-show="!loading" class="py-16 px-6 bg-surface-secondary">
         <div class="max-w-7xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <template x-for="post in filteredPosts" :key="post.slug">
-                    <a :href="'/blog/' + post.slug + '?lang={{ language }}'" class="block bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-orange-500">
-                        <div class="relative h-48 flex items-center justify-center"
-                             :class="'bg-gradient-to-br from-' + post.color + '-500 to-' + post.color + '-600'">
+                    <a :href="'/blog/' + post.slug + '?lang={{ language }}'" class="block bg-surface-card rounded-2xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-2 border-2 border-border-light hover:border-accent">
+                        <div class="relative h-48 flex items-center justify-center bg-gradient-to-br from-accent/20 to-accent/5">
                             <div class="text-6xl" x-text="post.emoji"></div>
                         </div>
                         <div class="p-6">
                             <div class="flex items-center gap-2 mb-3">
-                                <span class="px-3 py-1 text-xs font-semibold rounded-full"
-                                      :class="'bg-' + post.color + '-100 text-' + post.color + '-600'"
+                                <span class="px-3 py-1 text-xs font-semibold rounded-full bg-accent/10 text-accent"
                                       x-text="post.category"></span>
-                                <span class="text-gray-400 text-xs" x-text="post.date"></span>
+                                <span class="text-text-muted text-xs" x-text="post.date"></span>
                             </div>
-                            <h3 class="text-xl font-bold text-slate-900 mb-3" x-text="post.title"></h3>
-                            <p class="text-gray-600 mb-4 text-sm line-clamp-2" x-text="post.excerpt"></p>
-                            <span class="text-gray-400 text-xs" x-text="post.read_time + ' {% if language == 'uk' %}хв{% else %}min{% endif %}'"></span>
+                            <h3 class="text-xl font-bold text-text-primary mb-3" x-text="post.title"></h3>
+                            <p class="text-text-secondary mb-4 text-sm line-clamp-2" x-text="post.excerpt"></p>
+                            <span class="text-text-muted text-xs" x-text="post.read_time + ' {% if language == 'uk' %}хв{% else %}min{% endif %}'"></span>
                         </div>
                     </a>
                 </template>
@@ -125,7 +123,7 @@ Blog - Trexim
             <!-- No results message -->
             <div x-show="filteredPosts.length === 0 && !loading" class="text-center py-12">
                 <div class="text-6xl mb-4">🔍</div>
-                <p class="text-gray-500 text-lg">
+                <p class="text-text-secondary text-lg">
                     {% if language == 'uk' %}Статей у цій категорії поки немає{% else %}No articles in this category yet{% endif %}
                 </p>
             </div>
@@ -134,12 +132,12 @@ Blog - Trexim
 </div>
 
 <!-- Newsletter CTA -->
-<section class="py-16 px-6 bg-gradient-to-r from-orange-500 to-orange-600">
+<section class="py-16 px-6 bg-accent">
     <div class="max-w-4xl mx-auto text-center">
-        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-text-on-accent mb-4">
             {% if language == 'uk' %}Підпишіться на нашу розсилку{% else %}Subscribe to Our Newsletter{% endif %}
         </h2>
-        <p class="text-orange-100 mb-8 text-lg">
+        <p class="text-text-on-accent/80 mb-8 text-lg">
             {% if language == 'uk' %}
             Отримуйте останні новини та інсайти про логістику просто на пошту
             {% else %}
@@ -149,8 +147,8 @@ Blog - Trexim
         <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
             <input type="email"
                    placeholder="{% if language == 'uk' %}Ваш email{% else %}Your email{% endif %}"
-                   class="flex-1 px-6 py-3 rounded-xl border-0 focus:ring-2 focus:ring-white">
-            <button type="submit" class="px-8 py-3 bg-white text-orange-500 font-semibold rounded-xl hover:bg-orange-50 transition">
+                   class="flex-1 px-6 py-3 rounded-full border-0 bg-surface text-text-primary placeholder-text-muted focus:ring-2 focus:ring-white">
+            <button type="submit" class="px-8 py-3 bg-surface text-text-primary font-semibold rounded-full hover:bg-surface-secondary transition">
                 {% if language == 'uk' %}Підписатися{% else %}Subscribe{% endif %}
             </button>
         </form>
@@ -194,33 +192,6 @@ function blogFilter() {
 </script>
 
 <style>
-/* Tailwind doesn't generate dynamic color classes, so we need to define them */
-.from-orange-500 { --tw-gradient-from: #f97316; }
-.to-orange-600 { --tw-gradient-to: #ea580c; }
-.from-blue-500 { --tw-gradient-from: #3b82f6; }
-.to-blue-600 { --tw-gradient-to: #2563eb; }
-.from-green-500 { --tw-gradient-from: #22c55e; }
-.to-green-600 { --tw-gradient-to: #16a34a; }
-.from-purple-500 { --tw-gradient-from: #a855f7; }
-.to-purple-600 { --tw-gradient-to: #9333ea; }
-.from-red-500 { --tw-gradient-from: #ef4444; }
-.to-red-600 { --tw-gradient-to: #dc2626; }
-.from-yellow-500 { --tw-gradient-from: #eab308; }
-.to-yellow-600 { --tw-gradient-to: #ca8a04; }
-
-.bg-orange-100 { background-color: #ffedd5; }
-.text-orange-600 { color: #ea580c; }
-.bg-blue-100 { background-color: #dbeafe; }
-.text-blue-600 { color: #2563eb; }
-.bg-green-100 { background-color: #dcfce7; }
-.text-green-600 { color: #16a34a; }
-.bg-purple-100 { background-color: #f3e8ff; }
-.text-purple-600 { color: #9333ea; }
-.bg-red-100 { background-color: #fee2e2; }
-.text-red-600 { color: #dc2626; }
-.bg-yellow-100 { background-color: #fef9c3; }
-.text-yellow-600 { color: #ca8a04; }
-
 .line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
