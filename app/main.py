@@ -87,7 +87,7 @@ async def root(request: Request, lang: str = "uk"):
         blog_posts = get_homepage_posts(lang, limit=6)
     except Exception as e:
         logger.error(f"Failed to load homepage posts: {e}")
-                blog_posts = []
+        blog_posts = []
     return templates.TemplateResponse(        "pages/home.html",
         {"request": request, "language": lang, "blog_posts": blog_posts}
     )
