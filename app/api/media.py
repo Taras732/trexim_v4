@@ -3,10 +3,7 @@ Media API - endpoints for image upload and management
 """
 from fastapi import APIRouter, UploadFile, File, HTTPException, Query
 
-try:
-    from ..media import upload_image, delete_image
-except ImportError:
-    from media import upload_image, delete_image
+from ..media import upload_image, delete_image
 
 router = APIRouter(prefix="/media", tags=["media"])
 

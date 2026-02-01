@@ -20,21 +20,34 @@ analytics. Reduce delays by 40% and document time by 80%.
 
 {% block content %}
 <!-- Hero Section -->
-<section class="relative min-h-[90vh] flex items-center px-6 py-20 overflow-hidden">
-    <!-- Gradient background -->
-    <div class="absolute inset-0 bg-gradient-to-br from-surface via-surface-secondary to-surface"></div>
-    <div class="absolute top-1/4 right-0 w-[600px] h-[600px] bg-accent/10 rounded-full blur-[120px]"></div>
-    <div class="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-accent/5 rounded-full blur-[100px]"></div>
+<section class="relative min-h-[90vh] flex items-center px-6 py-20 overflow-hidden honeycomb-bg">
+    <!-- Gradient overlay -->
+    <div class="absolute inset-0 bg-gradient-to-br from-surface via-transparent to-surface/80"></div>
+
+    <!-- Animated glow orbs -->
+    <div class="absolute top-1/4 right-0 w-[600px] h-[600px] bg-accent/10 rounded-full blur-[120px] float-animation"></div>
+    <div class="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-accent-muted/20 rounded-full blur-[100px] float-animation" style="animation-delay: -3s;"></div>
+
+    <!-- Decorative hexagons -->
+    <div class="hex-decoration absolute top-20 right-10 w-32 h-32 opacity-[0.08] float-animation" style="animation-delay: -2s;">
+        <svg viewBox="0 0 100 100"><polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" stroke="currentColor" stroke-width="1" fill="none" class="text-accent"/></svg>
+    </div>
+    <div class="hex-decoration absolute bottom-32 right-1/4 w-20 h-20 opacity-[0.06] float-animation" style="animation-delay: -4s;">
+        <svg viewBox="0 0 100 100"><polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" stroke="currentColor" stroke-width="1" fill="none" class="text-accent"/></svg>
+    </div>
+    <div class="hex-decoration absolute top-1/3 left-10 w-24 h-24 opacity-[0.05] float-animation" style="animation-delay: -1s;">
+        <svg viewBox="0 0 100 100"><polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" stroke="currentColor" stroke-width="1" fill="none" class="text-accent"/></svg>
+    </div>
 
     <div class="relative z-10 max-w-7xl mx-auto w-full">
         <div class="max-w-3xl">
             <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-text-primary mb-6 leading-[1.05]">
                 {% if language == 'uk' %}
                 Логістика<br>
-                <span class="text-accent">під контролем</span>
+                <span class="text-accent text-glow">під контролем</span>
                 {% else %}
                 Logistics<br>
-                <span class="text-accent">under control</span>
+                <span class="text-accent text-glow">under control</span>
                 {% endif %}
             </h1>
 
@@ -48,11 +61,11 @@ analytics. Reduce delays by 40% and document time by 80%.
 
             <div class="flex flex-col sm:flex-row gap-4">
                 <a href="/contact?lang={{ language }}&type=demo"
-                    class="inline-flex items-center justify-center px-8 py-4 bg-accent hover:bg-accent-light text-text-on-accent text-lg font-bold rounded-full shadow-button hover:shadow-glow transition-all duration-300">
+                    class="btn-accent-glow inline-flex items-center justify-center px-8 py-4 bg-accent hover:bg-accent-light text-text-on-accent text-lg font-bold rounded-full shadow-button transition-all duration-300">
                     {% if language == 'uk' %}Замовити демо{% else %}Request Demo{% endif %}
                 </a>
                 <a href="/services?lang={{ language }}"
-                    class="inline-flex items-center justify-center px-8 py-4 bg-transparent text-text-primary text-lg font-semibold rounded-full border-2 border-border-light hover:border-accent hover:text-accent transition-all duration-300">
+                    class="inline-flex items-center justify-center px-8 py-4 bg-transparent text-text-primary text-lg font-semibold rounded-full border-2 border-border-light hover:border-accent hover:text-accent accent-glow-hover transition-all duration-300">
                     {% if language == 'uk' %}Як це працює{% else %}How it works{% endif %}
                 </a>
             </div>
@@ -61,23 +74,26 @@ analytics. Reduce delays by 40% and document time by 80%.
 </section>
 
 <!-- Stats Bar -->
-<section class="py-12 px-6 bg-surface-secondary border-y border-border-light">
-    <div class="max-w-7xl mx-auto">
+<section class="py-12 px-6 bg-surface-secondary border-y border-border-light relative overflow-hidden">
+    <!-- Subtle shimmer effect -->
+    <div class="absolute inset-0 shimmer pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div class="text-center">
-                <div class="text-4xl md:text-5xl font-bold text-accent mb-2">40%</div>
+            <div class="text-center group">
+                <div class="text-4xl md:text-5xl font-bold text-accent mb-2 group-hover:text-glow transition-all duration-300">40%</div>
                 <div class="text-text-secondary text-sm">{% if language == 'uk' %}менше затримок{% else %}fewer delays{% endif %}</div>
             </div>
-            <div class="text-center">
-                <div class="text-4xl md:text-5xl font-bold text-accent mb-2">80%</div>
+            <div class="text-center group">
+                <div class="text-4xl md:text-5xl font-bold text-accent mb-2 group-hover:text-glow transition-all duration-300">80%</div>
                 <div class="text-text-secondary text-sm">{% if language == 'uk' %}швидше документи{% else %}faster documents{% endif %}</div>
             </div>
-            <div class="text-center">
-                <div class="text-4xl md:text-5xl font-bold text-accent mb-2">15</div>
+            <div class="text-center group">
+                <div class="text-4xl md:text-5xl font-bold text-accent mb-2 group-hover:text-glow transition-all duration-300">15</div>
                 <div class="text-text-secondary text-sm">{% if language == 'uk' %}хв точність ETA{% else %}min ETA accuracy{% endif %}</div>
             </div>
-            <div class="text-center">
-                <div class="text-4xl md:text-5xl font-bold text-accent mb-2">24/7</div>
+            <div class="text-center group">
+                <div class="text-4xl md:text-5xl font-bold text-accent mb-2 group-hover:text-glow transition-all duration-300">24/7</div>
                 <div class="text-text-secondary text-sm">{% if language == 'uk' %}моніторинг{% else %}monitoring{% endif %}</div>
             </div>
         </div>
@@ -85,8 +101,8 @@ analytics. Reduce delays by 40% and document time by 80%.
 </section>
 
 <!-- Features Section -->
-<section class="py-20 md:py-28 px-6">
-    <div class="max-w-7xl mx-auto">
+<section class="py-20 md:py-28 px-6 relative overflow-hidden hex-grid-bg">
+    <div class="max-w-7xl mx-auto relative z-10">
         <div class="text-center mb-16">
             <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary mb-4">
                 {% if language == 'uk' %}Чому обирають Trexim{% else %}Why Choose Trexim{% endif %}
@@ -102,7 +118,7 @@ analytics. Reduce delays by 40% and document time by 80%.
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Card 1 -->
-            <div class="group p-8 bg-surface-card rounded-3xl border border-border-light hover:border-accent transition-all duration-300">
+            <div class="group p-8 bg-surface-card rounded-3xl card-accent">
                 <div class="w-14 h-14 bg-accent/20 rounded-2xl flex items-center justify-center mb-6">
                     <svg class="w-7 h-7 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
@@ -127,7 +143,7 @@ analytics. Reduce delays by 40% and document time by 80%.
             </div>
 
             <!-- Card 2 -->
-            <div class="group p-8 bg-surface-card rounded-3xl border border-border-light hover:border-accent transition-all duration-300">
+            <div class="group p-8 bg-surface-card rounded-3xl card-accent">
                 <div class="w-14 h-14 bg-accent/20 rounded-2xl flex items-center justify-center mb-6">
                     <svg class="w-7 h-7 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
@@ -151,7 +167,7 @@ analytics. Reduce delays by 40% and document time by 80%.
             </div>
 
             <!-- Card 3 -->
-            <div class="group p-8 bg-surface-card rounded-3xl border border-border-light hover:border-accent transition-all duration-300">
+            <div class="group p-8 bg-surface-card rounded-3xl card-accent">
                 <div class="w-14 h-14 bg-accent/20 rounded-2xl flex items-center justify-center mb-6">
                     <svg class="w-7 h-7 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
@@ -175,7 +191,7 @@ analytics. Reduce delays by 40% and document time by 80%.
             </div>
 
             <!-- Card 4 -->
-            <div class="group p-8 bg-surface-card rounded-3xl border border-border-light hover:border-accent transition-all duration-300">
+            <div class="group p-8 bg-surface-card rounded-3xl card-accent">
                 <div class="w-14 h-14 bg-accent/20 rounded-2xl flex items-center justify-center mb-6">
                     <svg class="w-7 h-7 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -202,8 +218,16 @@ analytics. Reduce delays by 40% and document time by 80%.
 </section>
 
 <!-- For Who Section -->
-<section class="py-20 md:py-28 px-6 bg-surface-secondary">
-    <div class="max-w-7xl mx-auto">
+<section class="py-20 md:py-28 px-6 honeycomb-bg-light relative overflow-hidden">
+    <!-- Decorative hex -->
+    <div class="hex-decoration absolute top-10 left-10 w-40 h-40 opacity-[0.04] float-animation">
+        <svg viewBox="0 0 100 100"><polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" stroke="currentColor" stroke-width="1" fill="none" class="text-accent"/></svg>
+    </div>
+    <div class="hex-decoration absolute bottom-20 right-20 w-28 h-28 opacity-[0.05] float-animation" style="animation-delay: -2s;">
+        <svg viewBox="0 0 100 100"><polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" stroke="currentColor" stroke-width="1" fill="none" class="text-accent"/></svg>
+    </div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
         <div class="text-center mb-16">
             <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary mb-4">
                 {% if language == 'uk' %}Для кого Trexim{% else %}Who Is Trexim For{% endif %}
@@ -212,7 +236,7 @@ analytics. Reduce delays by 40% and document time by 80%.
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             <!-- Shippers -->
-            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-surface-card to-surface p-10 border border-border-light">
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-surface-card to-surface p-10 card-accent glow-border">
                 <div class="absolute top-0 right-0 w-32 h-32 bg-accent/10 rounded-full blur-[60px]"></div>
                 <div class="relative">
                     <div class="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center mb-6">
@@ -254,7 +278,7 @@ analytics. Reduce delays by 40% and document time by 80%.
             </div>
 
             <!-- Logistics Companies -->
-            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-surface-card to-surface p-10 border border-border-light">
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-surface-card to-surface p-10 card-accent glow-border">
                 <div class="absolute top-0 right-0 w-32 h-32 bg-accent/10 rounded-full blur-[60px]"></div>
                 <div class="relative">
                     <div class="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center mb-6">
@@ -299,7 +323,7 @@ analytics. Reduce delays by 40% and document time by 80%.
 </section>
 
 <!-- How It Works -->
-<section class="py-20 md:py-28 px-6">
+<section class="py-20 md:py-28 px-6 relative">
     <div class="max-w-7xl mx-auto">
         <div class="text-center mb-16">
             <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary mb-4">
@@ -309,8 +333,8 @@ analytics. Reduce delays by 40% and document time by 80%.
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Step 1 -->
-            <div class="text-center">
-                <div class="w-20 h-20 bg-accent text-text-on-accent rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-6">
+            <div class="text-center group">
+                <div class="w-20 h-20 bg-accent text-text-on-accent hexagon flex items-center justify-center text-3xl font-bold mx-auto mb-6 shadow-button group-hover:shadow-glow transition-all duration-300">
                     1
                 </div>
                 <h3 class="text-xl font-bold text-text-primary mb-3">
@@ -326,8 +350,8 @@ analytics. Reduce delays by 40% and document time by 80%.
             </div>
 
             <!-- Step 2 -->
-            <div class="text-center">
-                <div class="w-20 h-20 bg-accent text-text-on-accent rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-6">
+            <div class="text-center group">
+                <div class="w-20 h-20 bg-accent text-text-on-accent hexagon flex items-center justify-center text-3xl font-bold mx-auto mb-6 shadow-button group-hover:shadow-glow transition-all duration-300">
                     2
                 </div>
                 <h3 class="text-xl font-bold text-text-primary mb-3">
@@ -343,8 +367,8 @@ analytics. Reduce delays by 40% and document time by 80%.
             </div>
 
             <!-- Step 3 -->
-            <div class="text-center">
-                <div class="w-20 h-20 bg-accent text-text-on-accent rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-6">
+            <div class="text-center group">
+                <div class="w-20 h-20 bg-accent text-text-on-accent hexagon flex items-center justify-center text-3xl font-bold mx-auto mb-6 shadow-button group-hover:shadow-glow transition-all duration-300">
                     3
                 </div>
                 <h3 class="text-xl font-bold text-text-primary mb-3">
@@ -422,7 +446,7 @@ analytics. Reduce delays by 40% and document time by 80%.
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             {% for post in blog_posts[:3] %}
-            <a href="/blog/{{ post.slug }}?lang={{ language }}" class="group bg-surface-card rounded-2xl overflow-hidden border border-border-light hover:border-accent transition-all duration-300">
+            <a href="/blog/{{ post.slug }}?lang={{ language }}" class="group bg-surface-card rounded-2xl overflow-hidden card-accent">
                 <div class="h-48 bg-gradient-to-br from-accent/20 to-accent/5 flex items-center justify-center">
                     <span class="text-6xl">{{ post.emoji }}</span>
                 </div>
@@ -448,10 +472,21 @@ analytics. Reduce delays by 40% and document time by 80%.
 {% endif %}
 
 <!-- CTA Section -->
-<section class="py-20 md:py-28 px-6 bg-surface-secondary">
-    <div class="max-w-4xl mx-auto text-center">
+<section class="py-20 md:py-28 px-6 honeycomb-bg-light relative overflow-hidden">
+    <!-- Animated glow -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[150px] float-animation"></div>
+
+    <!-- Decorative hexes -->
+    <div class="hex-decoration absolute top-10 left-20 w-16 h-16 opacity-[0.06] float-animation" style="animation-delay: -1s;">
+        <svg viewBox="0 0 100 100"><polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" stroke="currentColor" stroke-width="2" fill="none" class="text-accent"/></svg>
+    </div>
+    <div class="hex-decoration absolute bottom-10 right-20 w-24 h-24 opacity-[0.05] float-animation" style="animation-delay: -3s;">
+        <svg viewBox="0 0 100 100"><polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" stroke="currentColor" stroke-width="2" fill="none" class="text-accent"/></svg>
+    </div>
+
+    <div class="max-w-4xl mx-auto text-center relative z-10">
         <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary mb-6">
-            {% if language == 'uk' %}Готові взяти логістику під контроль?{% else %}Ready to Take Control?{% endif %}
+            {% if language == 'uk' %}Готові взяти логістику <span class="text-accent text-glow">під контроль</span>?{% else %}Ready to <span class="text-accent text-glow">Take Control</span>?{% endif %}
         </h2>
         <p class="text-xl text-text-secondary mb-10 max-w-2xl mx-auto">
             {% if language == 'uk' %}
@@ -462,7 +497,7 @@ analytics. Reduce delays by 40% and document time by 80%.
         </p>
 
         <a href="/contact?lang={{ language }}&type=demo"
-            class="inline-flex items-center justify-center px-10 py-5 bg-accent hover:bg-accent-light text-text-on-accent text-lg font-bold rounded-full shadow-button hover:shadow-glow transition-all duration-300">
+            class="btn-accent-glow inline-flex items-center justify-center px-10 py-5 bg-accent hover:bg-accent-light text-text-on-accent text-lg font-bold rounded-full shadow-button transition-all duration-300">
             {% if language == 'uk' %}Замовити демо{% else %}Request Demo{% endif %}
             <svg class="w-6 h-6 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
@@ -471,9 +506,9 @@ analytics. Reduce delays by 40% and document time by 80%.
 
         <p class="text-text-muted text-sm mt-8">
             {% if language == 'uk' %}
-            Або напишіть: <a href="mailto:trexim.logistics@gmail.com" class="text-accent hover:text-accent-light">trexim.logistics@gmail.com</a>
+            Або напишіть: <a href="mailto:trexim.logistics@gmail.com" class="text-accent hover:text-accent-light transition-colors">trexim.logistics@gmail.com</a>
             {% else %}
-            Or email: <a href="mailto:trexim.logistics@gmail.com" class="text-accent hover:text-accent-light">trexim.logistics@gmail.com</a>
+            Or email: <a href="mailto:trexim.logistics@gmail.com" class="text-accent hover:text-accent-light transition-colors">trexim.logistics@gmail.com</a>
             {% endif %}
         </p>
     </div>
