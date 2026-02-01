@@ -2,15 +2,6 @@
 <html lang="{{ 'uk' if language == 'uk' else 'en' }}">
 <head>
     <meta charset="UTF-8">
-    <!-- Prevent FOUC: Apply theme before page renders -->
-    <script>
-        (function() {
-            var theme = localStorage.getItem('theme') || 'light';
-            if (theme === 'dark') {
-                document.documentElement.setAttribute('data-theme', 'dark');
-            }
-        })();
-    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Trexim - {{ 'Операційна система для автоперевезень' if language == 'uk' else 'Operating System for Auto Transportation' }}{% endblock %}</title>
 
@@ -62,46 +53,35 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Theme CSS Variables -->
+    <!-- Theme CSS Variables - Dark Orange Theme -->
     <style>
-        /* Light theme (default) */
         :root {
-            --color-surface: #FFFFFF;
-            --color-surface-secondary: #F5F5F5;
-            --color-surface-card: #FFFFFF;
-            --color-accent: #F5DB00;
-            --color-accent-light: #FFE633;
-            --color-accent-dark: #D9C300;
-            --color-text-primary: #0A0A0A;
-            --color-text-secondary: #525252;
-            --color-text-muted: #737373;
-            --color-text-on-accent: #0A0A0A;
-            --color-border: #E5E5E5;
-            --color-border-dark: #D4D4D4;
-            --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            --shadow-card-hover: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-            --shadow-glow: 0 0 40px -10px rgb(255 224 59 / 0.5);
-            --shadow-button: 0 0 20px 0 rgb(255 224 59 / 0.4);
-        }
+            /* Surfaces */
+            --color-surface: #141414;           /* Основний фон */
+            --color-surface-secondary: #28282A; /* Темні гекси */
+            --color-surface-card: #1E1E20;      /* Картки (між фоном і гексами) */
 
-        /* Dark theme */
-        [data-theme="dark"] {
-            --color-surface: #0A0A0A;
-            --color-surface-secondary: #141414;
-            --color-surface-card: #1A1A1A;
-            --color-accent: #22C55E;
-            --color-accent-light: #4ADE80;
-            --color-accent-dark: #16A34A;
+            /* Accents - Orange */
+            --color-accent: #EA7A17;            /* Яскравий акцент */
+            --color-accent-light: #F59542;      /* Світліший для hover */
+            --color-accent-dark: #CA4916;       /* Темний акцент */
+            --color-accent-muted: #8D4F2B;      /* Перехідний тон */
+
+            /* Text */
             --color-text-primary: #FFFFFF;
-            --color-text-secondary: #A1A1AA;
-            --color-text-muted: #71717A;
-            --color-text-on-accent: #0A0A0A;
-            --color-border: #27272A;
-            --color-border-dark: #18181B;
-            --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
-            --shadow-card-hover: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.4);
-            --shadow-glow: 0 0 40px -10px rgb(34 197 94 / 0.5);
-            --shadow-button: 0 0 20px 0 rgb(34 197 94 / 0.4);
+            --color-text-secondary: #A8A8AB;
+            --color-text-muted: #6E6E72;
+            --color-text-on-accent: #FFFFFF;
+
+            /* Borders */
+            --color-border: #39393C;            /* Контури / об'єм */
+            --color-border-dark: #28282A;
+
+            /* Shadows */
+            --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+            --shadow-card-hover: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.4);
+            --shadow-glow: 0 0 40px -10px rgb(234 122 23 / 0.5);
+            --shadow-button: 0 0 20px 0 rgb(234 122 23 / 0.4);
         }
     </style>
 
@@ -204,18 +184,6 @@
                         <a href="?lang=en" class="px-2 py-1 rounded {% if language == 'en' %}text-accent font-medium{% else %}text-text-muted hover:text-text-primary{% endif %} transition-colors">EN</a>
                     </div>
 
-                    <!-- Theme Toggle -->
-                    <button id="theme-toggle" class="p-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-surface-secondary transition-all" title="Toggle theme">
-                        <!-- Sun icon (shown in dark mode) -->
-                        <svg id="theme-icon-sun" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
-                        </svg>
-                        <!-- Moon icon (shown in light mode) -->
-                        <svg id="theme-icon-moon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
-                        </svg>
-                    </button>
-
                     <!-- CTA Button -->
                     <a href="/contact?lang={{ language }}" class="hidden sm:inline-flex px-6 py-2.5 bg-accent hover:bg-accent-light text-text-on-accent text-sm font-bold rounded-full shadow-button hover:shadow-glow transition-all duration-300">
                         {{ 'Почати' if language == 'uk' else 'Get Started' }}
@@ -253,16 +221,6 @@
                 <a href="/contact?lang={{ language }}" class="block px-3 py-3 text-text-secondary hover:text-accent rounded-lg transition-colors">
                     {{ 'Контакти' if language == 'uk' else 'Contact' }}
                 </a>
-                <!-- Mobile Theme Toggle -->
-                <button id="theme-toggle-mobile" class="flex items-center gap-3 w-full px-3 py-3 text-text-secondary hover:text-accent rounded-lg transition-colors">
-                    <svg id="theme-icon-sun-mobile" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
-                    </svg>
-                    <svg id="theme-icon-moon-mobile" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
-                    </svg>
-                    <span id="theme-text-mobile">{{ 'Темна тема' if language == 'uk' else 'Dark mode' }}</span>
-                </button>
                 <a href="/contact?lang={{ language }}" class="block mt-4 px-4 py-3 bg-accent text-text-on-accent text-center font-bold rounded-full">
                     {{ 'Почати' if language == 'uk' else 'Get Started' }}
                 </a>
@@ -352,55 +310,6 @@
 
     <!-- Trexim Analytics (extended tracking) -->
     <script src="/static/js/analytics.js"></script>
-
-    <!-- Theme Toggle Script -->
-    <script>
-        (function() {
-            const toggle = document.getElementById('theme-toggle');
-            const toggleMobile = document.getElementById('theme-toggle-mobile');
-            const sunIcon = document.getElementById('theme-icon-sun');
-            const moonIcon = document.getElementById('theme-icon-moon');
-            const sunIconMobile = document.getElementById('theme-icon-sun-mobile');
-            const moonIconMobile = document.getElementById('theme-icon-moon-mobile');
-            const themeTextMobile = document.getElementById('theme-text-mobile');
-            const html = document.documentElement;
-
-            const lightText = '{{ "Темна тема" if language == "uk" else "Dark mode" }}';
-            const darkText = '{{ "Світла тема" if language == "uk" else "Light mode" }}';
-
-            function setTheme(theme) {
-                if (theme === 'dark') {
-                    html.setAttribute('data-theme', 'dark');
-                    sunIcon.classList.remove('hidden');
-                    moonIcon.classList.add('hidden');
-                    sunIconMobile.classList.remove('hidden');
-                    moonIconMobile.classList.add('hidden');
-                    themeTextMobile.textContent = darkText;
-                } else {
-                    html.removeAttribute('data-theme');
-                    sunIcon.classList.add('hidden');
-                    moonIcon.classList.remove('hidden');
-                    sunIconMobile.classList.add('hidden');
-                    moonIconMobile.classList.remove('hidden');
-                    themeTextMobile.textContent = lightText;
-                }
-                localStorage.setItem('theme', theme);
-            }
-
-            function toggleTheme() {
-                const currentTheme = html.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-                setTheme(currentTheme === 'dark' ? 'light' : 'dark');
-            }
-
-            // Initialize theme from localStorage
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            setTheme(savedTheme);
-
-            // Toggle theme on click
-            toggle.addEventListener('click', toggleTheme);
-            toggleMobile.addEventListener('click', toggleTheme);
-        })();
-    </script>
 
     {% block scripts %}{% endblock %}
 </body>
