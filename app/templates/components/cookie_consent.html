@@ -6,22 +6,27 @@
      x-transition:leave="transition ease-in duration-200"
      x-transition:leave-start="opacity-100 translate-y-0"
      x-transition:leave-end="opacity-0 translate-y-4"
-     class="fixed bottom-0 left-0 right-0 z-50 p-4 bg-white border-t border-gray-200 shadow-lg md:p-6">
+     class="fixed bottom-0 left-0 right-0 z-50 p-4 md:p-6 bg-surface-card border-t border-border-light shadow-card-hover">
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
         <div class="flex-1 text-center md:text-left">
-            <p class="text-gray-700 text-sm md:text-base">
+            <p class="text-text-secondary text-sm md:text-base">
+                {% if language == 'uk' %}
                 Ми використовуємо cookies для покращення вашого досвіду на сайті та збору анонімної статистики.
-                <a href="/privacy" class="text-orange-500 hover:underline">Політика конфіденційності</a>
+                <a href="/privacy?lang={{ language }}" class="text-accent hover:text-accent-light hover:underline transition-colors">Політика конфіденційності</a>
+                {% else %}
+                We use cookies to improve your experience and collect anonymous statistics.
+                <a href="/privacy?lang={{ language }}" class="text-accent hover:text-accent-light hover:underline transition-colors">Privacy Policy</a>
+                {% endif %}
             </p>
         </div>
         <div class="flex gap-3">
             <button @click="decline()"
-                    class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition">
-                Відхилити
+                    class="px-4 py-2 text-sm font-medium text-text-secondary bg-surface-secondary border border-border-light rounded-full hover:bg-surface hover:border-accent/50 transition-all">
+                {% if language == 'uk' %}Відхилити{% else %}Decline{% endif %}
             </button>
             <button @click="accept()"
-                    class="px-6 py-2 text-sm font-medium text-white bg-orange-500 rounded-lg hover:bg-orange-600 transition">
-                Прийняти
+                    class="px-6 py-2 text-sm font-medium text-text-on-accent bg-accent rounded-full hover:bg-accent-light transition-all shadow-button hover:shadow-glow">
+                {% if language == 'uk' %}Прийняти{% else %}Accept{% endif %}
             </button>
         </div>
     </div>
